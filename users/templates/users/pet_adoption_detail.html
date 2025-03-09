@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
+    <!-- breadcrumbs -->
+    <nav
+        class="text-sm font-light mb-4 text-center flex items-center md:absolute top-1/2 transform -translate-y-1/2">
+        <a href="/">Home</a>
+        <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-2">
+            <path
+                d="M1.19571 7.46017C1.12991 7.46055 1.06467 7.44794 1.00376 7.42306C0.942837 7.39817 0.887429 7.36151 0.840709 7.31517C0.747584 7.22149 0.695312 7.09476 0.695312 6.96267C0.695312 6.83058 0.747584 6.70385 0.840709 6.61017L3.44571 4.00017L0.840709 1.39017C0.758796 1.29452 0.715993 1.17148 0.720853 1.04564C0.725714 0.919805 0.77788 0.800436 0.866928 0.711388C0.955975 0.622341 1.07534 0.570175 1.20118 0.565314C1.32702 0.560454 1.45006 0.603257 1.54571 0.68517L4.50071 3.64517C4.54705 3.69189 4.58371 3.7473 4.60859 3.80822C4.63348 3.86914 4.64609 3.93437 4.64571 4.00017C4.64387 4.13255 4.59208 4.25935 4.50071 4.35517L1.53571 7.31517C1.44506 7.40516 1.3234 7.45704 1.19571 7.46017Z"
+                fill="#7F7F7F" />
+        </svg>
+        <a href="/shop">Pets</a>
+        <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-2">
+            <path
+                d="M1.19571 7.46017C1.12991 7.46055 1.06467 7.44794 1.00376 7.42306C0.942837 7.39817 0.887429 7.36151 0.840709 7.31517C0.747584 7.22149 0.695312 7.09476 0.695312 6.96267C0.695312 6.83058 0.747584 6.70385 0.840709 6.61017L3.44571 4.00017L0.840709 1.39017C0.758796 1.29452 0.715993 1.17148 0.720853 1.04564C0.725714 0.919805 0.77788 0.800436 0.866928 0.711388C0.955975 0.622341 1.07534 0.570175 1.20118 0.565314C1.32702 0.560454 1.45006 0.603257 1.54571 0.68517L4.50071 3.64517C4.54705 3.69189 4.58371 3.7473 4.60859 3.80822C4.63348 3.86914 4.64609 3.93437 4.64571 4.00017C4.64387 4.13255 4.59208 4.25935 4.50071 4.35517L1.53571 7.31517C1.44506 7.40516 1.3234 7.45704 1.19571 7.46017Z"
+                fill="#7F7F7F" />
+        </svg>
+        <a href="/shop" class="font-normal">View Details</a>
+    </nav>
+    <!-- title -->
+    <h1
+        class="text-xl absolute left-1/2 transform -translate-x-1/2 w-full hidden sm:block text-center my-4 sm:my-0">
+        Dog Food Details</h1>
+    <div></div>
+</section>
+<!-- Pet details -->
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Pet image -->
+        <img src="{{ pet.image.url }}" alt="dog food" class="w-full aspect-[611/567] object-cover rounded-2xl" />
+
+        <!-- Pet details -->
+        <div>
+            <h1 class="text-xl">{{ pet.name }}</h1>
+            <!-- Details grid -->
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <div class="flex gap-4 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-cake">
+                        <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+                        <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+                        <path d="M2 21h20" />
+                        <path d="M7 8v3" />
+                        <path d="M12 8v3" />
+                        <path d="M17 8v3" />
+                        <path d="M7 4h.01" />
+                        <path d="M12 4h.01" />
+                        <path d="M17 4h.01" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-light text-[#7f7f7f]">Age</p>
+                        <p>{{ pet.age }}</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-venus-and-mars">
+                        <path d="M10 20h4" />
+                        <path d="M12 16v6" />
+                        <path d="M17 2h4v4" />
+                        <path d="m21 2-5.46 5.46" />
+                        <circle cx="12" cy="11" r="5" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-light text-[#7f7f7f]">Gender</p>
+                        <p>{{ pet.gender }}</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-paw-print">
+                        <circle cx="11" cy="4" r="2" />
+                        <circle cx="18" cy="8" r="2" />
+                        <circle cx="20" cy="16" r="2" />
+                        <path
+                            d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-light text-[#7f7f7f]">Breed</p>
+                        <p>{{ pet.bread }}</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-ruler">
+                        <path
+                            d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" />
+                        <path d="m14.5 12.5 2-2" />
+                        <path d="m11.5 9.5 2-2" />
+                        <path d="m8.5 6.5 2-2" />
+                        <path d="m17.5 15.5 2-2" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-light text-[#7f7f7f]">Size</p>
+                        <p>{{ pet.size }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="pb-2">Description</p>
+            <p class="text-sm font-light ">
+                {{ pet.description }}
+            </p>
+            <p class="pt-6">Health &amp; Vaccinations</p>
+            <ul class="text-sm font-light py-4 bullets">
+                <li>Fully vaccinated</li>
+                <li>Spayed</li>
+                <li>Microchipped</li>
+            </ul>
+            <!-- counter and add to cart -->
+            <div class="flex items
+            -center gap-4">
+            {% if existing_request %}
+                <p>You have already applied for this pet.</p>
+            {% else %}
+                <form method="post">
+                {% csrf_token %}
+                <button type="submit"
+                    class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:cursor-pointer hover:bg-[#ED824D]">Apply
+                    to Adopt</button>
+                </form>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Adoption Process -->
+<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <h2 class="text-xl font-medium py-4">Adoption Process</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4">
+            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-scroll-text m-2">
+                    <path d="M15 12h-5" />
+                    <path d="M15 8h-5" />
+                    <path d="M19 17V5a2 2 0 0 0-2-2H4" />
+                    <path
+                        d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
+                </svg>
+            </div>
+            <h2 class="py-4"> 1. Submit Application</h2>
+            <p class="text-sm text-[#7f7f7f]">Fill out our comprehensive adoption application form.</p>
+        </div>
+        <div class="bg-white p-4">
+            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-headset">
+                    <path
+                        d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" />
+                    <path d="M21 16v2a4 4 0 0 1-4 4h-5" />
+                </svg>
+            </div>
+            <h2 class="py-4"> 2. Initial Interview</h2>
+            <p class="text-sm text-[#7f7f7f]">We'll schedule a phone call to discuss your application.</p>
+        </div>
+        <div class="bg-white p-4">
+            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-house">
+                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+                    <path
+                        d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+            </div>
+            <h2 class="py-4"> 3. Home Check</h2>
+            <p class="text-sm text-[#7f7f7f]">A quick visit to ensure your home is pet-ready.</p>
+        </div>
+        <div class="bg-white p-4">
+            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-heart">
+                    <path
+                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+            </div>
+            <h2 class="py-4"> 4. Welcome Home</h2>
+            <p class="text-sm text-[#7f7f7f]">Complete the adoption and welcome your new family member! </p>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

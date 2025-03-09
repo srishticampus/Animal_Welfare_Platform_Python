@@ -10,6 +10,7 @@ from datetime import datetime
 from petshops.models import PetShop
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from admin_panel.models import AddPets, AdoptionRequest
 
 def register(request):
     if request.method == "POST":
@@ -216,8 +217,36 @@ def checkout(request):
 def order_success(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     items = OrderItem.objects.filter(order=order)
+    cart_items = Cart.objects.filter(user=request.user)
+
+    total_price = sum(item.total_price() for item in cart_items)
+    tax_rate = Decimal('0.10')
+    tax_amount = order.total_price * tax_rate
+    final_price = order.total_price + tax_amount
+
     context = {
-        "items": items
+        "items": items,
+        "total_price": total_price,
+        "tax_amount": tax_amount,
+        "final_price": final_price,
+        'order': order,
     }
-    print(context)
+
     return render(request, "users/order_success.html", context)
+
+def pet_adoption_list(request):
+    pets = AddPets.objects.all()
+    return render(request, 'users/pet_adoption_list.html', {'pets': pets})
+
+def pet_adoption_detail(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+
+
+    existing_request = AdoptionRequest.objects.filter(pet=pet, user=request.user).first()
+    
+    if request.method == 'POST':
+        if not existing_request:
+            AdoptionRequest.objects.create(pet=pet, user=request.user)
+            return redirect('pet_adoption_list')
+
+    return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request})

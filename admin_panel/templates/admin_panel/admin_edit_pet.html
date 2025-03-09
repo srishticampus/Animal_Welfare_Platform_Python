@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Edit Pet</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Image:</label><br>
+    <img src="{{ pet.image.url }}" width="150"><br>
+    <input type="file" name="image"><br>
+
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ pet.name }}" required><br>
+
+    <label>Age:</label>
+    <input type="text" name="age" value="{{ pet.age }}" required><br>
+
+    <label>Gender:</label>
+    <input type="text" name="gender" value="{{ pet.gender }}" required><br>
+
+    <label>Breed:</label>
+    <input type="text" name="bread" value="{{ pet.bread }}" required><br>
+
+    <label>Size:</label>
+    <input type="text" name="size" value="{{ pet.size }}" required><br>
+
+    <label>Description:</label>
+    <input type="text" name="description" value="{{ pet.description }}" required><br>
+
+    <label>Health & Vaccinations:</label>
+    <input type="text" name="health_vaccinations" value="{{ pet.health_vaccinations }}" required><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+<a href="{% url 'admin_pet_list' %}">Back</a>
+{% endblock %}

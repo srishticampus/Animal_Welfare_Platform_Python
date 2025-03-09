@@ -1,15 +1,76 @@
-<h2>Thank you for your order!</h2>
-<p>Your order has been placed successfully.</p>
+{% extends "base.html" %}
 
-{% if items %}
-    <h3>Your Order Details:</h3>
-    <ul>
-        {% for item in items %}
-            <li>Product: {{ item.product.product_name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No orders found.</p>
-{% endif %}
+{% block content %}
 
-<a href="{% url 'petshop' %}">Continue Shopping</a>
+
+<section class="container bg-white mx-auto px-3 lg:px-0 pt-16 rounded-2xl mt-8 max-w-[800px]">
+    <div class="flex flex-col items-center gap-4 px-4 sm:px-8">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M80 40C80 17.9086 62.0914 0 40 0C17.9086 0 0 17.9086 0 40C0 62.0914 17.9086 80 40 80C62.0914 80 80 62.0914 80 40Z"
+                fill="#DCFCE7" />
+            <mask id="mask0_2102_4468" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="24" y="22"
+                width="32" height="36">
+                <path d="M55.75 22H24.25V58H55.75V22Z" fill="white" />
+            </mask>
+            <g mask="url(#mask0_2102_4468)">
+                <path
+                    d="M55.1172 30.1562C55.5391 30.625 55.75 31.164 55.75 31.7734C55.75 32.3828 55.5391 32.9219 55.1172 33.3906L37.1172 51.3906C36.6485 51.8125 36.1094 52.0234 35.5 52.0234C34.8906 52.0234 34.3515 51.8125 33.8828 51.3906L24.8828 42.3906C24.4609 41.9219 24.25 41.3828 24.25 40.7734C24.25 40.164 24.4609 39.625 24.8828 39.1562C25.3516 38.7344 25.8906 38.5234 26.5 38.5234C27.1094 38.5234 27.6484 38.7344 28.1172 39.1562L35.5 46.6094L51.8828 30.1562C52.3515 29.7344 52.8906 29.5234 53.5 29.5234C54.1094 29.5234 54.6485 29.7344 55.1172 30.1562Z"
+                    fill="#22C55E" />
+            </g>
+        </svg>
+
+        <h1 class="text-2xl font-medium text-center">Order Successfully Placed!</h1>
+        <p class="text-sm font-light text-center mb-4">Thank you for your purchase! Your furry friends will be
+            delighted.
+        </p>
+        <hr class="border-[#ccc] w-full" />
+
+        <!-- items -->
+        {% if items %}
+        <div class="flex flex-col gap-4 w-full mt-4">
+            {% for item in items %}
+            <div class="flex justify-between items-center">
+                <div class="flex gap-2">
+                    <img src="{{ item.product.product_image.url }}" alt="dog" class="w-24 h-24 object-cover rounded-lg" />
+                    <div class="ps-2">
+                        <p class="text-sm font-medium"> {{ item.product.product_name }}</p>
+                        <p class="text-xs py-3">Qty: {{ item.quantity }}</p>
+                    </div>
+                </div>
+                <p class="text-sm font-medium">₹{{ item.price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <hr class="border-[#ccc] w-full" />
+
+        <!-- Order Summary -->
+        <div class="flex flex-col gap-4 w-full mt-4">
+            <h2 class="text-lg font-semibold">Order Summary</h2>
+            <div class="flex justify-between items-center py-2">
+                <p class="text-[#7f7f7f]">Subtotal</p>
+                <p>₹{{ order.total_price }}</p>
+            </div>
+            <div class="flex justify-between items-center py-2">
+                <p class="text-[#7f7f7f]">Shipping</p>
+                <p>Free</p>
+            </div>
+            <div class="flex justify-between items-center py-2">
+                <p class="text-[#7f7f7f]">Tax</p>
+                <p>₹{{ tax_amount|floatformat:2 }}</p>
+            </div>
+            <hr class="border-[#ccc]" />
+            <div class="flex justify-between items-center py-2">
+                <p>Total</p>
+                <p>₹{{ final_price|floatformat:2 }}</p>
+            </div>
+        </div>
+        <button class="bg-[#e54c00] text-white w-full py-2 rounded-2xl hover:bg-[#ED824D] my-10">View Order
+            Details</button>
+    </div>
+
+</section>
+
+{% endblock %}

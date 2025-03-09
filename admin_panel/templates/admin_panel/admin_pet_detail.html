@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>{{ pet.name }}</h2>
+<img src="{{ pet.image.url }}" width="300"><br>
+<strong>Age:</strong> {{ pet.age }}<br>
+<strong>Gender:</strong> {{ pet.gender }}<br>
+<strong>Breed:</strong> {{ pet.bread }}<br>
+<strong>Size:</strong> {{ pet.size }}<br>
+<strong>Description:</strong> {{ pet.description }}<br>
+<strong>Health & Vaccinations:</strong> {{ pet.health_vaccinations }}<br>
+<a href="{% url 'admin_edit_pet' pet.id %}">Edit</a>
+<a href="{% url 'admin_delete_pet' pet.id %}">Delete</a>
+<a href="{% url 'admin_pet_list' %}">Back</a>
+{% endblock %}

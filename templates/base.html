@@ -33,52 +33,30 @@
         </svg>
         <p class="text-lg font-semibold">Paw Haven</p>
       </div>
-
+      {% if user.is_authenticated %}
+    {% if request.user.is_superuser %}
+    <a href="{% url 'manage_users' %}" class="p-1 m-2 bg-blue-500 text-white">Manage Users</a>
+    <a href="{% url 'manage_petshops' %}">Manage Pet Shops</a>
+    {% endif %}
+    
+    {% if user.is_authenticated %}
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">
         <li><a class="hover:text-[#e54c00] transition" href="/">Home</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="/rescue">Rescue</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/adopt">Adopt</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="{% url 'pet_adoption_list' %}">Adopt</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'petshop' %}">Shop</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="/orders">Orders</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="/donation">Donation</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/about">About</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/contact">Contact</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="{% url 'about_page' %}">About</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="{% url 'contact_page' %}">Contact</a></li>
       </ul>
-
-      <!-- user icon -->
-      <!-- <div class="relative group">
-        <label for="profile-menu" class="p-2 rounded-full hover:bg-gray-200 transition cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-user">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </label>
-        
-        <input type="checkbox" id="profile-menu" class="peer hidden">
-      
-        <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg p-2 opacity-0 peer-checked:opacity-100 peer-checked:block group-hover:opacity-100 group-hover:block transition-all">
-          <a href="#" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M1 15C1 13.9391 1.42143 12.9217 2.17157 12.1716C2.92172 11.4214 3.93913 11 5 11H13C14.0609 11 15.0783 11.4214 15.8284 12.1716C16.5786 12.9217 17 13.9391 17 15C17 15.5304 16.7893 16.0391 16.4142 16.4142C16.0391 16.7893 15.5304 17 15 17H3C2.46957 17 1.96086 16.7893 1.58579 16.4142C1.21071 16.0391 1 15.5304 1 15Z" stroke="black" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M9 7C10.6569 7 12 5.65685 12 4C12 2.34315 10.6569 1 9 1C7.34315 1 6 2.34315 6 4C6 5.65685 7.34315 7 9 7Z" stroke="black" stroke-width="1.5"/>
-            </svg>
-            Profile
-          </a>
-          <a href="{% url 'logout' %}" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 12L12 9M12 9L9 6M12 9H1M6 4.24859V4.2002C6 3.08009 6 2.51962 6.21799 2.0918C6.40973 1.71547 6.71547 1.40973 7.0918 1.21799C7.51962 1 8.08009 1 9.2002 1H13.8002C14.9203 1 15.4796 1 15.9074 1.21799C16.2837 1.40973 16.5905 1.71547 16.7822 2.0918C17 2.5192 17 3.07899 17 4.19691V13.8036C17 14.9215 17 15.4805 16.7822 15.9079C16.5905 16.2842 16.2837 16.5905 15.9074 16.7822C15.48 17 14.921 17 13.8031 17H9.19691C8.07899 17 7.5192 17 7.0918 16.7822C6.71547 16.5905 6.40973 16.2839 6.21799 15.9079C6 15.4805 6 14.9215 6 13.8036V13.7514" stroke="black" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            Logout
-          </a>
-        </div>
-      </div> -->
+      {% endif %}
+      {% endif %}
       <div class="lin">
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
-        <a href="" class=" items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Profile</a>
+        <a href="" class=" items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Profile {{ user.username }}</a>
         {% else %}
         <a href="{% url 'login' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Login</a>
         {% endif %}

@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from petshops.models import PetShop
+from .models import AddPets, AdoptionRequest
 
 @login_required
 def admin_dashboard(request):
@@ -34,3 +35,82 @@ def manage_petshops(request):
 
     petshops = PetShop.objects.all()
     return render(request, "admin_panel/manage_petshops.html", {"petshops": petshops})
+
+
+def admin_pet_list(request):
+    pets = AddPets.objects.all()
+    return render(request, 'admin_panel/admin_pet_list.html', {'pets': pets})
+
+def admin_add_pet(request):
+    if request.method == 'POST':
+        image = request.FILES['image']
+        name = request.POST['name']
+        age = request.POST['age']
+        gender = request.POST['gender']
+        bread = request.POST['bread']
+        size = request.POST['size']
+        description = request.POST['description']
+        health_vaccinations = request.POST['health_vaccinations']
+
+        AddPets.objects.create(
+            image=image,
+            name=name,
+            age=age,
+            gender=gender,
+            bread=bread,
+            size=size,
+            description=description,
+            health_vaccinations=health_vaccinations
+        )
+        return redirect('admin_pet_list')
+
+    return render(request, 'admin_panel/admin_add_pet.html')
+
+def admin_pet_detail(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+    return render(request, 'admin_panel/admin_pet_detail.html', {'pet': pet})
+
+def admin_edit_pet(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+
+    if request.method == 'POST':
+        pet.name = request.POST['name']
+        pet.age = request.POST['age']
+        pet.gender = request.POST['gender']
+        pet.bread = request.POST['bread']
+        pet.size = request.POST['size']
+        pet.description = request.POST['description']
+        pet.health_vaccinations = request.POST['health_vaccinations']
+
+        if 'image' in request.FILES:
+            pet.image = request.FILES['image']
+
+        pet.save()
+        return redirect('admin_pet_list')
+
+    return render(request, 'admin_panel/admin_edit_pet.html', {'pet': pet})
+
+def admin_delete_pet(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+
+    if request.method == 'POST':
+        pet.delete()
+        return redirect('admin_pet_list')
+
+    return render(request, 'admin_panel/admin_delete_pet.html', {'pet': pet})
+
+def admin_adoption_requests(request):
+    requests = AdoptionRequest.objects.select_related('pet', 'user').all()
+    return render(request, 'admin_panel/admin_adoption_requests.html', {'requests': requests})
+
+def approve_adoption(request, request_id):
+    adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
+    adoption_request.status = 'Approved'
+    adoption_request.save()
+    return redirect('admin_adoption_requests')
+
+def reject_adoption(request, request_id):
+    adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
+    adoption_request.status = 'Rejected'
+    adoption_request.save()
+    return redirect('admin_adoption_requests')

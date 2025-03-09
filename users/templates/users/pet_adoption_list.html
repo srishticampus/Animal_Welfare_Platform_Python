@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
+    <!-- breadcrumbs -->
+    <nav class="text-sm font-light mb-4 text-center flex items-center absolute top-1/2 transform -translate-y-1/2">
+        <a href="/">Home</a>
+        <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-2">
+            <path
+                d="M1.19571 7.46017C1.12991 7.46055 1.06467 7.44794 1.00376 7.42306C0.942837 7.39817 0.887429 7.36151 0.840709 7.31517C0.747584 7.22149 0.695312 7.09476 0.695312 6.96267C0.695312 6.83058 0.747584 6.70385 0.840709 6.61017L3.44571 4.00017L0.840709 1.39017C0.758796 1.29452 0.715993 1.17148 0.720853 1.04564C0.725714 0.919805 0.77788 0.800436 0.866928 0.711388C0.955975 0.622341 1.07534 0.570175 1.20118 0.565314C1.32702 0.560454 1.45006 0.603257 1.54571 0.68517L4.50071 3.64517C4.54705 3.69189 4.58371 3.7473 4.60859 3.80822C4.63348 3.86914 4.64609 3.93437 4.64571 4.00017C4.64387 4.13255 4.59208 4.25935 4.50071 4.35517L1.53571 7.31517C1.44506 7.40516 1.3234 7.45704 1.19571 7.46017Z"
+                fill="#7F7F7F" />
+        </svg>
+        <a href="/shop" class="font-normal">Pets</a>
+    </nav>
+    <!-- title -->
+    <h1
+        class="text-xl absolute left-1/2 transform -translate-x-1/2 w-full hidden sm:block text-center my-4 sm:my-0">
+        Pet
+        Shop</h1>
+    <div></div>
+</section>
+<!-- products -->
+<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for pet in pets %}
+        <div class="w-full">
+            <div class="card bg-white rounded-2xl">
+                <div class="img">
+                    <img src="{{ pet.image.url }}" alt="products"
+                        class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+                </div>
+                <div class="content p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">{{ pet.name }}</h3>
+                        <!--badge-->
+                        <div class="bg-[#4CAF50] text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Available
+                        </div>
+                    </div>
+                    <p class="text-xs font-medium text-[#4c4c4c] py-1">
+                        {{ pet.bread }} • <span class="text-[#7f7f7f]">{{ pet.age }}</span>
+                    </p>
+                    <p class="text-xs font-light text-[#4c4c4c] py-1">{{ pet.description }}</p>
+                    <a href="{% url 'pet_adoption_detail' pet.id %}"
+                        class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">View
+                        Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

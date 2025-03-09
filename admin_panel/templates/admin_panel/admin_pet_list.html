@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Admin - Pet List</h2>
+<a href="{% url 'admin_add_pet' %}">Add New Pet</a>
+<ul>
+    {% for pet in pets %}
+        <li>
+            <img src="{{ pet.image.url }}" width="100">
+            <strong>{{ pet.name }}</strong> ({{ pet.age }} years, {{ pet.gender }})
+            <a href="{% url 'admin_pet_detail' pet.id %}">View Details</a>
+            <a href="{% url 'admin_edit_pet' pet.id %}">Edit</a>
+            <a href="{% url 'admin_delete_pet' pet.id %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
