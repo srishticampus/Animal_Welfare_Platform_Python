@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import PetShop, PetShopProduct, Offer
+from .models import PetShop, Product, Cart
 # Register your models here.
 
 
 admin.site.register(PetShop)
-admin.site.register(PetShopProduct)
-admin.site.register(Offer)
+admin.site.register(Product)
+admin.site.register(Cart)
+

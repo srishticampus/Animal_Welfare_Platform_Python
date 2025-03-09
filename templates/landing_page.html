@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="src/style.css" />
+    <title>Vite App</title>
+</head>
+
+<body class="bg-[#F6F7F9] text-[#4c4c4c]">
+    <!-- navbar -->
+    <nav class=" py-6">
+        <div class="container mx-auto px-3 lg:px-0 flex justify-between items-center">
+            <!-- logo -->
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-dog text-[#e54c00]" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M11.25 16.25h1.5L12 17z" />
+                    <path d="M16 14v.5" />
+                    <path
+                        d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" />
+                    <path d="M8 14v.5" />
+                    <path
+                        d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" />
+                </svg>
+                <p class="text-base font-medium">Paw Haven</p>
+            </div>
+            <!-- nav -->
+            <ul class="text-sm font-light gap-6 hidden md:flex">
+                <!-- links to home, rescue,adopt,shop,orders,donation,about,contact -->
+                <li><a class="orange-underline text-xs pb-1" href="/">Home</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/rescue">Rescue</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/adoption">Adopt</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/shop">Shop</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/orders">Orders</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/donation">Donation</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/about">About</a></li>
+                <li><a class="orange-underline text-xs pb-1" href="/contact">Contact</a></li>
+            </ul>
+            <!-- user icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-user">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+            </svg>
+        </div>
+    </nav>
+
+    <!-- hero -->
+    <section class="container mx-auto px-3 lg:px-0 py-12">
+        <div class="flex flex-col md:flex-row py-16 justify-center items-center gap-6">
+            <div>
+                <h1 class="text-5xl font-semibold leading-snug">Pets deserve a loving <span
+                        class="text-[#E54C00]">Home!</span></h1>
+                <p class="text-lg font-light pt-2">Rescue. Foster. Adopt. Make a Difference.</p>
+            </div>
+            <img src="src/assets/hero-main.png" alt="nurses helping a dog"
+                class="w-full md:w-1/2 rounded-2xl aspect-video object-cover object-top" />
+        </div>
+    </section>
+
+    <!-- stats -->
+    <section class="container mx-auto px-3 lg:px-0 py-8">
+        <div class="flex flex-col sm:flex-row justify-evenly gap-4">
+            <div class="flex flex-col items-center gap-4">
+                <p class="text-4xl text-[#e54c00] font-semibold">400+</p>
+                <p class="text-lg font-light">Successful Adoptions</p>
+            </div>
+            <div class="flex flex-col items-center gap-4">
+                <p class="text-4xl text-[#e54c00] font-semibold">200+</p>
+                <p class="text-lg font-light">Volunteers</p>
+            </div>
+            <div class="flex flex-col items-center gap-4">
+                <p class="text-4xl text-[#e54c00] font-semibold">8+</p>
+                <p class="text-lg font-light">Years</p>
+            </div>
+            <div class="flex flex-col items-center gap-4">
+                <p class="text-4xl text-[#e54c00] font-semibold">20k+</p>
+                <p class="text-lg font-light">Pets Rescued </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- cards bento grid -->
+    <section class="container mx-auto px-3 lg:px-0 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-4">
+            <div
+                class="rounded-2xl aspect-video md:aspect-auto overflow-hidden flex items-center justify-center row-span-2 relative">
+                <div
+                    class="absolute  bg-white bg-opacity-50 top-2 right-2 flex items-center justify-center h-12 w-12 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right">
+                        <path d="M7 7h10v10" />
+                        <path d="M7 17 17 7" />
+                    </svg>
+                </div>
+                <div
+                    class="absolute h-full w-full bg-gradient-to-b from-transparent to-[#000000ee] flex justify-center">
+                    <div class="p-6 mt-auto">
+                        <h3 class="text-white text-xl sm:text-3xl">Be a Lifesaver – Rescue Stray Animals</h3>
+                        <p class="text-white text-xs sm:text-sm font-light pt-2">
+                            Report animals in need, and our volunteers will step in to rescue, treat, and find them a
+                            loving home. Every report brings hope to a helpless pet.
+                        </p>
+                    </div>
+                </div>
+                <img src="src/assets/card-1.png" alt="dog" class="w-full h-full object-cover object-center" />
+            </div>
+            <div class="rounded-2xl aspect-video overflow-hidden flex items-center justify-center relative">
+                <div
+                    class="absolute  bg-white bg-opacity-50 top-2 right-2 flex items-center justify-center h-12 w-12 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right">
+                        <path d="M7 7h10v10" />
+                        <path d="M7 17 17 7" />
+                    </svg>
+                </div>
+                <div
+                    class="absolute h-full w-full bg-gradient-to-b from-transparent to-[#000000ee] flex justify-center">
+                    <div class="p-6 mt-auto">
+                        <h3 class="text-white text-xl sm:text-3xl">Adopt a Pet - Your Best Friend!</h3>
+                        <p class="text-white text-xs sm:text-sm font-light pt-2">
+                            Give a rescued pet a second chance at happiness. Browse loving cats and dogs waiting for a
+                            forever home .
+                        </p>
+                    </div>
+                </div>
+                <img src="src/assets/card-2.png" alt="dog" class="w-full h-full object-cover object-center" />
+            </div>
+            <div class="rounded-2xl aspect-video overflow-hidden flex items-center justify-center relative">
+                <div
+                    class="absolute  bg-white bg-opacity-50 top-2 right-2 flex items-center justify-center h-12 w-12 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right">
+                        <path d="M7 7h10v10" />
+                        <path d="M7 17 17 7" />
+                    </svg>
+                </div>
+                <div
+                    class="absolute h-full w-full bg-gradient-to-b from-transparent to-[#000000ee] flex justify-center">
+                    <div class="p-6 mt-auto">
+                        <h3 class="text-white text-xl sm:text-3xl">Shop & Support Animal Welfare!</h3>
+                        <p class="text-white text-xs sm:text-sm font-light pt-2">
+                            Get high-quality pet food and accessories while supporting rescue efforts. Every purchase
+                            helps rescued animals.
+                        </p>
+                    </div>
+                </div>
+                <img src="src/assets/card-3.png" alt="dog" class="w-full h-full object-cover object-center" />
+            </div>
+        </div>
+    </section>
+
+    <!-- how it works-->
+    <section class="container mx-auto px-3 lg:px-0 py-8">
+        <h2 class="text-2xl font-semibold text-center mb-12 text-[#e54c00]">How it works</h2>
+        <div class="flex flex-col md:flex-row justify-evenly text-center my-8 gap-4">
+            <div class="flex flex-col items-center">
+                <img src="src/assets/work-1.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+                <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Report a Stray Pet</h3>
+                <p class="text-sm">Spotted an animal in need? Upload a photo and location details to alert our rescue
+                    team. Every report
+                    helps save a life.</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="src/assets/work-2.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+                <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Volunteers Take Action</h3>
+                <p class="text-sm">Our dedicated volunteers step in! Once verified, our team quickly reaches the pet’s
+                    location, ensuring safe rescue and care.</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="src/assets/work-3.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+                <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Find a Loving Home</h3>
+                <p class="text-sm">After recovery, pets are ready for adoption. We connect them with loving families,
+                    ensuring a happy and secure future.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- cta banner -->
+    <section class="container mx-auto px-3 lg:px-0 py-8">
+        <div class="relative cta-gradient text-white rounded-2xl p-12 flex flex-col gap-6 items-start overflow-hidden">
+            <div class="absolute w-full h-full  inset-0 -z-1">
+                <img src="src/assets/cta.png" alt="volunteer helping a dog"
+                    class="md:w-1/2 h-full object-cover object-top right-0 absolute rotate-y-180" />
+            </div>
+
+            <div class="md:w-1/2">
+                <h3 class="text-2xl font-semibold">Heroes Without Capes, Join Our Volunteers & Save Innocent Lives
+                    Today!</h3>
+            </div>
+            <button class="bg-white text-[#e54c00] px-6 py-2 rounded-full flex text-sm gap-2 items-center">Register
+                Now <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-move-right">
+                    <path d="M18 8L22 12L18 16" />
+                    <path d="M2 12H22" />
+                </svg></button>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="bg-[#4c4c4c] text-white py-4">
+        <div class="container mx-auto px-3 pt-3 lg:px-0 flex">
+            <div class="flex-1 flex flex-col justify-between pb-1">
+                <!-- logo -->
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-dog text-[#e54c00]" width="48"
+                        height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11.25 16.25h1.5L12 17z" />
+                        <path d="M16 14v.5" />
+                        <path
+                            d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" />
+                        <path d="M8 14v.5" />
+                        <path
+                            d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" />
+                    </svg>
+                    <p class="text-2xl w-full font-semibold">Paw Haven</p>
+                </div>
+                <!-- description -->
+                <p class="text-xs font-light py-2 ps-2 pt-4 sm:ps-0">A compassionate platform dedicated to rescuing,
+                    rehabilitating,
+                    and rehoming
+                    pets
+                    while supporting animal welfare through community efforts.</p>
+            </div>
+            <!-- nav -->
+            <div class="flex-1">
+                <nav class="text-xs font-light py-2 flex flex-col justify-evenly items-stretch text-end gap-4">
+                    <a href="/">Home</a>
+                    <a href="/shop">Shop</a>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+        <!-- divider -->
+        <div class="container mx-auto px-3 lg:px-0 py-2">
+            <hr class="border-white" />
+        </div>
+        <div class="flex flex-col sm:flex-row justify-between items-center container mx-auto py-3">
+            <!-- copyright -->
+            <div class="text-xs font-light">
+                <p>Copyright &copy; 2024. All rights reserved.</p>
+            </div>
+            <!-- links -->
+            <div>
+                <a href="#" class="text-xs font-light px-3 underline">Terms of Service</a>
+                <a href="#" class="text-xs font-light px-3 underline">FAQ</a>
+                <a href="#" class="text-xs font-light px-3 underline">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

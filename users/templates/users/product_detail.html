@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-xl text-center my-4">Dog Food Details</h1>
+
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- product image -->
+        <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="w-full aspect-[611/567] object-cover rounded-2xl" />
+
+        <!-- product details -->
+        <div>
+            <h1 class="text-xl">{{ product.product_name }}</h1>
+            <p class="text-2xl py-4 font-medium">₹{{ product.product_price }}</p>
+            <p class="pb-2">Description</p>
+            <p class="text-sm font-light">{{ product.description }}</p>
+
+            <ul class="text-sm font-light py-4 bullets">
+                <li>100% Natural Ingredients</li>
+                <li>Rich in Protein</li>
+                <li>Essential Vitamins and Minerals</li>
+                <li>No Artificial Preservatives</li>
+                <li>Supports Digestive Health</li>
+            </ul>
+
+            <!-- counter and add to cart -->
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <button class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">-</button>
+                    <p class="px-8 py-2 border border-[#ccc] rounded-md">1</p>
+                    <button class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">+</button>
+                </div>
+                <button class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D]">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- similar products -->
+<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <h2 class="text-xl font-medium py-4">Similar Products</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for similar in similar_products %}
+        <div class="w-full">
+            <a href="{% url 'product_detail' similar.id %}">
+                <div class="card rounded-2xl">
+                    <div class="img">
+                        <img src="{{ similar.product_image.url }}" alt="{{ similar.product_name }}"
+                            class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+                    </div>
+                    <div class="content p-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-base">{{ similar.product_name }}</h3>
+                            <p class="text-xl">₹{{ similar.product_price }}</p>
+                        </div>
+                        <p class="text-xs font-medium text-[#7f7f7f] py-1">
+                            {{ product.product_description }}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

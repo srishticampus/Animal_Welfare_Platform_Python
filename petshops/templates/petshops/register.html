@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <input type="text" name="registration_id" placeholder="Registration ID" required><br>
+    <input type="text" name="username" placeholder="Username" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="text" name="phone_number" placeholder="Phone Number" required><br>
+    <input type="text" name="location" placeholder="Location" required><br>
+    <input type="text" name="available_accessories" placeholder="Available Accessories" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
+    <button type="submit" class="bg-[#e54c00] hover:bg-[#ED824D] hover:cursor-pointer text-white py-2 px-4 rounded-3xl mt-8 col-span-2">Register</button>
+</form>
+{% endblock %}

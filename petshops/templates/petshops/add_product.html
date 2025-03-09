@@ -1,0 +1,28 @@
+
+    <h2>Welcome, {{ user.username }}!</h2>
+    <h3>Add Product</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="product_name" placeholder="Product Name" required><br>
+        <input type="text" name="product_price" placeholder="Product Price" required><br>
+        <textarea name="product_description" placeholder="Product Description" required></textarea><br>
+        <input type="file" name="product_image" required><br>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <h3>Products List</h3>
+    <ul>
+        {% for product in user.petshop.product_set.all %}
+            <li>
+                <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}" width="100"><br>
+                <strong>{{ product.product_name }}</strong> - ₹{{ product.product_price }}<br>
+                {{ product.product_description }}
+            </li>
+        {% empty %}
+            <li>No products added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="{% url 'logout_petshop' %}">Logout</a>
+

@@ -1,39 +1,37 @@
 from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import Group, Permission
-# Create your models here.
-
+from django.contrib.auth.models import User
 
 class PetShop(models.Model):
-    name = models.CharField(max_length=255)
-    registration_id = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    registration_id = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
     location = models.TextField()
     available_accessories = models.TextField()
-    owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    groups = models.ManyToManyField(Group, related_name="petshop_users", blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name="petshop_user_permissions", blank=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username
 
-    
-class PetShopProduct(models.Model):
-    shop = models.ForeignKey(PetShop, on_delete=models.CASCADE, related_name='products')
-    name = models.CharField(max_length=255)
-    details = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='product_images/')
+class Product(models.Model):
+    petshop = models.ForeignKey(PetShop, on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=255)
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    product_description = models.TextField()
+    product_image = models.ImageField(upload_to='product_images/')
 
     def __str__(self):
-        return f"{self.name} - {self.shop.name}"
+        return self.product_name
     
 
-class Offer(models.Model):
-    product = models.ForeignKey(PetShopProduct, on_delete=models.CASCADE, related_name='offers')
-    discounted_price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.TextField()
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def total_price(self):
+        return self.product.product_price * self.quantity
 
     def __str__(self):
-        return f"Offer on {self.product.name}"
+        return f"{self.user.username} - {self.product.product_name} - {self.quantity}"
+    
+

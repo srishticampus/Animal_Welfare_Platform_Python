@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container mx-auto px-3 lg:px-0 flex flex-col items-center gap-4 py-8">
+    
+        <form action="" method="post" enctype="multipart/form-data" 
+            class="flex flex-col items-center gap-6 w-full max-w-[600px]">
+
+            {% csrf_token %}
+            
+            <h1 class="text-xl font-semibold">Sign Up!</h1>
+
+            <!-- Image Upload -->
+            <label for="image-upload" class="flex flex-col items-center cursor-pointer">
+                <input type="file" name="profile_image" id="image-upload" accept="image/*" 
+                    class="hidden" onchange="previewImage(event)" />
+                <img id="image-preview" src="src/assets/profile-pic.png" 
+                    alt="Upload Profile Pic" class="w-48 h-56 object-contain mt-2" />
+                    <span class="text-sm">Upload Profile Image</span>
+            </label>
+
+            <!-- Form Fields -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                <label for="name" class="flex flex-col">
+                    <span>Name</span>
+                    <input type="text" name="username" id="name" class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+                
+                <label for="email" class="flex flex-col">
+                    <span>Email</span>
+                    <input type="email" name="email" id="email" class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+
+                <label for="phone" class="flex flex-col">
+                    <span>Phone Number</span>
+                    <input type="tel" name="phone_number" id="phone" class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+
+                <label for="aadhaar" class="flex flex-col">
+                    <span>Aadhaar Number</span>
+                    <input type="text" name="aadhaar_number" id="aadhaar" class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+
+                <label for="password" class="flex flex-col">
+                    <span>Password</span>
+                    <input type="password" name="password" id="password" class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+
+                <label for="confirm-password" class="flex flex-col">
+                    <span>Confirm Password</span>
+                    <input type="password" name="confirm_password" id="confirm-password" 
+                        class="border border-[#ccc] rounded-md p-2" required/>
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="bg-[#e54c00] hover:bg-[#ED824D] text-white py-2 px-4 rounded-3xl mt-4">
+                Sign Up
+            </button>
+
+        </form>
+
+        <p class="text-sm mt-4">Already have an account? <a href="/login" class="underline">Login</a></p>
+
+
+    </main>
+{% endblock %}

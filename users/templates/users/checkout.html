@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
+    <!-- breadcrumbs -->
+    <a href="/shop"
+        class="text-sm font-light mb-4 text-center flex items-center md:absolute top-1/2 transform -translate-y-1/2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-move-left">
+            <path d="M6 8L2 12L6 16" />
+            <path d="M2 12H22" />
+        </svg>
+        <span class="font-normal ms-4">Back</span>
+    </a>
+    <!-- title -->
+    <h1 class="-z-1 text-xl absolute left-1/2 transform -translate-x-1/2 hidden sm:block text-center my-4 sm:my-0">
+        Checkout</h1>
+    <div></div>
+</section>
+
+<!--main-->
+<main>
+    <form action="" method="post" class="container flex flex-col lg:flex-row items-start mx-auto gap-4">
+        {% csrf_token %}
+        <div class="lg:flex-[1.5] w-full">
+            <!--address form-->
+            <section class="bg-white p-6 rounded-2xl">
+                <h2 class="text-xl font-semibold mb-4">Shipping Address</h2>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                    <div>
+                        <label for="name" class="text-sm font-light">Name</label>
+                        <input type="text" id="name" name="name" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="email" class="text-sm font-light">Email</label>
+                        <input type="email" id="email" name="email" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="phone" class="text-sm font-light">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="address" class="text-sm font-light">Address</label>
+                        <input type="text" id="address" name="address" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="city" class="text-sm font-light">Land Mark</label>
+                        <input type="text" id="city" name="landmark" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="zip" class="text-sm font-light">Pin Code</label>
+                        <input type="text" id="zip" name="zip" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                </div>
+            </section>
+            <!--payment form-->
+            <section class="bg-white p-6 rounded-2xl mt-6">
+                <h2 class="text-xl font-semibold mb-4">Payment</h2>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                    <div>
+                        <label for="card" class="text-sm font-light">Card Number</label>
+                        <input type="text" id="card" name="card_number" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="name" class="text-sm font-light">Card Name</label>
+                        <input type="text" id="name" name="card_name" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="expiry" class="text-sm font-light">Expiry Date</label>
+                        <input type="date" id="expiry" name="expiry_date" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                    <div>
+                        <label for="cvv" class="text-sm font-light">CVV</label>
+                        <input type="text" id="cvv" name="cvv" class="w-full border border-[#e0e0e0] rounded-md p-2" />
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!--order summary-->
+        <section class="bg-white w-full lg:px-0 pt-8 rounded-2xl lg:flex-1">
+            <div class="flex flex-col items-center gap-4 px-4 sm:px-8">
+                <!-- items -->
+                <div class="flex flex-col gap-4 w-full">
+                    {% for item in cart_items %}
+                    <div class="flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <img src="{{ item.product.product_image.url }}" alt="dog" class="w-24 h-24 object-cover rounded-lg" />
+                            <div class="ps-2">
+                                <p class="text-sm font-medium">{{ item.product.product_name }}</p>
+                                <p class="text-xs py-3">Qty: {{ item.quantity }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm font-medium">₹{{ item.product.product_price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <hr class="border-[#ccc] w-full" />
+
+                <!-- Order Summary -->
+                <div class="flex flex-col gap-4 w-full mt-4">
+                    <h2 class="text-lg font-medium mb-3">Order Summary</h2>
+                    <div class="flex justify-between">
+                        <p class="text-sm font-light">Subtotal</p>
+                        <p class="text-sm">₹{{ total_price }}</p>
+                    </div>
+                    <div class="flex justify-between">
+                        <p class="text-sm font-light">Shipping</p>
+                        <p class="text-sm">Free</p>
+                    </div>
+                    <div class="flex justify-between">
+                        <p class="text-sm font-light">Tax</p>
+                        <p class="text-sm">₹{{ tax_amount|floatformat:2 }}</p>
+                    </div>
+                    <hr class="border-[#ccc] w-full" />
+                    <div class="flex justify-between">
+                        <p class="text-sm font-light">Total</p>
+                        <p class="font-medium">₹{{ final_price|floatformat:2 }}</p>
+                    </div>
+                </div>
+                <button class="bg-[#e54c00] text-white w-full py-2 rounded-2xl hover:bg-[#ED824D] my-10">Place
+                    Order</button>
+            </div>
+
+        </section>
+    </form>
+</main>
+
+{% endblock %}
