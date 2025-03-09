@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import UserProfile
-from petshops.models import Product, Cart
+from petshops.models import Product, Cart, Order, OrderItem, Payment, ShippingAddress
 from django.shortcuts import render, get_object_or_404
 from decimal import Decimal
 from datetime import datetime
@@ -108,6 +108,27 @@ def remove_from_cart(request, cart_id):
     cart_item.delete()
     return redirect('cart_page')
 
+# def checkout(request):
+#     cart_items = Cart.objects.filter(user=request.user)
+    
+#     if not cart_items.exists():
+#         messages.error(request, "Your cart is empty.")
+#         return redirect("cart")
+    
+#     total_price = sum(item.total_price() for item in cart_items)
+#     tax_rate = Decimal('0.10')
+#     tax_amount = total_price * tax_rate
+#     final_price = total_price + tax_amount
+
+#     context = {
+#         "cart_items": cart_items,
+#         "total_price": total_price,
+#         "tax_amount": tax_amount,
+#         "final_price": final_price,
+#     }
+#     return render(request, "users/checkout.html", context)
+
+
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
     
@@ -126,6 +147,44 @@ def checkout(request):
         "tax_amount": tax_amount,
         "final_price": final_price,
     }
-    return render(request, "users/checkout.html", context)
 
+    if request.method == "POST":
+        address = request.POST["address"]
+        pin_code = request.POST["pin_code"]
+        phone = request.POST["phone"]
+        
+        shipping_address = ShippingAddress.objects.create(
+            user=request.user,
+            name=request.user.username,
+            email=request.user.email,
+            phone=phone,
+            address=address,
+            pin_code=pin_code
+        )
+        
+        cart_items = Cart.objects.filter(user=request.user)
+        total_price = sum(item.total_price() for item in cart_items)
+        
+        payment = Payment.objects.create(
+            user=request.user,
+            card_number=request.POST["card_number"],
+            card_name=request.POST["card_name"],
+            expiry_date=request.POST["expiry_date"],
+            cvv=request.POST["cvv"]
+        )
+        
+        order = Order.objects.create(
+            user=request.user,
+            shipping_address=shipping_address,
+            payment=payment,
+            total_price=total_price
+        )
+        
+        for item in cart_items:
+            OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity, price=item.total_price())
+        
+        cart_items.delete()
+        messages.success(request, "Order placed successfully!")
+        return redirect("order_success")
+    return render(request, "users/checkout.html", context)
 
