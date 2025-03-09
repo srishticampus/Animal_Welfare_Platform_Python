@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petshops',
     'users',
-    'landing'
+    'landing',
+    'admin_panel',
 ]
 
 

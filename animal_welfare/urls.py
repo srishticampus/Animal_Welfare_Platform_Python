@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("landing.urls")),
     path("users/", include("users.urls")),
     path("petshops/", include("petshops.urls")),
+    path("admin-panel/", include("admin_panel.urls")),
 ]
 
 if settings.DEBUG:

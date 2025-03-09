@@ -1,0 +1,17 @@
+<h2>Manage Pet Shops</h2>
+<table border="1">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Location</th>
+    </tr>
+    {% for petshop in petshops %}
+    <tr>
+        <td>{{ petshop.user.username }}</td>
+        <td>{{ petshop.user.email }}</td>
+        <td>{{ petshop.phone_number }}</td>
+        <td>{{ petshop.location }}</td>
+    </tr>
+    {% endfor %}
+</table>

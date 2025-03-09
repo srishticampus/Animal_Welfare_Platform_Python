@@ -7,6 +7,7 @@ from petshops.models import Product, Cart, Order, OrderItem, Payment, ShippingAd
 from django.shortcuts import render, get_object_or_404
 from decimal import Decimal
 from datetime import datetime
+from petshops.models import PetShop
 
 def register(request):
     if request.method == "POST":
@@ -45,11 +46,16 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user:
             login(request, user)
-            return redirect('home')
+            if user.is_superuser:  
+                return redirect("admin_dashboard") 
+            elif PetShop.objects.filter(user=user).exists():
+                return redirect("add_product")  
+            else:
+                return redirect("home")
         else:
-            messages.error(request, "Invalid credentials!")
+            messages.error(request, "Invalid username or password")
             return redirect('login')
 
     return render(request, 'users/login.html')
