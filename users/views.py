@@ -185,6 +185,15 @@ def checkout(request):
         
         cart_items.delete()
         messages.success(request, "Order placed successfully!")
-        return redirect("order_success")
+        return redirect("order_success", order_id=order.id)
+    
     return render(request, "users/checkout.html", context)
 
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    items = OrderItem.objects.filter(order=order)
+    context = {
+        "items": items
+    }
+    print(context)
+    return render(request, "users/order_success.html", context)
