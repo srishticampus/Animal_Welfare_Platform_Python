@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'users',
     'landing',
     'admin_panel',
-    'tailwind',
-    'theme',
+
 ]
 
 TAILWIND_APP_NAME = 'theme'
