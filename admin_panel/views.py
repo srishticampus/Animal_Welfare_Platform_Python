@@ -107,6 +107,10 @@ def approve_adoption(request, request_id):
     adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
     adoption_request.status = 'Approved'
     adoption_request.save()
+
+    pet = adoption_request.pet
+    pet.is_adopted = True
+    pet.save()
     return redirect('admin_adoption_requests')
 
 def reject_adoption(request, request_id):

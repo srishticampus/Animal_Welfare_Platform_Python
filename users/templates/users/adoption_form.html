@@ -1,7 +1,7 @@
+
 {% extends "base.html" %}
 
 {% block content %}
-
 <section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
     <!-- breadcrumbs -->
     <nav
@@ -26,12 +26,11 @@
         Dog Food Details</h1>
     <div></div>
 </section>
-<!-- Pet details -->
+<!-- info section -->
 <section class="container mx-auto px-3 lg:px-0 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Pet image -->
-        <img src="{{ pet.image.url }}" alt="dog food" class="w-full aspect-[611/567] object-cover rounded-2xl" />
-
+    <div class="flex flex-wrap justify-evenly bg-white rounded-2xl p-6">
+        <img src="src/assets/dog.png" alt="dog food"
+            class="w-[200px] py-3 aspect-square object-cover rounded-2xl" />
         <!-- Pet details -->
         <div>
             <h1 class="text-xl">{{ pet.name }}</h1>
@@ -53,7 +52,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Age</p>
-                        <p>{{ pet.age }}</p>
+                        <p>8 months</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -68,7 +67,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Gender</p>
-                        <p>{{ pet.gender }}</p>
+                        <p>Female</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -83,7 +82,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Breed</p>
-                        <p>{{ pet.bread }}</p>
+                        <p>Golden Retriever</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -99,93 +98,54 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Size</p>
-                        <p>{{ pet.size }}</p>
+                        <p>Medium</p>
                     </div>
                 </div>
             </div>
-
-            <p class="pb-2">Description</p>
-            <p class="text-sm font-light ">
-                {{ pet.description }}
-            </p>
-            <p class="pt-6">Health &amp; Vaccinations</p>
-            <ul class="text-sm font-light py-4 bullets">
-                <li>Fully vaccinated</li>
-                <li>Spayed</li>
-                <li>Microchipped</li>
-            </ul>
-            <!-- counter and add to cart -->
-            <div class="flex items
-            -center gap-4">
-            <form action="{% url 'adoption_form' pet.id %}" method="get">
-                <button
-                    class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:cursor-pointer hover:bg-[#ED824D]">Apply
-                    to Adopt</button>
-            </form>
-            </div>
         </div>
     </div>
 </section>
-
-<!-- Adoption Process -->
-<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
-    <h2 class="text-xl font-medium py-4">Adoption Process</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white p-4">
-            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-scroll-text m-2">
-                    <path d="M15 12h-5" />
-                    <path d="M15 8h-5" />
-                    <path d="M19 17V5a2 2 0 0 0-2-2H4" />
-                    <path
-                        d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
-                </svg>
-            </div>
-            <h2 class="py-4"> 1. Submit Application</h2>
-            <p class="text-sm text-[#7f7f7f]">Fill out our comprehensive adoption application form.</p>
-        </div>
-        <div class="bg-white p-4">
-            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-headset">
-                    <path
-                        d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" />
-                    <path d="M21 16v2a4 4 0 0 1-4 4h-5" />
-                </svg>
-            </div>
-            <h2 class="py-4"> 2. Initial Interview</h2>
-            <p class="text-sm text-[#7f7f7f]">We'll schedule a phone call to discuss your application.</p>
-        </div>
-        <div class="bg-white p-4">
-            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-house">
-                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-                    <path
-                        d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                </svg>
-            </div>
-            <h2 class="py-4"> 3. Home Check</h2>
-            <p class="text-sm text-[#7f7f7f]">A quick visit to ensure your home is pet-ready.</p>
-        </div>
-        <div class="bg-white p-4">
-            <div class="text-[#e54c00] bg-[#E54C0033] rounded-full w-10 h-10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-heart">
-                    <path
-                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
-            </div>
-            <h2 class="py-4"> 4. Welcome Home</h2>
-            <p class="text-sm text-[#7f7f7f]">Complete the adoption and welcome your new family member! </p>
-        </div>
+<!-- adoption form -->
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <div class="bg-white rounded-2xl p-6">
+        <h1 class="text-xl text-center">Adoption Form</h1>
+        <form method="POST" class="flex flex-col sm:grid grid-cols-2 gap-4 py-4">
+            {% csrf_token %} 
+            <label for="name" class="flex flex-col">
+                <span class="text-sm font-light mb-2"> Name</span>
+                <input type="text" name="name" id="name"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+            </label>
+            <label for="email" class="flex flex-col">
+                <span class="text-sm font-light mb-2">Email</span>
+                <input type="email" name="email" id="email"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+            </label>
+            <label for="phone" class="flex flex-col">
+                <span class="text-sm font-light mb-2">Phone</span>
+                <input type="tel" name="phone" id="phone"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+            </label>
+            <label for="address" class="flex flex-col">
+                <span class="text-sm font-light mb-2">Address</span>
+                <input type="text" name="address" id="address"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+            </label>
+            <label for="experience" class="flex flex-col sm:col-span-2">
+                <span class="text-sm font-light mb-2">Experience with Pets</span>
+                <textarea name="experience" id="experience" rows="4"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
+            </label>
+            <label for="reason" class="flex flex-col sm:col-span-2">
+                <span class="text-sm font-light mb-2">Reason for Adoption</span>
+                <textarea name="reason" id="reason" rows="4"
+                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
+            </label>
+            <button type="submit"
+                class="w-full col-span-2 bg-[#e54c00] text-white py-2 rounded-2xl focus:outline-none">Submit
+                Application</button>
+        </form>
     </div>
 </section>
-
 
 {% endblock %}

@@ -10,7 +10,7 @@ from datetime import datetime
 from petshops.models import PetShop
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
-from admin_panel.models import AddPets, AdoptionRequest
+from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
 
 def register(request):
     if request.method == "POST":
@@ -235,7 +235,7 @@ def order_success(request, order_id):
     return render(request, "users/order_success.html", context)
 
 def pet_adoption_list(request):
-    pets = AddPets.objects.all()
+    pets = AddPets.objects.filter(is_adopted=False)
     return render(request, 'users/pet_adoption_list.html', {'pets': pets})
 
 def pet_adoption_detail(request, pet_id):
@@ -250,3 +250,31 @@ def pet_adoption_detail(request, pet_id):
             return redirect('pet_adoption_list')
 
     return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request})
+
+
+@login_required
+def adoption_form(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+    adoption_request, created = AdoptionRequest.objects.get_or_create(pet=pet, user=request.user)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        experience = request.POST.get('experience')
+        reason = request.POST.get('reason')
+
+        AdoptionApplication.objects.create(
+            adoption_request=adoption_request,
+            name=name,
+            email=email,
+            phone=phone,
+            address=address,
+            experience=experience,
+            reason=reason
+        )
+
+        return redirect('pet_adoption_list') 
+
+    return render(request, 'users/adoption_form.html', {'pet': pet})
