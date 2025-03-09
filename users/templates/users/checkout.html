@@ -3,7 +3,7 @@
 {% block content %}
 <section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
     <!-- breadcrumbs -->
-    <a href="/shop"
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
         class="text-sm font-light mb-4 text-center flex items-center md:absolute top-1/2 transform -translate-y-1/2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = '/users/login/'
 
 # Application definition
 
@@ -42,8 +43,15 @@ INSTALLED_APPS = [
     'users',
     'landing',
     'admin_panel',
+    'tailwind',
+    'theme',
 ]
 
+TAILWIND_APP_NAME = 'theme'
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

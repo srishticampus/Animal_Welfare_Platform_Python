@@ -8,6 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from decimal import Decimal
 from datetime import datetime
 from petshops.models import PetShop
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 def register(request):
     if request.method == "POST":
@@ -66,23 +68,32 @@ def logout_view(request):
     messages.success(request, "Logged out successfully!")
     return redirect('login')
 
-
+@never_cache
+@login_required
 def home(request):
     return render(request, 'users/pet-shop.html')
 
+@never_cache
+@login_required
 def pet_shop(request):
     products = Product.objects.all()
     return render(request, 'users/pet-shop.html', {'products': products})
 
+@never_cache
+@login_required
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'users/product_detail.html', {'product': product})
 
+@never_cache
+@login_required
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     similar_products = Product.objects.exclude(id=product_id)[:3]
     return render(request, 'users/product_detail.html', {'product': product, 'similar_products': similar_products})
 
+@never_cache
+@login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
@@ -93,6 +104,8 @@ def add_to_cart(request, product_id):
     
     return redirect('cart_page')
 
+@never_cache
+@login_required
 def cart_page(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.total_price() for item in cart_items)
@@ -109,6 +122,8 @@ def cart_page(request):
     }
     return render(request, 'users/cart.html', context)
 
+@never_cache
+@login_required
 def remove_from_cart(request, cart_id):
     cart_item = get_object_or_404(Cart, id=cart_id, user=request.user)
     cart_item.delete()
@@ -134,7 +149,8 @@ def remove_from_cart(request, cart_id):
 #     }
 #     return render(request, "users/checkout.html", context)
 
-
+@never_cache
+@login_required
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
     
@@ -195,6 +211,8 @@ def checkout(request):
     
     return render(request, "users/checkout.html", context)
 
+@never_cache
+@login_required
 def order_success(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     items = OrderItem.objects.filter(order=order)

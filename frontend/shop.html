@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/style.css" />
+  <title>Vite App</title>
+</head>
+
+<body class="bg-[#F6F7F9] text-[#4c4c4c]">
+  <!-- navbar -->
+  <nav class=" py-6">
+    <div class="container mx-auto px-3 lg:px-0 flex justify-between items-center">
+      <!-- logo -->
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-dog text-[#e54c00]" width="24" height="24"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M11.25 16.25h1.5L12 17z" />
+          <path d="M16 14v.5" />
+          <path
+            d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" />
+          <path d="M8 14v.5" />
+          <path
+            d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" />
+        </svg>
+        <p class="text-base font-medium">Paw Haven</p>
+      </div>
+      <!-- nav -->
+      <ul class="text-sm font-light gap-6 hidden md:flex">
+        <!-- links to home, rescue,adopt,shop,orders,donation,about,contact -->
+        <li><a class="orange-underline text-xs pb-1" href="/">Home</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/rescue">Rescue</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/adopt">Adopt</a></li>
+        <li><a class="orange-underline-active text-xs pb-1" href="/shop">Shop</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/orders">Orders</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/donation">Donation</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/about">About</a></li>
+        <li><a class="orange-underline text-xs pb-1" href="/contact">Contact</a></li>
+      </ul>
+      <!-- user icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-user">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </div>
+  </nav>
+  <!-- header after navbar -->
+  <section class="px-3 lg:px-0 sm:flex items-center container mx-auto py-8  relative">
+    <!-- breadcrumbs -->
+    <nav class="text-sm font-light mb-4 text-center flex items-center absolute top-1/2 transform -translate-y-1/2">
+      <a href="/">Home</a>
+      <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-2">
+        <path
+          d="M1.19571 7.46017C1.12991 7.46055 1.06467 7.44794 1.00376 7.42306C0.942837 7.39817 0.887429 7.36151 0.840709 7.31517C0.747584 7.22149 0.695312 7.09476 0.695312 6.96267C0.695312 6.83058 0.747584 6.70385 0.840709 6.61017L3.44571 4.00017L0.840709 1.39017C0.758796 1.29452 0.715993 1.17148 0.720853 1.04564C0.725714 0.919805 0.77788 0.800436 0.866928 0.711388C0.955975 0.622341 1.07534 0.570175 1.20118 0.565314C1.32702 0.560454 1.45006 0.603257 1.54571 0.68517L4.50071 3.64517C4.54705 3.69189 4.58371 3.7473 4.60859 3.80822C4.63348 3.86914 4.64609 3.93437 4.64571 4.00017C4.64387 4.13255 4.59208 4.25935 4.50071 4.35517L1.53571 7.31517C1.44506 7.40516 1.3234 7.45704 1.19571 7.46017Z"
+          fill="#7F7F7F" />
+      </svg>
+      <a href="/shop" class="font-normal">Shop</a>
+    </nav>
+    <!-- title -->
+    <h1 class="text-xl absolute left-1/2 transform -translate-x-1/2 w-full hidden sm:block text-center my-4 sm:my-0">Pet
+      Shop</h1>
+    <div></div> 
+  </section>
+  <!-- products -->
+  <section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="w-full">
+        <div class="card bg-white rounded-2xl">
+          <div class="img">
+            <img src="src/assets/dog1.png" alt="products" class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+          </div>
+          <div class="content p-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base">Premium Dog Food</h3>
+              <p class="text-xl">₹123.00</p>
+            </div>
+            <p class="text-xs font-medium text-[#7f7f7f] py-1">
+              Organic &amp; Natural
+            </p>
+            <button
+              class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+              to cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <div class="card bg-white rounded-2xl">
+          <div class="img">
+            <img src="src/assets/dog2.png" alt="products" class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+          </div>
+          <div class="content p-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base">Premium Dog Food</h3>
+              <p class="text-xl">₹123.00</p>
+            </div>
+            <p class="text-xs font-medium text-[#7f7f7f] py-1">
+              Organic &amp; Natural
+            </p>
+            <button
+              class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+              to cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <div class="card bg-white rounded-2xl">
+          <div class="img">
+            <img src="src/assets/dog3.png" alt="products" class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+          </div>
+          <div class="content p-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base">Premium Dog Food</h3>
+              <p class="text-xl">₹123.00</p>
+            </div>
+            <p class="text-xs font-medium text-[#7f7f7f] py-1">
+              Organic &amp; Natural
+            </p>
+            <button
+              class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+              to cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <div class="card bg-white rounded-2xl">
+          <div class="img">
+            <img src="src/assets/dog4.png" alt="products" class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+          </div>
+          <div class="content p-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base">Premium Dog Food</h3>
+              <p class="text-xl">₹123.00</p>
+            </div>
+            <p class="text-xs font-medium text-[#7f7f7f] py-1">
+              Organic &amp; Natural
+            </p>
+            <button
+              class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+              to cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <div class="card bg-white rounded-2xl">
+          <div class="img">
+            <img src="src/assets/dog5.png" alt="products" class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+          </div>
+          <div class="content p-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base">Premium Dog Food</h3>
+              <p class="text-xl">₹123.00</p>
+            </div>
+            <p class="text-xs font-medium text-[#7f7f7f] py-1">
+              Organic &amp; Natural
+            </p>
+            <button
+              class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+              to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- footer -->
+  <footer class="bg-[#4c4c4c] text-white py-4">
+    <div class="container mx-auto px-3 pt-3 lg:px-0 flex">
+      <div class="flex-1 flex flex-col justify-between pb-1">
+        <!-- logo -->
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-dog text-[#e54c00]" width="48" height="48"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M11.25 16.25h1.5L12 17z" />
+            <path d="M16 14v.5" />
+            <path
+              d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" />
+            <path d="M8 14v.5" />
+            <path
+              d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" />
+          </svg>
+          <p class="text-2xl w-full font-semibold">Paw Haven</p>
+        </div>
+        <!-- description -->
+        <p class="text-xs font-light py-2 ps-2 pt-4 sm:ps-0">A compassionate platform dedicated to rescuing,
+          rehabilitating,
+          and rehoming
+          pets
+          while supporting animal welfare through community efforts.</p>
+      </div>
+      <!-- nav -->
+      <div class="flex-1">
+        <nav class="text-xs font-light py-2 flex flex-col justify-evenly items-stretch text-end gap-4">
+          <a href="/">Home</a>
+          <a href="/shop">Shop</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </nav>
+      </div>
+    </div>
+    <!-- divider -->
+    <div class="container mx-auto px-3 lg:px-0 py-2">
+      <hr class="border-white" />
+    </div>
+    <div class="flex flex-col sm:flex-row justify-between items-center container mx-auto py-3">
+      <!-- copyright -->
+      <div class="text-xs font-light">
+        <p>Copyright &copy; 2024. All rights reserved.</p>
+      </div>
+      <!-- links -->
+      <div>
+        <a href="#" class="text-xs font-light px-3 underline">Terms of Service</a>
+        <a href="#" class="text-xs font-light px-3 underline">FAQ</a>
+        <a href="#" class="text-xs font-light px-3 underline">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
