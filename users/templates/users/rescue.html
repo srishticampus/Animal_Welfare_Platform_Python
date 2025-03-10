@@ -13,6 +13,7 @@
             <img src="{% static 'assets/hero.png' %}" alt="nurses helping a dog" class="w-full md:w-1/2 rounded-2xl" />
         </div>
     </section>
+
     {% if messages %}
     {% for message in messages %}
     <div class="flex justify-center items-center">
@@ -20,6 +21,7 @@
     </div>
     {% endfor %}
     {% endif %}
+
     <!-- form -->
     <section class="container mx-auto px-3 lg:px-0">
         <form action="{% url 'create_rescue_request' %}" method="post" enctype="multipart/form-data" class="bg-white rounded-2xl p-6">

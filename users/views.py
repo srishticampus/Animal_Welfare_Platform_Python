@@ -55,8 +55,10 @@ def login_view(request):
             if user.is_superuser:  
                 return redirect("admin_dashboard") 
             elif PetShop.objects.filter(user=user).exists():
+                messages.success(request, "Login successful!")
                 return redirect("add_product")  
             elif Volunteer.objects.filter(user=user).exists():
+                messages.success(request, "Login successful!")
                 return redirect("rescue_list")
             else:
                 return redirect("home")
@@ -296,7 +298,7 @@ def create_rescue_request(request):
             description=description,
             image=image
         )
-
+        
         messages.success(request, "Rescue request submitted successfully!")
         return redirect("create_rescue_request")  
 

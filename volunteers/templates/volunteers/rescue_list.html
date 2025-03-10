@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% if messages %}
+{% for message in messages %}
+<div class="flex justify-center items-center">
+    <p class="text-red-500">{{ message }}</p>
+</div>
+{% endfor %}
+{% endif %}
 <section class="container mx-auto px-3 lg:px-0 py-8">
     <h1 class="text-3xl font-semibold text-[#E54C00] text-center">Rescue Requests</h1>
 

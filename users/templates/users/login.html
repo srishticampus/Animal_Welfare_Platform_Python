@@ -2,6 +2,13 @@
 
 {% block content %}
     <main class="container mx-auto px-3 lg:px-0 flex flex-col items-center gap-4 py-8 my-20">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="flex justify-center items-center">
+            <p class="text-red-500">{{ message }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
         <h1 class="text-3xl font-semibold">Login!</h1>
         <form action="" method="post" class="flex flex-col gap-4 w-full max-w-[600px]">
             {% csrf_token %}
