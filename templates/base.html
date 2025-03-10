@@ -53,6 +53,8 @@
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'about_page' %}">About</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'contact_page' %}">Contact</a></li>
       </ul>
+      {% elif user.volunteer %}
+        <a href="{% url 'rescue_list' %}">Rescue List</a>
       {% elif user.petshop %}
         <a href="{% url 'add_product' %}" class="hover:text-[#e54c00] transition">Add Product</a>
         <a href="" class="hover:text-[#e54c00] transition">List Products</a>

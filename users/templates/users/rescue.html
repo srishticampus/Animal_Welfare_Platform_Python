@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
     <!-- hero -->
@@ -10,10 +10,16 @@
                 <p class="text-lg font-light pt-2">Help us rescue animals by reporting incidents. Your small
                     effort can save a life!</p>
             </div>
-            <img src="src/assets/hero.png" alt="nurses helping a dog" class="w-full md:w-1/2 rounded-2xl" />
+            <img src="{% static 'assets/hero.png' %}" alt="nurses helping a dog" class="w-full md:w-1/2 rounded-2xl" />
         </div>
     </section>
-
+    {% if messages %}
+    {% for message in messages %}
+    <div class="flex justify-center items-center">
+        <p class="text-red-500">{{ message }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
     <!-- form -->
     <section class="container mx-auto px-3 lg:px-0">
         <form action="{% url 'create_rescue_request' %}" method="post" enctype="multipart/form-data" class="bg-white rounded-2xl p-6">
