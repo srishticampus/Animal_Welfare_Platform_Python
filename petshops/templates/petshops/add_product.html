@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
     <h2>Welcome, {{ user.username }}!</h2>
     <h3>Add Product</h3>
@@ -26,3 +29,5 @@
     <br>
     <a href="{% url 'logout_petshop' %}">Logout</a>
 
+
+{% endblock %}

@@ -117,10 +117,16 @@
             <!-- counter and add to cart -->
             <div class="flex items
             -center gap-4">
+            {% if existing_request %}
+                <p>You have already applied for this pet.</p>
+            {% else %}
             <form action="{% url 'adoption_form' pet.id %}" method="get">
+                {% csrf_token %}
                 <button
                     class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:cursor-pointer hover:bg-[#ED824D]">Apply
                     to Adopt</button>
+                </form>
+                {% endif %}
             </form>
             </div>
         </div>

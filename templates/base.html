@@ -2,16 +2,16 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="{% static 'vite.svg' %}" />
-  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
 
   <title>{% block title %}Paw Haven{% endblock %}</title>
 </head>
@@ -33,13 +33,15 @@
         </svg>
         <p class="text-lg font-semibold">Paw Haven</p>
       </div>
-      {% if user.is_authenticated %}
-    {% if request.user.is_superuser %}
-    <a href="{% url 'manage_users' %}" class="p-1 m-2 bg-blue-500 text-white">Manage Users</a>
-    <a href="{% url 'manage_petshops' %}">Manage Pet Shops</a>
-    {% endif %}
-    
-    {% if user.is_authenticated %}
+      {% if user.is_authenticated and user.is_superuser %}
+      <ul class="text-sm font-medium gap-6 hidden md:flex">
+        <a href="{% url 'admin_dashboard' %}" class="hover:text-[#e54c00] transition">Dashboard</a>
+        <a href="{% url 'manage_users' %}" class="hover:text-[#e54c00] transition">Manage Users</a>
+        <a href="{% url 'manage_petshops' %}" class="hover:text-[#e54c00] transition">Manage Pet Shops</a>
+        <a href="{% url 'admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
+        <a href="{% url 'admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
+      </ul>
+      {% elif user.is_authenticated and not user.petshop %}
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">
         <li><a class="hover:text-[#e54c00] transition" href="/">Home</a></li>
@@ -51,12 +53,17 @@
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'about_page' %}">About</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'contact_page' %}">Contact</a></li>
       </ul>
-      {% endif %}
+      {% elif user.petshop %}
+        <a href="{% url 'add_product' %}" class="hover:text-[#e54c00] transition">Add Product</a>
+        <a href="" class="hover:text-[#e54c00] transition">List Products</a>
       {% endif %}
       <div class="lin">
-        {% if user.is_authenticated %}
+        {% if user.is_superuser %}
         <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
+        
+        {% elif user.is_authenticated and not user.is_superuser %}
         <a href="" class=" items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Profile {{ user.username }}</a>
+        <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
         {% else %}
         <a href="{% url 'login' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Login</a>
         {% endif %}
