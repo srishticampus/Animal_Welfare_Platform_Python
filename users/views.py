@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from decimal import Decimal
 from datetime import datetime
 from petshops.models import PetShop
+from volunteers.models import Volunteer, RescueRequest
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
@@ -55,6 +56,8 @@ def login_view(request):
                 return redirect("admin_dashboard") 
             elif PetShop.objects.filter(user=user).exists():
                 return redirect("add_product")  
+            elif Volunteer.objects.filter(user=user).exists():
+                return redirect("volunteer_dashboard")
             else:
                 return redirect("home")
         else:
@@ -251,7 +254,7 @@ def pet_adoption_detail(request, pet_id):
 
     return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request})
 
-
+@never_cache
 @login_required
 def adoption_form(request, pet_id):
     pet = get_object_or_404(AddPets, id=pet_id)
@@ -278,3 +281,23 @@ def adoption_form(request, pet_id):
         return redirect('pet_adoption_list') 
 
     return render(request, 'users/adoption_form.html', {'pet': pet})
+
+@never_cache
+@login_required
+def create_rescue_request(request):
+    if request.method == "POST":
+        location = request.POST["location"]
+        description = request.POST["description"]
+        image = request.FILES.get("image") 
+
+        RescueRequest.objects.create(
+            user=request.user,
+            location=location,
+            description=description,
+            image=image
+        )
+
+        messages.success(request, "Rescue request submitted successfully!")
+        return redirect("rescue_list")  
+
+    return render(request, "users/rescue.html")

@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from .models import Volunteer
+from .models import Volunteer, RescueRequest
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def volunteer_register(request):
@@ -36,3 +37,9 @@ def volunteer_register(request):
         return redirect("login")
 
     return render(request, "volunteers/register.html")
+
+
+@login_required
+def rescue_list(request):
+    rescue_requests = RescueRequest.objects.all().order_by("-created_at")
+    return render(request, "volunteers/rescue_list.html", {"rescue_requests": rescue_requests})

@@ -45,7 +45,7 @@
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">
         <li><a class="hover:text-[#e54c00] transition" href="/">Home</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/rescue">Rescue</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="{% url 'create_rescue_request' %}">Rescue</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'pet_adoption_list' %}">Adopt</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'petshop' %}">Shop</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="/orders">Orders</a></li>
