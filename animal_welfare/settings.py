@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'landing',
     'admin_panel',
+    'volunteers',
 
 ]
 
