@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="container mx-auto px-3 lg:px-0 py-12">
+    <div class="flex flex-col md:flex-row py-16 justify-center items-center gap-6">
+        <div>
+            <h1 class="text-5xl font-semibold leading-snug">Pets deserve a loving <span
+                    class="text-[#E54C00]">Home!</span></h1>
+            <p class="text-lg font-light pt-2">Rescue. Foster. Adopt. Make a Difference.</p>
+        </div>
+        <img src="{% static 'assets/hero-main.png' %}" alt="nurses helping a dog"
+            class="w-full md:w-1/2 rounded-2xl aspect-video object-cover object-top" />
+    </div>
+</section>
+
+<!-- stats -->
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <div class="flex flex-col sm:flex-row justify-evenly gap-4">
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-4xl text-[#e54c00] font-semibold">400+</p>
+            <p class="text-lg font-light">Successful Adoptions</p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-4xl text-[#e54c00] font-semibold">200+</p>
+            <p class="text-lg font-light">Volunteers</p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-4xl text-[#e54c00] font-semibold">8+</p>
+            <p class="text-lg font-light">Years</p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-4xl text-[#e54c00] font-semibold">20k+</p>
+            <p class="text-lg font-light">Pets Rescued </p>
+        </div>
+    </div>
+</section>
+
+<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <h2 class="text-4xl my-8 font-semibold text-center">Find Your Perfect <span
+            class="text-[#e54c00]">Companion</span>
+    </h2>
+    <p class="text-center mb-8 text-lg font-light text-gray-600">Give a rescued pet a loving home. Browse available
+        pets
+        and start your adoption journey today!</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="w-full">
+            <div class="card bg-white rounded-2xl">
+                <div class="img">
+                    <img src="src/assets/dog.png" alt="products"
+                        class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+                </div>
+                <div class="content p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">Max</h3>
+                        <!--badge-->
+                        <div class="bg-[#4CAF50] text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Available
+                        </div>
+                    </div>
+                    <p class="text-xs font-medium text-[#4c4c4c] py-1">
+                        Golden Retriever • <span class="text-[#7f7f7f]">8 months</span>
+                    </p>
+                    <p class="text-xs font-light text-[#4c4c4c] py-1">Friendly and energetic puppy, great with kids
+                        and other pets.</p>
+                    <button
+                        class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">View
+                        Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/pets" class="text-center text-sm font-light text-[#e54c00] underline float-end mt-8">View More</a>
+
+</section>
+<section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">
+    <h2 class="text-4xl my-8 font-semibold text-center">Shop for a Cause – Every<span
+            class="text-[#e54c00]">Purchase Helps!</span>
+    </h2>
+    <p class="text-center mb-8 text-lg font-light text-gray-600">Buy pet food, accessories, and essentials. Your
+        purchase supports animal welfare initiatives.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for product in products %}
+        <div class="w-full">
+            <div class="card bg-white rounded-2xl">
+                <div class="img">
+                    <img src="{{ product.product_image.url }}" alt="products"
+                        class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
+                </div>
+                <div class="content p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base">{{ product.product_name }}</h3>
+                        <p class="text-xl">₹{{ product.product_price }}</p>
+                    </div>
+                    <p class="text-xs font-medium text-[#7f7f7f] py-1">
+                        {{ product.product_description }}
+                    </p>
+                    <a href="{% url 'add_to_cart' product.id %}"><button
+                        class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
+                        to cart</button></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'petshop' %}" class="text-center text-sm font-light text-[#e54c00] underline float-end mt-8">View More</a>
+</section>
+<!-- how it works-->
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-12 text-[#e54c00]">How it works</h2>
+    <div class="flex flex-col md:flex-row justify-evenly text-center my-8 gap-4">
+        <div class="flex flex-col items-center">
+            <img src="src/assets/work-1.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+            <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Report a Stray Pet</h3>
+            <p class="text-sm">Spotted an animal in need? Upload a photo and location details to alert our rescue
+                team. Every report
+                helps save a life.</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <img src="src/assets/work-2.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+            <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Volunteers Take Action</h3>
+            <p class="text-sm">Our dedicated volunteers step in! Once verified, our team quickly reaches the pet’s
+                location, ensuring safe rescue and care.</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <img src="src/assets/work-3.png" alt="dog" class="w-24 h-24 object-cover object-center mb-3" />
+            <h3 class="text-xl text-[#4c4c4c] font-semibold mb-4">Find a Loving Home</h3>
+            <p class="text-sm">After recovery, pets are ready for adoption. We connect them with loving families,
+                ensuring a happy and secure future.</p>
+        </div>
+    </div>
+</section>
+
+<!-- cta banner -->
+<section class="container mx-auto px-3 lg:px-0 py-8">
+    <div class="relative cta-gradient text-white rounded-2xl p-12 flex flex-col gap-6 items-start overflow-hidden">
+        <div class="absolute w-full h-full  inset-0 -z-1">
+            <img src="src/assets/cta.png" alt="volunteer helping a dog"
+                class="md:w-1/2 h-full object-cover object-top right-0 absolute rotate-y-180" />
+        </div>
+
+        <div class="md:w-1/2">
+            <h3 class="text-2xl font-semibold">Heroes Without Capes, Join Our Volunteers & Save Innocent Lives
+                Today!</h3>
+        </div>
+        <button class="bg-white text-[#e54c00] px-6 py-2 rounded-full flex text-sm gap-2 items-center">Register
+            Now <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-move-right">
+                <path d="M18 8L22 12L18 16" />
+                <path d="M2 12H22" />
+            </svg></button>
+    </div>
+</section>
+
+
+{% endblock content %}

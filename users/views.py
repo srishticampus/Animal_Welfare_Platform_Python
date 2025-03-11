@@ -12,36 +12,61 @@ from volunteers.models import Volunteer, RescueRequest
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
+import re
 
 def register(request):
     if request.method == "POST":
-        username = request.POST['username']
-        email = request.POST['email']
-        aadhaar_number = request.POST['aadhaar_number']
-        phone_number = request.POST['phone_number']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        aadhaar_number = request.POST.get('aadhaar_number', '').strip()
+        phone_number = request.POST.get('phone_number', '').strip()
+        password = request.POST.get('password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
         profile_image = request.FILES.get('profile_image')
 
-        if password != confirm_password:
-            messages.error(request, "Passwords do not match!")
-            return redirect('register')
+        errors = {}
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists!")
-            return redirect('register')
+        if not profile_image:
+            errors['profile_image'] = "Profile image is required!"
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists!")
-            return redirect('register')
+        if username.isdigit():
+            errors['username'] = "Username cannot be entirely numeric!"
 
-        user = User.objects.create_user(username=username, email=email, password=password)
-        profile = UserProfile.objects.create(user=user, aadhaar_number=aadhaar_number, phone_number=phone_number, profile_image=profile_image)
+    
+        if not re.fullmatch(r'^\d{10}$', phone_number):
+            errors['phone_number'] = "Phone number must be exactly 10 digits!"
+
+    
+        if not aadhaar_number.isdigit():
+            errors['aadhaar_number'] = "Aadhaar number must contain only numbers!"
+
         
+        if len(password) < 8:
+            errors['password'] = "Password must be at least 8 characters long!"
+
+    
+        if password != confirm_password:
+            errors['confirm_password'] = "Passwords do not match!"
+
+       
+        if User.objects.filter(username=username).exists():
+            errors['username'] = "Username already exists!"
+
+   
+        if User.objects.filter(email=email).exists():
+            errors['email'] = "Email already exists!"
+
+        if errors:
+            return render(request, 'users/register.html', {'errors': errors})
+
+   
+        user = User.objects.create_user(username=username, email=email, password=password)
+        UserProfile.objects.create(user=user, aadhaar_number=aadhaar_number, phone_number=phone_number, profile_image=profile_image)
+
         messages.success(request, "Registration successful! You can now log in.")
         return redirect('login')
 
-    return render(request, 'users/register.html')
+    return render(request, 'users/register.html', {'errors': {}})
 
 
 def login_view(request):
@@ -77,7 +102,8 @@ def logout_view(request):
 @never_cache
 @login_required
 def home(request):
-    return render(request, 'users/pet-shop.html')
+    products = Product.objects.order_by('-id')[:3]
+    return render(request, 'users/home.html', {'products': products})
 
 @never_cache
 @login_required

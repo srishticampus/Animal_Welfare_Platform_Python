@@ -46,12 +46,12 @@
       {% elif user.is_authenticated and not user.petshop %}
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">
-        <li><a class="hover:text-[#e54c00] transition" href="/">Home</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="{% url 'home' %}">Home</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'create_rescue_request' %}">Rescue</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'pet_adoption_list' %}">Adopt</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'petshop' %}">Shop</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/orders">Orders</a></li>
-        <li><a class="hover:text-[#e54c00] transition" href="/donation">Donation</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="#">Orders</a></li>
+        <li><a class="hover:text-[#e54c00] transition" href="#">Donation</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'about_page' %}">About</a></li>
         <li><a class="hover:text-[#e54c00] transition" href="{% url 'contact_page' %}">Contact</a></li>
       </ul>
