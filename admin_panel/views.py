@@ -118,3 +118,10 @@ def reject_adoption(request, request_id):
     adoption_request.status = 'Rejected'
     adoption_request.save()
     return redirect('admin_adoption_requests')
+
+def user_toggle(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.is_active = not user.is_active
+    user.save()
+
+    return redirect('manage_users')

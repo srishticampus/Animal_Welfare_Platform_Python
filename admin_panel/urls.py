@@ -15,4 +15,6 @@ urlpatterns = [
     path('admin/adoption-requests/', views.admin_adoption_requests, name='admin_adoption_requests'),
     path('admin/adoption-requests/<int:request_id>/approve/', views.approve_adoption, name='approve_adoption'),
     path('admin/adoption-requests/<int:request_id>/reject/', views.reject_adoption, name='reject_adoption'),
+    path('user_toggle/<int:user_id>/', views.user_toggle, name='user_toggle'),
+
 ]
