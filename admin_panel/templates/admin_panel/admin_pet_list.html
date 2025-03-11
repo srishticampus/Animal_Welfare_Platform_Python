@@ -1,17 +1,55 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h2>Admin - Pet List</h2>
-<a href="{% url 'admin_add_pet' %}">Add New Pet</a>
-<ul>
-    {% for pet in pets %}
-        <li>
-            <img src="{{ pet.image.url }}" width="100">
-            <strong>{{ pet.name }}</strong> ({{ pet.age }} years, {{ pet.gender }})
-            <a href="{% url 'admin_pet_detail' pet.id %}">View Details</a>
-            <a href="{% url 'admin_edit_pet' pet.id %}">Edit</a>
-            <a href="{% url 'admin_delete_pet' pet.id %}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8 flex justify-between items-center">
+            <h1 class="text-2xl font-semibold text-gray-900">Pet List</h1>
+            <a href="{% url 'admin_add_pet' %}" 
+               class="inline-flex items-center px-4 py-2 bg-[#e54c00] text-white rounded-lg hover:bg-[#ED824D] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m-7-7h14"/>
+                </svg>
+                Add New Pet
+            </a>
+        </div>
+
+        <!-- Pet Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for pet in pets %}
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{{ pet.image.url }}" alt="{{ pet.name }}" class="w-full h-64 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">{{ pet.name }}</h3>
+                            <p class="text-sm text-gray-500">{{ pet.age }} years • {{ pet.gender }}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                            Available
+                        </span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <a href="{% url 'admin_pet_detail' pet.id %}" 
+                           class="flex-1 text-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            View Details
+                        </a>
+                        <a href="{% url 'admin_edit_pet' pet.id %}" 
+                           class="flex-1 text-center px-4 py-2 border border-[#e54c00] rounded-md text-sm font-medium text-[#e54c00] hover:bg-[#fff8f6]">
+                            Edit
+                        </a>
+                        <a href="{% url 'admin_delete_pet' pet.id %}" 
+                           class="flex-1 text-center px-4 py-2 border border-red-600 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

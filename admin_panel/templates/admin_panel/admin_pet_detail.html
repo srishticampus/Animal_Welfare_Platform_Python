@@ -1,15 +1,69 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h2>{{ pet.name }}</h2>
-<img src="{{ pet.image.url }}" width="300"><br>
-<strong>Age:</strong> {{ pet.age }}<br>
-<strong>Gender:</strong> {{ pet.gender }}<br>
-<strong>Breed:</strong> {{ pet.bread }}<br>
-<strong>Size:</strong> {{ pet.size }}<br>
-<strong>Description:</strong> {{ pet.description }}<br>
-<strong>Health & Vaccinations:</strong> {{ pet.health_vaccinations }}<br>
-<a href="{% url 'admin_edit_pet' pet.id %}">Edit</a>
-<a href="{% url 'admin_delete_pet' pet.id %}">Delete</a>
-<a href="{% url 'admin_pet_list' %}">Back</a>
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <a href="{% url 'admin_pet_list' %}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5m7 7-7-7 7-7"/>
+            </svg>
+            Back to Pet List
+        </a>
+
+        <!-- Pet Details Card -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="aspect-w-16 aspect-h-9">
+                <img src="{{ pet.image.url }}" alt="{{ pet.name }}" class="w-full h-96 object-cover">
+            </div>
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">{{ pet.name }}</h1>
+                    <div class="flex space-x-3">
+                        <a href="{% url 'admin_edit_pet' pet.id %}" 
+                           class="inline-flex items-center px-4 py-2 border border-[#e54c00] rounded-md text-sm font-medium text-[#e54c00] hover:bg-[#fff8f6]">
+                            Edit Pet
+                        </a>
+                        <a href="{% url 'admin_delete_pet' pet.id %}" 
+                           class="inline-flex items-center px-4 py-2 border border-red-600 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
+                            Delete Pet
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Age</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ pet.age }} years</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Gender</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ pet.gender }}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Breed</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ pet.bread }}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Size</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ pet.size }}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Health & Vaccinations</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ pet.health_vaccinations }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-sm font-medium text-gray-500">Description</h3>
+                    <p class="mt-1 text-lg text-gray-900">{{ pet.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
