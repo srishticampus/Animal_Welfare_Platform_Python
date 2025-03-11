@@ -40,9 +40,9 @@
                         {{ pet.bread }} • <span class="text-[#7f7f7f]">{{ pet.age }}</span>
                     </p>
                     <p class="text-xs font-light text-[#4c4c4c] py-1">{{ pet.description }}</p>
-                    <a href="{% url 'pet_adoption_detail' pet.id %}"
+                    <a href="{% url 'pet_adoption_detail' pet.id %}"><button 
                         class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">View
-                        Details</a>
+                        Details</button></a>
                 </div>
             </div>
         </div>
