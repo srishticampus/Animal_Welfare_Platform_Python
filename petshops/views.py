@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import PetShop, Product
+from django.contrib import messages
 
 def register_petshop(request):
     if request.method == 'POST':
@@ -25,6 +26,8 @@ def register_petshop(request):
             return render(request, 'petshops/register.html', {'error': 'Email already exists'})
 
         user = User.objects.create_user(username=username, email=email, password=password)
+        user.is_active = False
+        user.save()
         PetShop.objects.create(
             user=user,
             registration_id=registration_id,
@@ -32,7 +35,8 @@ def register_petshop(request):
             location=location,
             available_accessories=available_accessories
         )
-        return redirect('login_petshop')
+        messages.success(request, "Registration successful! Your account will be reviewed by an admin.")
+        return redirect('login')
 
     return render(request, 'petshops/register.html')
 

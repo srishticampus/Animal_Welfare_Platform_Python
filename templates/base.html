@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
   <title>{% block title %}Paw Haven{% endblock %}</title>
@@ -91,7 +92,7 @@
               </div>
           </div>
           <a href="{% url 'login' %}"
-              class="text-sm font-light px-6 py-3 rounded-4xl bg-[#e54c00] text-white flex gap-2 items-center">Login
+              class="text-sm font-light px-6 py-3 rounded-3xl bg-[#e54c00] text-white flex gap-2 items-center">Login
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="lucide lucide-move-right">
@@ -159,41 +160,61 @@
         </div>
     </div>
 </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: "{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}",
+                    title: "{{ message }}",
+                    showConfirmButton: false,
+                    timer: 3000  
+                });
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('image-preview').src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+  
+  <script>
+      // Get the elements for user
+      const usermenuButton = document.getElementById('user-menu-button');
+      const usermenu = document.getElementById('user-menu');
+  
+      // Toggle dropdown menu visibility on button click
+      usermenuButton.addEventListener('click', function () {
+          const isExpanded = usermenuButton.getAttribute('aria-expanded') === 'true';
+          if (isExpanded) {
+              usermenu.style.display = 'none';
+              usermenuButton.setAttribute('aria-expanded', 'false');
+          } else {
+              usermenu.style.display = 'block';
+              usermenuButton.setAttribute('aria-expanded', 'true');
+          }
+      });
+  
+      // Close the dropdown menu if the user clicks outside of it
+      window.addEventListener('click', function (event) {
+          if (!usermenuButton.contains(event.target) && !usermenu.contains(event.target)) {
+              usermenu.style.display = 'none';
+              usermenuButton.setAttribute('aria-expanded', 'false');
+          }
+      });
+  </script>
 </body>
-<script>
-  function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = function () {
-          document.getElementById('image-preview').src = reader.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-  }
-</script>
-
-<script>
-    // Get the elements for user
-    const usermenuButton = document.getElementById('user-menu-button');
-    const usermenu = document.getElementById('user-menu');
-
-    // Toggle dropdown menu visibility on button click
-    usermenuButton.addEventListener('click', function () {
-        const isExpanded = usermenuButton.getAttribute('aria-expanded') === 'true';
-        if (isExpanded) {
-            usermenu.style.display = 'none';
-            usermenuButton.setAttribute('aria-expanded', 'false');
-        } else {
-            usermenu.style.display = 'block';
-            usermenuButton.setAttribute('aria-expanded', 'true');
-        }
-    });
-
-    // Close the dropdown menu if the user clicks outside of it
-    window.addEventListener('click', function (event) {
-        if (!usermenuButton.contains(event.target) && !usermenu.contains(event.target)) {
-            usermenu.style.display = 'none';
-            usermenuButton.setAttribute('aria-expanded', 'false');
-        }
-    });
-</script>
-
 </html>

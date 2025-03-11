@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from petshops.models import PetShop
 from .models import AddPets, AdoptionRequest
+from django.contrib import messages
 
 @login_required
 def admin_dashboard(request):
@@ -125,3 +126,16 @@ def user_toggle(request, user_id):
     user.save()
 
     return redirect('manage_users')
+
+def toggle_petshop_status(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.is_active = not user.is_active
+    user.save()
+
+    if user.is_active:
+        messages.success(request, f"{user.username}'s account has been activated!")
+        return redirect('manage_petshops')
+    else:
+        messages.warning(request, f"{user.username}'s account has been deactivated.")
+
+    return redirect('manage_petshops') 

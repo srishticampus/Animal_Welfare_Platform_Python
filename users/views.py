@@ -76,6 +76,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user:
+            if not user.is_active:
+                messages.error(request, "Your account is pending approval by the admin.")
+                return redirect('login')
             login(request, user)
             if user.is_superuser:  
                 return redirect("admin_dashboard") 
@@ -86,6 +89,7 @@ def login_view(request):
                 messages.success(request, "Login successful!")
                 return redirect("rescue_list")
             else:
+                messages.success(request, "Login successful!")
                 return redirect("home")
         else:
             messages.error(request, "Invalid username or password")
