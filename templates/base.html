@@ -41,6 +41,8 @@
         <a href="{% url 'manage_petshops' %}" class="hover:text-[#e54c00] transition">Manage Pet Shops</a>
         <a href="{% url 'admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
         <a href="{% url 'admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
+        <a href="{% url 'admin_adoption_requests' %}" class="hover:text-[#e54c00] transition">Adoption Requests</a>
+    
       </ul>
       {% elif user.volunteer %}
       <a href="{% url 'rescue_list' %}">Rescue List</a>

@@ -97,6 +97,8 @@ def login_view(request):
 
     return render(request, 'users/login.html')
 
+def forgot_password(request):
+    return render(request, 'users/forgot-password.html')
 
 def logout_view(request):
     logout(request)
@@ -313,7 +315,7 @@ def adoption_form(request, pet_id):
             experience=experience,
             reason=reason
         )
-
+        messages.success(request, 'Form Submitted Successfully!')
         return redirect('pet_adoption_list') 
 
     return render(request, 'users/adoption_form.html', {'pet': pet})

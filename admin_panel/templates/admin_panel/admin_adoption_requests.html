@@ -2,18 +2,40 @@
 {% load static %}
 {% block content %}
 
-<h2>Adoption Requests</h2>
-<ul>
-    {% for request in requests %}
-        <li>
-            <strong>{{ request.user.username }}</strong> applied for <strong>{{ request.pet.name }}</strong>
-            (Status: {{ request.status }})
-            {% if request.status == "Pending" %}
-                <a href="{% url 'approve_adoption' request.id %}">Approve</a> |
-                <a href="{% url 'reject_adoption' request.id %}">Reject</a>
-            {% endif %}
-        </li>
-    {% endfor %}
-</ul>
+<main class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-6">Adoption Requests</h2>
+
+    {% if requests %}
+        <ul class="space-y-4">
+            {% for request in requests %}
+                <li class="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row items-center justify-between border">
+                    <div>
+                        <p class="text-lg font-medium">
+                            <span class="text-[#e54c00]">{{ request.user.username }}</span>
+                            applied for 
+                            <span class="font-semibold">{{ request.pet.name }}</span>
+                        </p>
+                        <p class="text-gray-600">Status: 
+                            <span class="font-medium {% if request.status == 'Pending' %}text-yellow-500{% elif request.status == 'Approved' %}text-green-500{% else %}text-red-500{% endif %}">
+                                {{ request.status }}
+                            </span>
+                        </p>
+                    </div>
+
+                    {% if request.status == "Pending" %}
+                        <div class="flex space-x-3 mt-3 md:mt-0">
+                            <a href="{% url 'approve_adoption' request.id %}" 
+                               class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">Approve</a>
+                            <a href="{% url 'reject_adoption' request.id %}" 
+                               class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Reject</a>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-gray-600">No adoption requests available.</p>
+    {% endif %}
+</main>
 
 {% endblock %}

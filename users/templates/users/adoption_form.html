@@ -29,7 +29,7 @@
 <!-- info section -->
 <section class="container mx-auto px-3 lg:px-0 py-8">
     <div class="flex flex-wrap justify-evenly bg-white rounded-2xl p-6">
-        <img src="src/assets/dog.png" alt="dog food"
+        <img src="{{ pet.image.url }}" alt="dog food"
             class="w-[200px] py-3 aspect-square object-cover rounded-2xl" />
         <!-- Pet details -->
         <div>
@@ -52,7 +52,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Age</p>
-                        <p>8 months</p>
+                        <p>{{ pet.age }}</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -67,7 +67,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Gender</p>
-                        <p>Female</p>
+                        <p>{{ pet.gender }}</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -82,7 +82,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Breed</p>
-                        <p>Golden Retriever</p>
+                        <p>{{ pet.bread }}</p>
                     </div>
                 </div>
                 <div class="flex gap-4 items-center">
@@ -98,7 +98,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-light text-[#7f7f7f]">Size</p>
-                        <p>Medium</p>
+                        <p>{{ pet.size }}</p>
                     </div>
                 </div>
             </div>
@@ -114,32 +114,32 @@
             <label for="name" class="flex flex-col">
                 <span class="text-sm font-light mb-2"> Name</span>
                 <input type="text" name="name" id="name"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none" />
             </label>
             <label for="email" class="flex flex-col">
                 <span class="text-sm font-light mb-2">Email</span>
                 <input type="email" name="email" id="email"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none" />
             </label>
             <label for="phone" class="flex flex-col">
                 <span class="text-sm font-light mb-2">Phone</span>
                 <input type="tel" name="phone" id="phone"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none" />
             </label>
             <label for="address" class="flex flex-col">
                 <span class="text-sm font-light mb-2">Address</span>
                 <input type="text" name="address" id="address"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none" />
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none" />
             </label>
             <label for="experience" class="flex flex-col sm:col-span-2">
                 <span class="text-sm font-light mb-2">Experience with Pets</span>
                 <textarea name="experience" id="experience" rows="4"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
             </label>
             <label for="reason" class="flex flex-col sm:col-span-2">
                 <span class="text-sm font-light mb-2">Reason for Adoption</span>
                 <textarea name="reason" id="reason" rows="4"
-                    class="border-1 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
+                    class="border-2 rounded-lg p-1 border-[#ccc] focus:outline-none"></textarea>
             </label>
             <button type="submit"
                 class="w-full col-span-2 bg-[#e54c00] text-white py-2 rounded-2xl focus:outline-none">Submit

@@ -20,7 +20,7 @@
             <label for="password" class="flex flex-col">
                 <span>Password</span>
                 <input type="password" name="password" id="password" class="border border-[#ccc] rounded-md p-2 mt-1" />
-                <a href="/forgot-password" class="text-xs mt-2 ms-auto ">Forgot password?</a>
+                <a href="{% url 'forgot-password' %}" class="text-xs mt-2 ms-auto ">Forgot password?</a>
             </label>
 
             <button type="submit"
