@@ -269,10 +269,14 @@ def order_success(request, order_id):
 
     return render(request, "users/order_success.html", context)
 
+@never_cache
+@login_required
 def pet_adoption_list(request):
     pets = AddPets.objects.filter(is_adopted=False)
     return render(request, 'users/pet_adoption_list.html', {'pets': pets})
 
+@never_cache
+@login_required
 def pet_adoption_detail(request, pet_id):
     pet = get_object_or_404(AddPets, id=pet_id)
 
