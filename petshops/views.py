@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import PetShop, Product
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+import re
 
 def register_petshop(request):
     if request.method == 'POST':
@@ -16,14 +19,34 @@ def register_petshop(request):
         location = request.POST['location']
         available_accessories = request.POST['available_accessories']
 
-        if password != confirm_password:
-            return render(request, 'petshops/register.html', {'error': 'Passwords do not match'})
+        errors = {}
 
+    
         if User.objects.filter(username=username).exists():
-            return render(request, 'petshops/register.html', {'error': 'Username already taken'})
+            errors['username'] = "Username already exists!"
+
+     
+        try:
+            validate_email(email)
+        except ValidationError:
+            errors['email'] = "Invalid email format!"
 
         if User.objects.filter(email=email).exists():
-            return render(request, 'petshops/register.html', {'error': 'Email already exists'})
+            errors['email'] = "Email already exists!"
+
+       
+        if PetShop.objects.filter(registration_id=registration_id).exists():
+            errors['registration_id'] = "This Registration ID is already taken!"
+
+        if not re.fullmatch(r"\d{10}", phone_number):
+            errors['phone_number'] = "Phone number must be exactly 10 digits!"
+
+     
+        if password != confirm_password:
+            errors['password'] = "Passwords do not match!"
+
+        if errors:
+            return render(request, 'petshops/register.html', {'errors': errors})
 
         user = User.objects.create_user(username=username, email=email, password=password)
         user.is_active = False

@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import Volunteer, RescueRequest
 from django.contrib.auth.decorators import login_required
+import re
 # Create your views here.
 
 def volunteer_register(request):
@@ -15,17 +16,22 @@ def volunteer_register(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
 
+        errors = {}
+
         if password != confirm_password:
-            messages.error(request, "Passwords do not match.")
-            return redirect("volunteer_register")
+            errors['password'] = "Passwords do not match!"
         
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists.")
-            return redirect("volunteer_register")
+            errors['username'] = "Username already exists!"
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already registered.")
-            return redirect("volunteer_register")
+            errors['email'] = "Email already exists!"
+
+        if not re.fullmatch(r"\d{10}", phone_number):
+            errors['phone_number'] = "Phone number must be exactly 10 digits!"
+
+        if errors:
+            return render(request, "volunteers/register.html", {"errors": errors})
 
         user = User.objects.create_user(username=username, email=email, password=password, first_name=name)
         user.save()

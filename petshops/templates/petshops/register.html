@@ -10,21 +10,25 @@
         <label for="registration_id" class="flex flex-col">
             <span>Registration ID</span>
             <input type="text" class="border border-[#ccc] rounded-md p-2" name="registration_id" placeholder="Registration ID" required>
+            {% if errors.registration_id %}<p class="text-red-500">{{ errors.registration_id }}</p>{% endif %}
         </label>
     
         <label for="username" class="flex flex-col">
             <span>Username</span>
             <input type="text" class="border border-[#ccc] rounded-md p-2" name="username" placeholder="Username" required>
+            {% if errors.username %}<p class="text-red-500">{{ errors.username }}</p>{% endif %}
         </label>
     
         <label for="email" class="flex flex-col">
             <span>Email</span>
             <input type="email" class="border border-[#ccc] rounded-md p-2" name="email" placeholder="Email" required>
+            {% if errors.email %}<p class="text-red-500 text-sm">{{ errors.email }}</p>{% endif %}
         </label>
     
         <label for="phone_number" class="flex flex-col">
             <span>Phone Number</span>
             <input type="text" class="border border-[#ccc] rounded-md p-2" name="phone_number" placeholder="Phone Number" required>
+            {% if errors.phone_number %}<p class="text-red-500">{{ errors.phone_number }}</p>{% endif %}
         </label>
     
         <label for="location" class="flex flex-col">
@@ -40,6 +44,7 @@
         <label for="password" class="flex flex-col">
             <span>Password</span>
             <input type="password" class="border border-[#ccc] rounded-md p-2" name="password" placeholder="Password" required>
+            {% if errors.password %}<p class="text-red-500">{{ errors.password }}</p>{% endif %}
         </label>
     
         <label for="confirm_password" class="flex flex-col">
