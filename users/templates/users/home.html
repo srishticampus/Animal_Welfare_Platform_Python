@@ -44,32 +44,33 @@
         pets
         and start your adoption journey today!</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for pet in pets %}
         <div class="w-full">
             <div class="card bg-white rounded-2xl">
                 <div class="img">
-                    <img src="src/assets/dog.png" alt="products"
+                    <img src="{{ pet.image.url }}" alt="products"
                         class="w-full aspect-[137/115] object-cover rounded-t-2xl" />
                 </div>
                 <div class="content p-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-semibold">Max</h3>
+                        <h3 class="font-semibold">{{ pet.name }}</h3>
                         <!--badge-->
                         <div class="bg-[#4CAF50] text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Available
                         </div>
                     </div>
                     <p class="text-xs font-medium text-[#4c4c4c] py-1">
-                        Golden Retriever • <span class="text-[#7f7f7f]">8 months</span>
+                        {{ pet.bread }} • <span class="text-[#7f7f7f]">{{ pet.age }}</span>
                     </p>
-                    <p class="text-xs font-light text-[#4c4c4c] py-1">Friendly and energetic puppy, great with kids
-                        and other pets.</p>
-                    <button
+                    <p class="text-xs font-light text-[#4c4c4c] py-1">{{ pet.description }}</p>
+                    <a href="{% url 'pet_adoption_detail' pet.id %}"><button
                         class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">View
-                        Details</button>
+                        Details</button></a>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    <a href="/pets" class="text-center text-sm font-light text-[#e54c00] underline float-end mt-8">View More</a>
+    <a href="{% url 'pet_adoption_list' %}" class="text-center text-sm font-light text-[#e54c00] underline float-end mt-8">View More</a>
 
 </section>
 <section class="px-3 lg:px-0 container mx-auto py-4 text-[#4c4c4c]">

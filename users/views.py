@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import UserProfile
+from admin_panel.models import AddPets
 from petshops.models import Product, Cart, Order, OrderItem, Payment, ShippingAddress
 from django.shortcuts import render, get_object_or_404
 from decimal import Decimal
@@ -109,7 +110,8 @@ def logout_view(request):
 @login_required
 def home(request):
     products = Product.objects.order_by('-id')[:3]
-    return render(request, 'users/home.html', {'products': products})
+    pets = AddPets.objects.order_by('-id')[:3]
+    return render(request, 'users/home.html', {'products': products ,'pets': pets})
 
 @never_cache
 @login_required
