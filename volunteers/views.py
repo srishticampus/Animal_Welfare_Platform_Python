@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from .models import Volunteer, RescueRequest
+from .models import Volunteer, RescueRequest, RescueResponse
 from django.contrib.auth.decorators import login_required
 import re
 # Create your views here.
@@ -47,7 +47,14 @@ def volunteer_register(request):
 
 @login_required
 def rescue_list(request):
+    volunteer = get_object_or_404(Volunteer, user=request.user)
     rescue_requests = RescueRequest.objects.all().order_by("-created_at")
+
+    for req in rescue_requests:
+        req.rejected_by_me = RescueResponse.objects.filter(
+            volunteer=volunteer, rescue_request=req, rejected=True
+        ).exists()
+
     return render(request, "volunteers/rescue_list.html", {"rescue_requests": rescue_requests})
 
 @login_required
@@ -66,10 +73,12 @@ def accept_rescue(request, request_id):
 @login_required
 def reject_rescue(request, request_id):
     rescue_request = get_object_or_404(RescueRequest, id=request_id)
+    volunteer = get_object_or_404(Volunteer, user=request.user)
 
     if rescue_request.status == "Pending":
-        rescue_request.status = "Rejected"
-        rescue_request.save()
+        RescueResponse.objects.get_or_create(
+            volunteer=volunteer, rescue_request=rescue_request, defaults={"rejected": True}
+        )
         messages.success(request, "You have rejected the rescue request.")
     
     return redirect("rescue_list")

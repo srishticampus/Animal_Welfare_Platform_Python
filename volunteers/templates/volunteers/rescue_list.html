@@ -11,22 +11,23 @@
             <p class="text-sm text-gray-600">Submitted by: {{ request.user.username }}</p>
             <p class="mt-2">{{ request.description }}</p>
             {% if request.image %}
-            <img src="{{ request.image.url }}" alt="Rescue Image" class="w-full h-40 object-cover mt-3 rounded-md">
+                <img src="{{ request.image.url }}" alt="Rescue Image" class="w-full h-40 object-cover mt-3 rounded-md">
             {% endif %}
             <p class="text-xs text-gray-500 mt-2">Date: {{ request.created_at }}</p>
 
-            {% if request.status == "Pending" %}
+            {% if request.status == "Accepted" %}
+                <p class="text-green-600 font-semibold mt-3">Already Rescued by {{ request.accepted_by.user.username }}</p>
+            {% elif request.rejected_by_me %}
+                <p class="text-red-600 font-semibold mt-3">You rejected this request.</p>
+            {% else %}
                 <div class="mt-4">
                     <a href="{% url 'accept_rescue' request.id %}" class="bg-green-500 text-white px-3 py-1 rounded-md">Accept</a>
                     <a href="{% url 'reject_rescue' request.id %}" class="bg-red-500 text-white px-3 py-1 rounded-md ml-2">Reject</a>
                 </div>
-            {% elif request.status == "Accepted" %}
-                <p class="text-green-600 font-semibold mt-3">Already Rescued by {{ request.accepted_by.user.username }}</p>
-            {% else %}
-                <p class="text-red-600 font-semibold mt-3">Rescue Request Rejected</p>
             {% endif %}
         </div>
-        {% endfor %}
+    {% endfor %}
+
     </div>
 </section>
 

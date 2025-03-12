@@ -27,3 +27,14 @@ class RescueRequest(models.Model):
     def __str__(self):
         return f"Rescue Request by {self.user.username} at {self.location}"
     
+
+class RescueResponse(models.Model):
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
+    rescue_request = models.ForeignKey(RescueRequest, on_delete=models.CASCADE)
+    rejected = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("volunteer", "rescue_request") 
+
+    def __str__(self):
+        return f"{self.volunteer.user.username} {'Rejected' if self.rejected else 'Accepted'} Request {self.rescue_request.id}"
