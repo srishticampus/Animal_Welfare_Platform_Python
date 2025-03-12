@@ -12,7 +12,7 @@
         <!-- Image Upload -->
         <label for="image-upload" class="flex flex-col items-center cursor-pointer">
             <input type="file" name="profile_image" id="image-upload" accept="image/*" class="hidden" onchange="previewImage(event)" required />
-            <img id="image-preview" src="{% static 'assets/profile-pic.png' %}" alt="Upload Profile Pic" class="w-48 h-56 object-contain mt-2" />
+            <img id="image-preview" src="{% static 'assets/profile-pic.png' %}" alt="Upload Profile Pic" class="w-48 h-56 object-contain mt-2 rounded-2xl" />
             <span class="text-sm">Upload Profile Image</span>
             {% if errors.profile_image %}
                 <p class="text-red-500 text-sm">{{ errors.profile_image }}</p>

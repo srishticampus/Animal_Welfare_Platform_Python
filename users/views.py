@@ -98,8 +98,39 @@ def login_view(request):
 
     return render(request, 'users/login.html')
 
+# Forgot Password View
 def forgot_password(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            request.session['reset_email'] = email  # Store email in session
+            return redirect('reset_password')
+        except User.DoesNotExist:
+            messages.error(request, "Email does not exist.")
+    
     return render(request, 'users/forgot-password.html')
+
+# Reset Password View
+def reset_password(request):
+    if 'reset_email' not in request.session:
+        return redirect('forgot_password')  # Prevent direct access
+
+    if request.method == "POST":
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm-password')
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+        else:
+            user = User.objects.get(email=request.session['reset_email'])
+            user.set_password(password)
+            user.save()
+            del request.session['reset_email']  # Remove session data
+            messages.success(request, "Password reset successfully. You can now log in.")
+            return redirect('login')
+
+    return render(request, 'users/reset_password.html')
 
 def logout_view(request):
     logout(request)

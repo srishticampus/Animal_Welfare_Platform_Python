@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
@@ -49,3 +49,27 @@ def volunteer_register(request):
 def rescue_list(request):
     rescue_requests = RescueRequest.objects.all().order_by("-created_at")
     return render(request, "volunteers/rescue_list.html", {"rescue_requests": rescue_requests})
+
+@login_required
+def accept_rescue(request, request_id):
+    rescue_request = get_object_or_404(RescueRequest, id=request_id)
+
+    if rescue_request.status == "Pending":
+        volunteer = Volunteer.objects.get(user=request.user)
+        rescue_request.status = "Accepted"
+        rescue_request.accepted_by = volunteer
+        rescue_request.save()
+        messages.success(request, "You have accepted the rescue request.")
+    
+    return redirect("rescue_list")
+
+@login_required
+def reject_rescue(request, request_id):
+    rescue_request = get_object_or_404(RescueRequest, id=request_id)
+
+    if rescue_request.status == "Pending":
+        rescue_request.status = "Rejected"
+        rescue_request.save()
+        messages.success(request, "You have rejected the rescue request.")
+    
+    return redirect("rescue_list")

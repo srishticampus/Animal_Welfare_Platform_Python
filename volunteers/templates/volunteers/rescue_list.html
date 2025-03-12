@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- {% if messages %}
-{% for message in messages %}
-<div class="flex justify-center items-center">
-    <p class="text-red-500">{{ message }}</p>
-</div>
-{% endfor %}
-{% endif %} -->
+
 <section class="container mx-auto px-3 lg:px-0 py-8">
     <h1 class="text-3xl font-semibold text-[#E54C00] text-center">Rescue Requests</h1>
 
@@ -20,6 +14,17 @@
             <img src="{{ request.image.url }}" alt="Rescue Image" class="w-full h-40 object-cover mt-3 rounded-md">
             {% endif %}
             <p class="text-xs text-gray-500 mt-2">Date: {{ request.created_at }}</p>
+
+            {% if request.status == "Pending" %}
+                <div class="mt-4">
+                    <a href="{% url 'accept_rescue' request.id %}" class="bg-green-500 text-white px-3 py-1 rounded-md">Accept</a>
+                    <a href="{% url 'reject_rescue' request.id %}" class="bg-red-500 text-white px-3 py-1 rounded-md ml-2">Reject</a>
+                </div>
+            {% elif request.status == "Accepted" %}
+                <p class="text-green-600 font-semibold mt-3">Already Rescued by {{ request.accepted_by.user.username }}</p>
+            {% else %}
+                <p class="text-red-600 font-semibold mt-3">Rescue Request Rejected</p>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
