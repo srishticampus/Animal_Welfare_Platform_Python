@@ -117,17 +117,32 @@
             <!-- counter and add to cart -->
             <div class="flex items
             -center gap-4">
-            {% if existing_request %}
-                <p>You have already applied for this pet.</p>
-            {% else %}
-            <form action="{% url 'adoption_form' pet.id %}" method="get">
-                {% csrf_token %}
-                <button
-                    class="bg-[#e54c00] text-white px-4 py-2 rounded-3xl w-full hover:cursor-pointer hover:bg-[#ED824D]">Apply
-                    to Adopt</button>
-                </form>
+            {% if adopted_user %}
+                <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed">
+                    Already Adopted by {{ adopted_user }}
+                </button>
+            {% elif existing_request %}
+                {% if existing_request.status == "Pending" %}
+                    <button class="bg-yellow-500 text-white px-4 py-2 rounded">
+                        Applied (Waiting for Approval)
+                    </button>
+                {% elif existing_request.status == "Approved" %}
+                    <button class="bg-green-500 text-white px-4 py-2 rounded">
+                        Application Accepted
+                    </button>
+                {% else %}
+                    <button class="bg-red-500 text-white px-4 py-2 rounded">
+                        Application Rejected
+                    </button>
                 {% endif %}
-            </form>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                        Apply for Adoption
+                    </button>
+                </form>
+            {% endif %}
             </div>
         </div>
     </div>

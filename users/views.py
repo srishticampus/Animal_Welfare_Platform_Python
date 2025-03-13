@@ -302,6 +302,10 @@ def order_success(request, order_id):
 
     return render(request, "users/order_success.html", context)
 
+def user_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'users/orders.html', {'orders': orders})
+
 @never_cache
 @login_required
 def pet_adoption_list(request):
@@ -316,12 +320,16 @@ def pet_adoption_detail(request, pet_id):
 
     existing_request = AdoptionRequest.objects.filter(pet=pet, user=request.user).first()
     
-    if request.method == 'POST':
-        if not existing_request:
-            AdoptionRequest.objects.create(pet=pet, user=request.user)
-            return redirect('pet_adoption_list')
+    if request.method == 'POST' and not existing_request:
+        AdoptionRequest.objects.create(pet=pet, user=request.user, status='Pending')
+        messages.success(request, 'Adoption request sent successfully!')
+        return redirect('pet_adoption_detail', pet_id=pet.id)
 
-    return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request})
+
+    adopted_user = AdoptionRequest.objects.filter(pet=pet, status="Approved").first()
+
+    return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request, 'adopted_user': adopted_user.user.username if adopted_user else None
+    })
 
 @never_cache
 @login_required
