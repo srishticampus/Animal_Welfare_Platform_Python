@@ -12,14 +12,12 @@ urlpatterns = [
     path('cart/', cart_page, name='cart_page'),
     path('cart/add/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path('cart/remove/<int:cart_id>/', remove_from_cart, name='remove_from_cart'),
-    path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path("checkout/", checkout, name="checkout"),
     path("order-success/<int:order_id>/", order_success, name="order_success"),
     path('adopt/', pet_adoption_list, name='pet_adoption_list'),
     path('adopt/<int:pet_id>/', pet_adoption_detail, name='pet_adoption_detail'),
     path('adoption-form/<int:pet_id>/', adoption_form, name='adoption_form'),
     path("rescue/", create_rescue_request, name="create_rescue_request"),
-    path('forgot-password/', forgot_password, name='forgot_password'),
     path('reset-password/', reset_password, name='reset_password'),
 
  

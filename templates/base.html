@@ -67,8 +67,70 @@
         <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
         
         {% elif user.is_authenticated and not user.is_superuser %}
-        <a href="" class=" items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Profile {{ user.username }}</a>
-        <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
+        <div class="relative inline-block text-left">
+            <div>
+                <button type="button"
+                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-gray-900 ring-gray-300 ring-inset hover:bg-gray-200 hover:cursor-pointer"
+                    id="cart-menu-button" aria-expanded="false" aria-haspopup="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-shopping-cart">
+                        <circle cx="8" cy="21" r="1" />
+                        <circle cx="19" cy="21" r="1" />
+                        <path
+                            d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
+                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+                id="cart-menu" style="display: none;">
+                <div class="py-1" role="none">
+                    <a href="{% url 'cart_page' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                        id="menu-item-0">View Cart</a>
+                    <a href="{% url 'checkout' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                        id="menu-item-1">Checkout</a>
+                </div>
+            </div>
+        </div>
+        <div class="relative inline-block text-left">
+            <div>
+                <button type="button"
+                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-gray-900 ring-gray-300 ring-inset hover:bg-gray-200 hover:cursor-pointer"
+                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-user">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
+                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+                id="user-menu" style="display: none;">
+                <div class="py-1" role="none">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700" role="menuitem"
+                        tabindex="-1" id="menu-item-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>Profile {{ user.username }}</a>
+                        <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700" role="menuitem"
+                        tabindex="-1" id="menu-item-0"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-log-out">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" x2="9" y1="12" y2="12" />
+                    </svg>Logout</a>
+                </div>
+            </div>
+        </div>
         {% else %}
         <div class="flex gap-8 justify-center items-center">
           <!-- dropdown -->
@@ -194,29 +256,47 @@
   </script>
   
   <script>
-      // Get the elements for user
-      const usermenuButton = document.getElementById('user-menu-button');
-      const usermenu = document.getElementById('user-menu');
-  
-      // Toggle dropdown menu visibility on button click
-      usermenuButton.addEventListener('click', function () {
-          const isExpanded = usermenuButton.getAttribute('aria-expanded') === 'true';
-          if (isExpanded) {
-              usermenu.style.display = 'none';
-              usermenuButton.setAttribute('aria-expanded', 'false');
-          } else {
-              usermenu.style.display = 'block';
-              usermenuButton.setAttribute('aria-expanded', 'true');
-          }
-      });
-  
-      // Close the dropdown menu if the user clicks outside of it
-      window.addEventListener('click', function (event) {
-          if (!usermenuButton.contains(event.target) && !usermenu.contains(event.target)) {
-              usermenu.style.display = 'none';
-              usermenuButton.setAttribute('aria-expanded', 'false');
-          }
-      });
-  </script>
+    // Get the elements for user
+    const usermenuButton = document.getElementById('user-menu-button');
+    const usermenu = document.getElementById('user-menu');
+    // Get the elements for cart
+    const cartmenuButton = document.getElementById('cart-menu-button');
+    const cartmenu = document.getElementById('cart-menu');
+
+    // Toggle dropdown menu visibility on button click
+    usermenuButton.addEventListener('click', function () {
+        const isExpanded = usermenuButton.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+            usermenu.style.display = 'none';
+            usermenuButton.setAttribute('aria-expanded', 'false');
+        } else {
+            usermenu.style.display = 'block';
+            usermenuButton.setAttribute('aria-expanded', 'true');
+        }
+    });
+    // Get the elements for cart
+    cartmenuButton.addEventListener('click', function () {
+        const isExpanded = cartmenuButton.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+            cartmenu.style.display = 'none';
+            cartmenuButton.setAttribute('aria-expanded', 'false');
+        } else {
+            cartmenu.style.display = 'block';
+            cartmenuButton.setAttribute('aria-expanded', 'true');
+        }
+    });
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.addEventListener('click', function (event) {
+        if (!usermenuButton.contains(event.target) && !usermenu.contains(event.target)) {
+            usermenu.style.display = 'none';
+            usermenuButton.setAttribute('aria-expanded', 'false');
+        }
+        if (!cartmenuButton.contains(event.target) && !cartmenu.contains(event.target)) {
+            cartmenu.style.display = 'none';
+            cartmenuButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
 </body>
 </html>
