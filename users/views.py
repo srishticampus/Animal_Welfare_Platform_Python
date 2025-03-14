@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
 import re
+from django.http import JsonResponse
+import json
 
 def register(request):
     if request.method == "POST":
@@ -164,14 +166,24 @@ def product_detail(request, product_id):
 @never_cache
 @login_required
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
-    
-    if not created:
-        cart_item.quantity += 1
+    if request.method == "POST":
+        data = json.loads(request.body)
+        quantity = data.get('quantity', 1)
+        
+        product = get_object_or_404(Product, id=product_id)
+        
+        cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+        if created:
+            cart_item.quantity = quantity  
+        else:
+            cart_item.quantity += 1  
+
         cart_item.save()
     
-    return redirect('cart_page')
+        
+        return JsonResponse({"message": "Product added to cart!"}, status=200)
+    
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @never_cache
 @login_required
