@@ -49,11 +49,11 @@
                     </div>
                     <div class="flex justify-between items-end">
                         <div class="flex gap-2">
-                            <button
-                                class="border border-[#ccc] px-4 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200">-</button>
-                            <p class="px-8 py-2 border border-[#ccc] rounded-md">{{ item.quantity }}</p>
-                            <button
-                                class="border border-[#ccc] px-4 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200">+</button>
+                            <!-- <button
+                                class="border border-[#ccc] px-4 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200">-</button> -->
+                            <p class="">Quantity: {{ item.quantity }}</p>
+                            <!-- <button
+                                class="border border-[#ccc] px-4 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200">+</button> -->
                         </div>
                         <a class="hover:cursor-pointer p-2" href="{% url 'remove_from_cart' item.id %}">
                             <svg width="16" height="18" viewBox="0 0 16 18" fill="none"
@@ -68,6 +68,7 @@
             </div>
             {% endfor %}
         <!-- order summary -->
+         {% if cart_items %}
         <div class="bg-white rounded-xl p-4 mt-4 lg:mt-0 h-full max-h-[600px] flex flex-col justify-between">
             <div>
                 <h2 class="text-lg font-semibold">Order Summary</h2>
@@ -92,6 +93,9 @@
             <a href="{% url 'checkout' %}" class="bg-[#e54c00] text-white w-full py-2 rounded-2xl hover:bg-[#ED824D]">Proceed to
                 Checkout</a>
         </div>
+        {% else %}
+        <p class="">No products in the cart</p>
+        {% endif %}
     </div>
   
 </section>
