@@ -66,7 +66,8 @@
         {% if user.is_superuser %}
         <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
         
-        {% elif user.is_active %}
+        {% elif user.is_authenticated and not user.volunteer and not user.petshop %}
+
         <div class="relative inline-block text-left">
             <div>
                 <button type="button"
