@@ -178,6 +178,9 @@ def add_to_cart(request, product_id):
 def cart_page(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.total_price() for item in cart_items)
+
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty. Add some items before checking out.")
     
     tax_rate = Decimal('0.10')
     tax_amount = total_price * tax_rate
