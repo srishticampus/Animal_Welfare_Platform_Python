@@ -92,8 +92,12 @@ def add_product_page(request):
             product_description=product_description,
             product_image=product_image
         )
+        messages.success(request, 'Item added')
         return redirect('add_product')
     return render(request, 'petshops/add_product.html')
+
+def list_product(request):
+    return render(request, 'petshops/list_products.html')
 
 
 def logout_petshop(request):

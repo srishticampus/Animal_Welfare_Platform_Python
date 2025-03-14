@@ -180,7 +180,7 @@ def add_to_cart(request, product_id):
 
         cart_item.save()
     
-        
+        messages.success(request, 'Item added')
         return JsonResponse({"message": "Product added to cart!"}, status=200)
     
     return JsonResponse({"error": "Invalid request"}, status=400)

@@ -60,13 +60,13 @@
       </ul>
       {% elif user.petshop %}
         <a href="{% url 'add_product' %}" class="hover:text-[#e54c00] transition">Add Product</a>
-        <a href="" class="hover:text-[#e54c00] transition">List Products</a>
+        <a href="{% url 'list_products' %}" class="hover:text-[#e54c00] transition">List Products</a>
       {% endif %}
       <div class="lin">
         {% if user.is_superuser %}
         <a href="{% url 'logout' %}" class="flex-inline items-center gap-2 p-2 hover:bg-gray-100 rounded-md">Logout</a>
         
-        {% elif user.is_active and not user.petshop %}
+        {% elif user.is_active %}
         <div class="relative inline-block text-left">
             <div>
                 <button type="button"
@@ -131,7 +131,7 @@
                 </div>
             </div>
         </div>
-        {% elif user.authenticated or user.voluneteer %}
+        {% elif user.petshop or user.volunteer %}
         <div class="relative inline-block text-left">
             <div>
                 <button type="button"
@@ -169,9 +169,43 @@
                 </div>
             </div>
         </div>
-        
+        {% else %}
+        <div class="flex gap-8 justify-center items-center">
+          <!-- dropdown -->
+          <div class="relative inline-block text-left">
+              <div>
+                  <button type="button"
+                      class="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm text-gray-900 ring-gray-300 ring-inset hover:bg-gray-50 hover:underline hover:cursor-pointer"
+                      id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                      Register
+                  </button>
+              </div>
+              <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
+                  role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+                  id="user-menu" style="display: none;">
+                  <div class="py-1" role="none">
+                      <a href="{% url 'register' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                          id="menu-item-0">User</a>
+                      <a href="{% url 'register_petshop' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                          id="menu-item-1">Petshop</a>
+                      <a href="{% url 'volunteer_register' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                          id="menu-item-2">Volunteer</a>
+                  </div>
+              </div>
+          </div>
+          <a href="{% url 'login' %}"
+              class="text-sm font-light px-6 py-3 rounded-3xl bg-[#e54c00] text-white flex gap-2 items-center">Login
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-move-right">
+                  <path d="M18 8L22 12L18 16" />
+                  <path d="M2 12H22" />
+              </svg></a>
+          </div>
         
         {% endif %}
+
+        
       </div>
     </div>
   </nav>

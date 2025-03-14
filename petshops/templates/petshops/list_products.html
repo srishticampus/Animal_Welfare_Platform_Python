@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-10">
+    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Products List</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for product in user.petshop.product_set.all %}
+            <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}" class="w-full h-40 object-cover rounded-lg">
+                
+                <h4 class="text-lg font-semibold text-gray-800 mt-2">{{ product.product_name }}</h4>
+                <p class="text-gray-600 font-bold">₹{{ product.product_price }}</p>
+                <p class="text-gray-700 mt-1">{{ product.product_description }}</p>
+            </div>
+        {% empty %}
+            <p class="text-center text-gray-600 col-span-2">No products added yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
