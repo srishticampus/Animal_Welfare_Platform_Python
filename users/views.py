@@ -84,7 +84,7 @@ def login_view(request):
                 return redirect('login')
             login(request, user)
             if user.is_superuser:  
-                return redirect("admin_dashboard") 
+                return redirect("admin_panel:admin_dashboard") 
             elif PetShop.objects.filter(user=user).exists():
                 messages.success(request, "Login successful!")
                 return redirect("add_product")  
