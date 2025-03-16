@@ -6,5 +6,5 @@
     {% csrf_token %}
     <button type="submit">Yes, Delete</button>
 </form>
-<a href="{% url 'admin_pet_list' %}">Cancel</a>
+<a href="{% url 'admin_panel:admin_pet_list' %}">Cancel</a>
 {% endblock %}

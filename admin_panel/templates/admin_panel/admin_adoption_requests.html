@@ -24,9 +24,9 @@
 
                     {% if request.status == "Pending" %}
                         <div class="flex space-x-3 mt-3 md:mt-0">
-                            <a href="{% url 'approve_adoption' request.id %}" 
+                            <a href="{% url 'admin_panel:approve_adoption' request.id %}" 
                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">Approve</a>
-                            <a href="{% url 'reject_adoption' request.id %}" 
+                            <a href="{% url 'admin_panel:reject_adoption' request.id %}" 
                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Reject</a>
                         </div>
                     {% endif %}
