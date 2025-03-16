@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="mb-8 flex justify-between items-center">
             <h1 class="text-2xl font-semibold text-gray-900">Pet List</h1>
-            <a href="{% url 'admin_add_pet' %}" 
+            <a href="{% url 'admin_panel:admin_add_pet' %}" 
                class="inline-flex items-center px-4 py-2 bg-[#e54c00] text-white rounded-lg hover:bg-[#ED824D] transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14m-7-7h14"/>
@@ -33,15 +33,15 @@
                         </span>
                     </div>
                     <div class="flex space-x-3">
-                        <a href="{% url 'admin_pet_detail' pet.id %}" 
+                        <a href="{% url 'admin_panel:admin_pet_detail' pet.id %}" 
                            class="flex-1 text-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                             View Details
                         </a>
-                        <a href="{% url 'admin_edit_pet' pet.id %}" 
+                        <a href="{% url 'admin_panel:admin_edit_pet' pet.id %}" 
                            class="flex-1 text-center px-4 py-2 border border-[#e54c00] rounded-md text-sm font-medium text-[#e54c00] hover:bg-[#fff8f6]">
                             Edit
                         </a>
-                        <a href="{% url 'admin_delete_pet' pet.id %}" 
+                        <a href="{% url 'admin_panel:admin_delete_pet' pet.id %}" 
                            class="flex-1 text-center px-4 py-2 border border-red-600 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
                             Delete
                         </a>

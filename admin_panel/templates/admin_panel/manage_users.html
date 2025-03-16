@@ -67,7 +67,7 @@
                                 {{ user.date_joined|date:"d/m/Y" }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <form method="POST" action="{% url 'user_toggle' user.id %}" class="inline">
+                                <form method="POST" action="{% url 'admin_panel:user_toggle' user.id %}" class="inline">
                                     {% csrf_token %}
                                     {% if user.is_active %}
                                         <button type="submit" 

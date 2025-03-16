@@ -87,7 +87,7 @@
                                 {% endif %}
                             </td> -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <form method="POST" action="{% url 'toggle_petshop_status' petshop.user.id %}" class="inline">
+                                <form method="POST" action="{% url 'admin_panel:toggle_petshop_status' petshop.user.id %}" class="inline">
                                     {% csrf_token %}
                                     {% if petshop.user.is_active %}
                                         <button type="submit" 

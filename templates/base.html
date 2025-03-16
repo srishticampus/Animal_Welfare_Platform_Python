@@ -36,12 +36,12 @@
       </div>
       {% if user.is_authenticated and user.is_superuser %}
       <ul class="text-sm font-medium gap-6 hidden md:flex">
-        <a href="{% url 'admin_dashboard' %}" class="hover:text-[#e54c00] transition">Dashboard</a>
-        <a href="{% url 'manage_users' %}" class="hover:text-[#e54c00] transition">Manage Users</a>
-        <a href="{% url 'manage_petshops' %}" class="hover:text-[#e54c00] transition">Manage Pet Shops</a>
-        <a href="{% url 'admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
-        <a href="{% url 'admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
-        <a href="{% url 'admin_adoption_requests' %}" class="hover:text-[#e54c00] transition">Adoption Requests</a>
+        <a href="{% url 'admin_panel:admin_dashboard' %}" class="hover:text-[#e54c00] transition">Dashboard</a>
+        <a href="{% url 'admin_panel:manage_users' %}" class="hover:text-[#e54c00] transition">Manage Users</a>
+        <a href="{% url 'admin_panel:manage_petshops' %}" class="hover:text-[#e54c00] transition">Manage Pet Shops</a>
+        <a href="{% url 'admin_panel:admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
+        <a href="{% url 'admin_panel:admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
+        <a href="{% url 'admin_panel:admin_adoption_requests' %}" class="hover:text-[#e54c00] transition">Adoption Requests</a>
     
       </ul>
       {% elif user.volunteer %}
