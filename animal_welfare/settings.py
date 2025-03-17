@@ -26,10 +26,10 @@ SECRET_KEY = 'django-insecure--1&63*x7x+b)0kq9aqzunjt-av0^oi9@4rcvohf1tiq-ukxj8k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','0.0.0.0','python.sicsglobal.com']
 
-LOGIN_URL = '/users/login/'
-
+#LOGIN_URL = '/users/login/'
+FORCE_SCRIPT_NAME = '/animal_welfare'
 # Application definition
 
 INSTALLED_APPS = [
@@ -129,13 +129,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'animal_welfare/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
-MEDIA_URL = '/media/'
+MEDIA_URL = 'animal_welfare/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
