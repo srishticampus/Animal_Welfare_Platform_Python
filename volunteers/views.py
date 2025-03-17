@@ -34,12 +34,13 @@ def volunteer_register(request):
             return render(request, "volunteers/register.html", {"errors": errors})
 
         user = User.objects.create_user(username=username, email=email, password=password, first_name=name)
+        user.is_active = False
         user.save()
 
         volunteer = Volunteer.objects.create(user=user, phone_number=phone_number)
         volunteer.save()
 
-        messages.success(request, "Registration successful! Please log in.")
+        messages.success(request, "Registration successful! Wait for admin approval.")
         return redirect("login")
 
     return render(request, "volunteers/register.html")

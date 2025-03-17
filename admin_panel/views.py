@@ -145,7 +145,14 @@ def user_toggle(request, user_id):
     user.is_active = not user.is_active
     user.save()
 
-    return redirect('manage_users')
+    return redirect('admin_panel:manage_users')
+
+def volunteer_toggle(request, volunteer_id):
+    user = User.objects.get(id=volunteer_id)
+    user.is_active = not user.is_active
+    user.save()
+
+    return redirect('admin_panel:manage_volunteers')
 
 def toggle_petshop_status(request, user_id):
     user = get_object_or_404(User, id=user_id)
