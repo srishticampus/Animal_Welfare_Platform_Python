@@ -131,7 +131,7 @@ def reject_adoption(request, request_id):
     adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
     adoption_request.status = 'Rejected'
     adoption_request.save()
-    return redirect('admin_adoption_requests')
+    return redirect('admin_panel:admin_adoption_requests')
 
 def user_toggle(request, user_id):
     user = User.objects.get(id=user_id)
