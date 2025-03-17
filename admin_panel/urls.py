@@ -8,6 +8,7 @@ urlpatterns = [
     path("", admin_dashboard, name="admin_dashboard"),
     path("users/", manage_users, name="manage_users"),
     path("petshops/", manage_petshops, name="manage_petshops"),
+    path('petshop-requests', views.petshop_requests, name='petshop_requests'),
     path('volunteers/', views.manage_volunteers, name='manage_volunteers'),
     path('admin/pets/', views.admin_pet_list, name='admin_pet_list'),
     path('admin/pets/add/', views.admin_add_pet, name='admin_add_pet'),

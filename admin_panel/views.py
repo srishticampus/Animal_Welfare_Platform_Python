@@ -47,8 +47,15 @@ def manage_petshops(request):
     if not request.user.is_superuser:
         return redirect("home")
 
-    petshops = PetShop.objects.all()
+    petshops = PetShop.objects.filter(user__is_active=True)
     return render(request, "admin_panel/manage_petshops.html", {"petshops": petshops})
+
+def petshop_requests(request):
+    if not request.user.is_superuser:
+        return redirect("home")
+    
+    petshops = PetShop.objects.filter(user__is_active=False)
+    return render(request, 'admin_panel/manage_petshop_requests.html',{"petshops": petshops})
 
 
 def admin_pet_list(request):

@@ -39,10 +39,11 @@
         <a href="{% url 'admin_panel:admin_dashboard' %}" class="hover:text-[#e54c00] transition">Dashboard</a>
         <a href="{% url 'admin_panel:manage_users' %}" class="hover:text-[#e54c00] transition">Manage Users</a>
         <a href="{% url 'admin_panel:manage_petshops' %}" class="hover:text-[#e54c00] transition">Manage Pet Shops</a>
-        <a href="{% url 'admin_panel:admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
-        <a href="{% url 'admin_panel:admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
-        <a href="{% url 'admin_panel:admin_adoption_requests' %}" class="hover:text-[#e54c00] transition">Adoption Requests</a>
+        <a href="{% url 'admin_panel:petshop_requests' %}" class="hover:text-[#e54c00] transition">Petshop Requests</a>
         <a href="{% url 'admin_panel:manage_volunteers' %}" class="hover:text-[#e54c00] transition">Manage Volunteer</a>
+        <a href="{% url 'admin_panel:admin_add_pet' %}" class="hover:text-[#e54c00] transition">Add Pets</a>
+        <a href="{% url 'admin_panel:admin_pet_list' %}" class="hover:text-[#e54c00] transition">Pet list</a>
+        <a href="{% url 'admin_panel:admin_adoption_requests' %}" class="hover:text-[#e54c00] transition">Adoption Requests</a>
     
       </ul>
       {% elif user.volunteer %}
