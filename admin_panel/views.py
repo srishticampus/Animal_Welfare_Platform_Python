@@ -164,8 +164,8 @@ def toggle_petshop_status(request, user_id):
 
     if user.is_active:
         messages.success(request, f"{user.username}'s account has been activated!")
-        return redirect('admin_panel:manage_petshops')
+        return redirect('admin_panel:petshop_requests')
     else:
         messages.warning(request, f"{user.username}'s account has been deactivated.")
 
-    return redirect('admin_panel:manage_petshops') 
+    return redirect('admin_panel:petshop_requests') 
