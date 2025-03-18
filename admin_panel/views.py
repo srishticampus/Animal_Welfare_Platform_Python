@@ -13,11 +13,13 @@ def admin_dashboard(request):
 
     petshop_users = PetShop.objects.values_list("user_id", flat=True)
     users_count = User.objects.filter(is_superuser=False).exclude(id__in=petshop_users).count()
+    volunteer_count = Volunteer.objects.count()
     petshops_count = PetShop.objects.count()
 
     context = {
         "users_count": users_count,
         "petshops_count": petshops_count,
+        "volunteer_count": volunteer_count,
     }
     return render(request, "admin_panel/dashboard.html", context)
 
@@ -155,7 +157,7 @@ def volunteer_toggle(request, volunteer_id):
     user.is_active = not user.is_active
     user.save()
 
-    return redirect('admin_panel:manage_volunteer')
+    return redirect('admin_panel:manage_volunteers')
 
 def toggle_petshop_status(request, user_id):
     user = get_object_or_404(User, id=user_id)
