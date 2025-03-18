@@ -17,7 +17,7 @@
   <title>{% block title %}TailWise{% endblock %}</title>
 </head>
 
-<body class="bg-[#F6F7F9] text-[#4c4c4c]">
+<body class="bg-[#F6F7F9] text-[#4c4c4c] flex flex-col min-h-screen">
   <!-- navbar -->
   <nav class="py-6 bg-white shadow-md">
     <div class="container mx-auto px-4 lg:px-0 flex justify-between items-center">
@@ -212,11 +212,13 @@
       </div>
     </div>
   </nav>
-
+  <div class="flex-grow">
+    <!-- Your main content goes here -->
     {% block content %}{% endblock %}
+  </div>
 
 <!-- footer -->
-<footer class="bg-[#4c4c4c] text-white py-4">
+<footer class="bg-[#4c4c4c] text-white py-4 mt-auto">
     <div class="container mx-auto px-3 pt-3 lg:px-0 flex">
         <div class="flex-1 flex flex-col justify-between pb-1">
             <!-- logo -->
