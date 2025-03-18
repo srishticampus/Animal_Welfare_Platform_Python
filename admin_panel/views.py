@@ -50,12 +50,15 @@ def manage_petshops(request):
     petshops = PetShop.objects.filter(user__is_active=True)
     return render(request, "admin_panel/manage_petshops.html", {"petshops": petshops})
 
+@login_required
 def petshop_requests(request):
     if not request.user.is_superuser:
         return redirect("home")
     
-    petshops = PetShop.objects.filter(user__is_active=False)
-    return render(request, 'admin_panel/manage_petshop_requests.html',{"petshops": petshops})
+    petshops = PetShop.objects.filter(user__is_active=True)
+    petshop_requests  = PetShop.objects.filter(user__is_active=False)
+    return render(request, 'admin_panel/manage_petshop_requests.html', {"petshop_requests": petshop_requests, "petshops": petshops})
+
 
 
 def admin_pet_list(request):
@@ -152,7 +155,7 @@ def volunteer_toggle(request, volunteer_id):
     user.is_active = not user.is_active
     user.save()
 
-    return redirect('admin_panel:manage_volunteers')
+    return redirect('admin_panel:manage_volunteer')
 
 def toggle_petshop_status(request, user_id):
     user = get_object_or_404(User, id=user_id)
