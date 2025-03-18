@@ -28,9 +28,11 @@
                             <h3 class="text-xl font-semibold text-gray-900">{{ pet.name }}</h3>
                             <p class="text-sm text-gray-500">{{ pet.age }} years • {{ pet.gender }}</p>
                         </div>
+                        {% if pet.id in adopted_pets %}
                         <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            Available
+                            Adopted by: {{ adopted_pets }}
                         </span>
+                        {% endif %}
                     </div>
                     <div class="flex space-x-3">
                         <a href="{% url 'admin_panel:admin_pet_detail' pet.id %}" 

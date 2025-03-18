@@ -65,7 +65,16 @@ def petshop_requests(request):
 
 def admin_pet_list(request):
     pets = AddPets.objects.all()
-    return render(request, 'admin_panel/admin_pet_list.html', {'pets': pets})
+
+    adopted_pets = {
+        adoption.pet.id: adoption.user.username
+        for adoption in AdoptionRequest.objects.filter(status="Approved")
+    }
+    print(adopted_pets)
+    return render(request, "admin_panel/admin_pet_list.html", {
+        "pets": pets,
+        "adopted_pets": adopted_pets,
+    })
 
 def admin_add_pet(request):
     if request.method == 'POST':
