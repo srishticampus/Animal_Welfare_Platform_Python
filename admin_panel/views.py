@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from accounts.models import User
 from petshops.models import PetShop
 from volunteers.models import Volunteer
 from .models import AddPets, AdoptionRequest

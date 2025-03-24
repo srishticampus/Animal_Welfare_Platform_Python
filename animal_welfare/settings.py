@@ -44,8 +44,12 @@ INSTALLED_APPS = [
     'landing',
     'admin_panel',
     'volunteers',
+    'accounts'
 
 ]
+
+
+AUTH_USER_MODEL = 'accounts.User'
 
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [

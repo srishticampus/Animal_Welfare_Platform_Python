@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import UserProfile
@@ -63,7 +63,7 @@ def register(request):
             return render(request, 'users/register.html', {'errors': errors})
 
    
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password, user_type='normal')
         UserProfile.objects.create(user=user, aadhaar_number=aadhaar_number, phone_number=phone_number, profile_image=profile_image)
 
         messages.success(request, "Registration successful! You can now log in.")

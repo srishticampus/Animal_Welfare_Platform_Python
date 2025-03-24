@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from accounts.models import User
 from .models import PetShop, Product
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -48,7 +48,7 @@ def register_petshop(request):
         if errors:
             return render(request, 'petshops/register.html', {'errors': errors})
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password, user_type='petshop')
         user.is_active = False
         user.save()
         PetShop.objects.create(

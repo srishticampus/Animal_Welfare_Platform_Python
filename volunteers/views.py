@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import Volunteer, RescueRequest, RescueResponse
@@ -33,7 +33,7 @@ def volunteer_register(request):
         if errors:
             return render(request, "volunteers/register.html", {"errors": errors})
 
-        user = User.objects.create_user(username=username, email=email, password=password, first_name=name)
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=name, user_type='volunteer')
         user.is_active = False
         user.save()
 
