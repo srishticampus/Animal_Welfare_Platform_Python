@@ -42,3 +42,12 @@ class AdoptionApplication(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Hospital(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    state = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name

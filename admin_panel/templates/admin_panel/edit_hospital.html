@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl text-center my-4">Edit Hospital</h1>
+
+<form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md">Update</button>
+    <a href="{% url 'admin_panel:hospital_list_admin' %}" class="ml-4 text-blue-500">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl text-center my-4">Find a Hospital</h1>
+
+<!-- State Selection Dropdown -->
+<form method="GET" class="text-center">
+    <label for="state" class="font-semibold">Select State:</label>
+    <select name="state" id="state" class="border p-2 rounded" onchange="this.form.submit()">
+        <option value="">-- Choose State --</option>
+        {% for state in states %}
+        <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>{{ state }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<!-- Hospital List -->
+<section class="container mx-auto px-3 py-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for hospital in hospitals %}
+        <div class="p-4 border rounded-lg shadow-md">
+            <h2 class="text-lg font-semibold">{{ hospital.name }}</h2>
+            <p class="text-gray-600">{{ hospital.address }}</p>
+            <p class="text-gray-500">📍 {{ hospital.state }}</p>
+            <p class="text-gray-500">📞 {{ hospital.contact_number }}</p>
+        </div>
+        {% empty %}
+        <p class="text-center col-span-3">No hospitals found for this state.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

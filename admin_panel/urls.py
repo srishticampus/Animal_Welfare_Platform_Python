@@ -26,4 +26,10 @@ urlpatterns = [
     path('admin/donations/', views.admin_dashboard_donations, name='admin_dashboard_donations'),
     path('admin/approve/<int:donation_id>/', views.approve_donation, name='approve_donation'),
 
+    path('hospitals/', views.hospital_list, name='hospital_list'),
+    path('hospital_list/', views.hospital_list_admin, name='hospital_list_admin'),
+    path('hospitals/add/', views.add_hospital, name='add_hospital'),
+    path('hospitals/edit/<int:hospital_id>/', views.edit_hospital, name='edit_hospital'),
+    path('hospitals/delete/<int:hospital_id>/', views.delete_hospital, name='delete_hospital'),
+
 ]

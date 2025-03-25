@@ -7,6 +7,8 @@ from .models import AddPets, AdoptionRequest
 from django.contrib import messages
 from donation.models import Donation
 from django.contrib.admin.views.decorators import staff_member_required
+from .models import Hospital
+from .forms import HospitalForm
 
 @login_required
 def admin_dashboard(request):
@@ -198,3 +200,51 @@ def admin_dashboard_donations(request):
 
     donations = Donation.objects.all().order_by('-created_at')
     return render(request, 'admin_panel/donations.html', {'donations': donations})
+
+def hospital_list(request):
+    states = Hospital.objects.values_list('state', flat=True).distinct()
+    selected_state = request.GET.get('state')
+    
+    if selected_state:
+        hospitals = Hospital.objects.filter(state=selected_state)
+    else:
+        hospitals = Hospital.objects.all()
+
+    return render(request, 'users/hospitals.html', {
+        'states': states,
+        'hospitals': hospitals,
+        'selected_state': selected_state
+    })
+
+
+def hospital_list_admin(request):
+    hospitals = Hospital.objects.all()
+    return render(request, 'admin_panel/hospital_list.html', {'hospitals': hospitals})
+
+def add_hospital(request):
+    if request.method == 'POST':
+        form = HospitalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:hospital_list_admin')
+    else:
+        form = HospitalForm()
+    return render(request, 'admin_panel/add_hospital.html', {'form': form})
+
+
+def edit_hospital(request, hospital_id):
+    hospital = get_object_or_404(Hospital, id=hospital_id)
+    if request.method == 'POST':
+        form = HospitalForm(request.POST, instance=hospital)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:hospital_list_admin')
+    else:
+        form = HospitalForm(instance=hospital)
+    return render(request, 'admin_panel/edit_hospital.html', {'form': form, 'hospital': hospital})
+
+
+def delete_hospital(request, hospital_id):
+    hospital = get_object_or_404(Hospital, id=hospital_id)
+    hospital.delete()
+    return redirect('admin_panel:hospital_list_admin')
