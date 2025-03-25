@@ -23,4 +23,7 @@ urlpatterns = [
     path('volunteer_toggle/<int:volunteer_id>/', views.volunteer_toggle, name='volunteer_toggle'),
     path('toggle_petshop_status/<int:user_id>/', views.toggle_petshop_status, name='toggle_petshop_status'),
 
+    path('admin/donations/', views.admin_dashboard_donations, name='admin_dashboard_donations'),
+    path('admin/approve/<int:donation_id>/', views.approve_donation, name='approve_donation'),
+
 ]

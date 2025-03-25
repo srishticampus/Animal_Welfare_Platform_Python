@@ -1,0 +1,13 @@
+<h2>Donate to a Volunteer</h2>
+<ul>
+    {% for volunteer in volunteers %}
+        <li>
+            {{ volunteer.username }}
+            <form method="POST" action="{% url 'make_donation' volunteer.id %}">
+                {% csrf_token %}
+                <input type="number" name="amount" placeholder="Enter amount" required>
+                <button type="submit">Send</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

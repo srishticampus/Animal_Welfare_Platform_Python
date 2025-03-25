@@ -5,6 +5,8 @@ from petshops.models import PetShop
 from volunteers.models import Volunteer
 from .models import AddPets, AdoptionRequest
 from django.contrib import messages
+from donation.models import Donation
+from django.contrib.admin.views.decorators import staff_member_required
 
 @login_required
 def admin_dashboard(request):
@@ -180,3 +182,19 @@ def toggle_petshop_status(request, user_id):
         messages.warning(request, f"{user.username}'s account has been deactivated.")
 
     return redirect('admin_panel:petshop_requests') 
+
+
+@login_required
+def approve_donation(request, donation_id):
+    donation = Donation.objects.get(id=donation_id)
+    donation.status = 'approved'
+    donation.save()
+    return redirect('admin_panel:admin_dashboard')
+
+@login_required
+def admin_dashboard_donations(request):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    donations = Donation.objects.all().order_by('-created_at')
+    return render(request, 'admin_panel/donations.html', {'donations': donations})

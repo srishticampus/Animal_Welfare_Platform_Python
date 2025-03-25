@@ -1,0 +1,12 @@
+<h2>Pending Donations</h2>
+<ul>
+    {% for donation in donations %}
+        <li>
+            {{ donation.donor.username }} donated ₹{{ donation.amount }} to {{ donation.volunteer.username }} 
+            (Status: {{ donation.status }})
+            {% if donation.status == 'pending' %}
+                <a href="{% url 'admin_panel:approve_donation' donation.id %}">Approve</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
