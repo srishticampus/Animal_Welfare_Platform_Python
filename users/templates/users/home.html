@@ -95,7 +95,7 @@
                     <p class="text-xs font-medium text-[#7f7f7f] py-1">
                         {{ product.product_description }}
                     </p>
-                    <a href="{% url 'add_to_cart' product.id %}"><button
+                    <a href="" onclick="addToCart(event, {{ product.id }})"><button
                         class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
                         to cart</button></a>
                 </div>

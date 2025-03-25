@@ -22,7 +22,7 @@
             
             {% if donation.status == 'pending' %}
             <a href="{% url 'admin_panel:approve_donation' donation.id %}" 
-                class="px-4 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition">
+                class="inline-flex items-center px-6 py-1 border border-transparent text-base font-medium rounded-md text-white bg-[#e54c00] hover:bg-[#ED824D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#e54c00]">
                 Approve
             </a>
             {% endif %}
