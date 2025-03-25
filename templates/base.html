@@ -50,6 +50,7 @@
       </ul>
       {% elif user.volunteer %}
       <a href="{% url 'rescue_list' %}">Rescue List</a>
+      <a href="{% url 'volunteer_dashboard' %}">Donations</a>
       {% elif user.is_authenticated and not user.petshop %}
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">

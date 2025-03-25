@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
 <h2>Donate to a Volunteer</h2>
 <ul>
     {% for volunteer in volunteers %}
@@ -11,3 +15,5 @@
         </li>
     {% endfor %}
 </ul>
+
+{% endblock %}

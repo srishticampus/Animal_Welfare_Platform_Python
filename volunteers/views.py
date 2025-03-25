@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import Volunteer, RescueRequest, RescueResponse
 from django.contrib.auth.decorators import login_required
+from donation.models import Donation
 import re
 # Create your views here.
 
@@ -83,3 +84,12 @@ def reject_rescue(request, request_id):
         messages.success(request, "You have rejected the rescue request.")
     
     return redirect("rescue_list")
+
+@login_required
+def volunteer_dashboard(request):
+    if request.user.user_type != 'volunteer':
+        return redirect('home')
+
+    donations = Donation.objects.filter(volunteer=request.user).order_by('-created_at')
+    
+    return render(request, 'volunteers/volunteer_dashboard.html', {'donations': donations})
