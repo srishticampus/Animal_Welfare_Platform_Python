@@ -1,12 +1,36 @@
-<h2>Pending Donations</h2>
-<ul>
-    {% for donation in donations %}
-        <li>
-            {{ donation.donor.username }} donated ₹{{ donation.amount }} to {{ donation.volunteer.username }} 
-            (Status: {{ donation.status }})
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Pending Donations</h2>
+
+    <div class="bg-white shadow-md rounded-lg p-4">
+        {% for donation in donations %}
+        <div class="flex items-center justify-between border-b border-gray-300 py-3">
+            <span class="text-lg text-gray-700">
+                <strong>{{ donation.donor.username }}</strong> donated 
+                <strong>₹{{ donation.amount }}</strong> to 
+                <strong>{{ donation.volunteer.username }}</strong>  
+                (Status: 
+                <span class="px-2 py-1 text-sm font-medium rounded-md 
+                    {% if donation.status == 'approved' %} bg-green-200 text-green-800 
+                    {% else %} bg-red-200 text-red-800 {% endif %}">
+                    {{ donation.status|title }}
+                </span>)
+            </span>
+            
             {% if donation.status == 'pending' %}
-                <a href="{% url 'admin_panel:approve_donation' donation.id %}">Approve</a>
+            <a href="{% url 'admin_panel:approve_donation' donation.id %}" 
+                class="px-4 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition">
+                Approve
+            </a>
             {% endif %}
-        </li>
-    {% endfor %}
-</ul>
+        </div>
+        {% empty %}
+        <p class="text-gray-500 text-center py-4">No pending donations.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

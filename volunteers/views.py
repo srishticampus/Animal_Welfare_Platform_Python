@@ -90,6 +90,5 @@ def volunteer_dashboard(request):
     if request.user.user_type != 'volunteer':
         return redirect('home')
 
-    donations = Donation.objects.filter(volunteer=request.user).order_by('-created_at')
-    
+    donations = Donation.objects.filter(volunteer=request.user, status='approved').order_by('-created_at')
     return render(request, 'volunteers/volunteer_dashboard.html', {'donations': donations})
