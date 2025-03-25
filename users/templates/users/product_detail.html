@@ -13,7 +13,7 @@
             <h1 class="text-xl">{{ product.product_name }}</h1>
             <p class="text-2xl py-4 font-medium">₹{{ product.product_price }}</p>
             <p class="pb-2">Description</p>
-            <p class="text-sm font-light">{{ product.description }}</p>
+            <p class="text-sm font-light">{{ product.product_description }}</p>
 
             <!-- <ul class="text-sm font-light py-4 bullets">
                 <li>100% Natural Ingredients</li>
@@ -25,13 +25,13 @@
 
             <!-- counter and add to cart -->
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 mt-6">
                     <button onclick="decreaseQuantity()" class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">-</button>
                     <p id="quantity" class="px-8 py-2 border border-[#ccc] rounded-md">1</p>
                     <button onclick="increaseQuantity()" class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">+</button>
                 </div>
                 <a href="#" onclick="addToCart(event, {{ product.id }})" 
-                class="bg-[#e54c00] text-white text-center px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D]">
+                class="bg-[#e54c00] text-white text-center px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D] mt-6">
                 Add to Cart
              </a>
                 <!-- <button class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D]">Add to Cart</button> -->

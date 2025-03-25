@@ -142,6 +142,7 @@ def logout_view(request):
 def home(request):
     products = Product.objects.order_by('-id')[:3]
     pets = AddPets.objects.order_by('-id')[:3]
+    
     return render(request, 'users/home.html', {'products': products ,'pets': pets})
 
 @never_cache
@@ -324,7 +325,7 @@ def user_orders(request):
 @never_cache
 @login_required
 def pet_adoption_list(request):
-    pets = AddPets.objects.filter(is_adopted=False)
+    pets = AddPets.objects.all()
     return render(request, 'users/pet_adoption_list.html', {'pets': pets})
 
 @never_cache

@@ -6,3 +6,7 @@ register = template.Library()
 def dict_key(dictionary, key):
     """Fetch dictionary value by key in Django template"""
     return dictionary.get(key, "")
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key, "Not Available")

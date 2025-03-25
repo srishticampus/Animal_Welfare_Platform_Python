@@ -15,6 +15,7 @@ class AddPets(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class AdoptionRequest(models.Model):
     pet = models.ForeignKey(AddPets, on_delete=models.CASCADE)
