@@ -89,7 +89,7 @@ jobs:
               exit 1
             fi
 
-      # Step 5: Verify application health
+      # Step 5: Verify application health (updated)
       - name: Verify application health
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -97,14 +97,25 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            if ! curl -s http://localhost:8006 | grep -q "Django"; then
+            # Wait for container to be fully up
+            sleep 15
+            
+            # Check container status
+            if ! docker ps --filter "name=animal_welfare_django" --format "{{.Status}}" | grep -q "Up"; then
+              echo "Container is not running"
+              docker logs animal_welfare_django || true
+              exit 1
+            fi
+            
+            # Check application health
+            if ! curl -s http://localhost:8006/animal_welfare | grep -q "Django"; then
               echo "Application health check failed"
+              docker logs animal_welfare_django || true
               exit 1
             fi
             echo "Application is healthy"
 
-            # Step 6: Rollback on failure
-      # Step 6: Rollback on failure
+      # Step 6: Enhanced Rollback
       - name: Rollback on failure
         if: failure()
         uses: appleboy/ssh-action@v0.1.10
@@ -113,34 +124,64 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /var/www/python.sicsglobal.com/animal_welfare/ || { echo "Failed to enter directory"; exit 1; }
-
-            # Verify docker-compose.yml exists
-            if [ ! -f "docker-compose.yml" ]; then
-              echo "Error: docker-compose.yml not found in $(pwd)"
-              ls -la  # Debug directory contents
+            echo "Starting rollback procedure..."
+            
+            cd /var/www/python.sicsglobal.com/animal_welfare/ || {
+              echo "Failed to enter deployment directory"
               exit 1
-            fi
-
-            # Stop any running containers
-            docker-compose down || echo "Warning: docker-compose down failed"
-
-            # Restore from backup if exists
-            if [ -d ".temp" ]; then
-              [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
-              [ -d .temp/media ] && mv .temp/media .
-              [ -d .temp/db ] && mv .temp/db .
-              rm -rf .temp
+            }
+            
+            # Check for any existing backups
+            echo "Checking for backups..."
+            if [ -d "backup" ]; then
+              echo "Found backup directory, restoring..."
+              
+              # Stop current containers
+              docker-compose down || true
+              
+              # Restore files
+              [ -f backup/db.sqlite3 ] && mv backup/db.sqlite3 .
+              [ -d backup/media ] && mv backup/media .
+              [ -d backup/db ] && mv backup/db .
               
               # Start previous version
               if docker-compose up -d; then
-                echo "Rollback completed successfully"
+                echo "Rollback completed successfully from backup directory"
                 exit 0
               else
-                echo "Error: Failed to start containers"
+                echo "Failed to start containers after rollback"
+                docker logs animal_welfare_django || true
+                exit 1
+              fi
+            elif [ -d ".temp" ]; then
+              echo "Found .temp directory, restoring..."
+              
+              docker-compose down || true
+              
+              [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
+              [ -d .temp/media ] && mv .temp/media .
+              [ -d .temp/db ] && mv .temp/db .
+              
+              if docker-compose up -d; then
+                echo "Rollback completed successfully from .temp directory"
+                exit 0
+              else
+                echo "Failed to start containers after rollback"
+                docker logs animal_welfare_django || true
                 exit 1
               fi
             else
               echo "No backup found - cannot rollback"
-              exit 1
+              echo "Current directory contents:"
+              ls -la
+              echo "Trying to restart current version..."
+              
+              if docker-compose up -d; then
+                echo "Successfully restarted current version"
+                exit 1  # Still mark as failed but with restarted container
+              else
+                echo "Failed to restart containers"
+                docker logs animal_welfare_django || true
+                exit 1
+              fi
             fi
