@@ -3,7 +3,7 @@ name: Deploy Django Animal Welfare Project
 on:
   push:
     branches:
-      - docker-setup  # Trigger deployment when code is pushed to the `docker-setup` branch
+      - docker-setup
 
 jobs:
   deploy:
@@ -14,32 +14,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: SSH into the server and clean up the target directory (preserve media folder and db.sqlite3)
-      - name: Clean up server directory (preserve media and db.sqlite3)
+      # Step 2: SSH into the server and prepare environment
+      - name: Prepare server environment
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            # Create target directory if it doesn't exist
+            sudo mkdir -p /var/www/python.sicsglobal.com/animal_welfare
+            sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data /var/www/python.sicsglobal.com/animal_welfare
+            sudo chmod -R 775 /var/www/python.sicsglobal.com/animal_welfare
+            
             cd /var/www/python.sicsglobal.com/animal_welfare/
-
-            # Move files and folders to preserve to a temporary directory
+            
+            # Backup important files
             mkdir -p .temp
-            mv db.sqlite3 .temp/db.sqlite3
-            mv media .temp/media
-
-            # Delete all files and subdirectories except the .temp directory
+            [ -f db.sqlite3 ] && mv db.sqlite3 .temp/
+            [ -d media ] && mv media .temp/
+            [ -d db ] && mv db .temp/
+            
+            # Clean directory while preserving .temp
             find . -mindepth 1 -maxdepth 1 ! -name '.temp' -exec rm -rf {} +
 
-            # Move preserved files and folders back to their original locations
-            mv .temp/db.sqlite3 .
-            mv .temp/media .
-
-            # Clean up the temporary directory
-            rm -rf .temp
-
-      # Step 3: Copy files to the server using SCP with password authentication
+      # Step 3: Copy files to the server with proper permissions
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -48,13 +47,13 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "./"
           target: "/var/www/python.sicsglobal.com/animal_welfare/"
-          strip_components: 1  # Remove the top-level directory when copying
-          overwrite: true  # Allow overwriting existing files
-          tar_tmp_path: /tmp  # Use a writable temporary directory
-          tar_exec: "tar"  # Use tar without sudo
+          strip_components: 1
+          overwrite: true
+          tar_tmp_path: /tmp
+          tar_exec: "tar"
 
-      # Step 4: SSH into the server and deploy the application using docker-compose
-      - name: Deploy to server
+      # Step 4: Set permissions and deploy
+      - name: Set permissions and deploy
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -62,52 +61,74 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /var/www/python.sicsglobal.com/animal_welfare/
-
-            # Stop and remove existing containers
+            
+            # Restore preserved files
+            [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
+            [ -d .temp/media ] && mv .temp/media .
+            [ -d .temp/db ] && mv .temp/db .
+            rm -rf .temp
+            
+            # Set proper permissions
+            sudo find . -type d -exec chmod 775 {} \;
+            sudo find . -type f -exec chmod 664 {} \;
+            sudo chmod -R 775 media db staticfiles
+            sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data .
+            
+            # Ensure db directory exists
+            mkdir -p db
+            chmod 775 db
+            
+            # Docker deployment
             docker-compose down
-
-            # Build and start new containers
             docker-compose up -d --build
+            
+            # Verify container is running
+            sleep 10  # Give containers time to start
+            if ! docker ps --filter "name=animal_welfare_django" --format "{{.Status}}" | grep -q "Up"; then
+              echo "Web container failed to start"
+              exit 1
+            fi
 
-      # Step 5: Verify deployment
-      - name: Verify deployment
+      # Step 5: Verify application health
+      - name: Verify application health
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Check if the web container is running
-            if ! docker ps --filter "name=animal_welfare_django" --format "{{.Status}}" | grep -q "Up"; then
-              echo "Web container is not running. Rolling back..."
+            if ! curl -s http://localhost:8006 | grep -q "Django"; then
+              echo "Application health check failed"
               exit 1
             fi
+            echo "Application is healthy"
 
-            echo "Deployment verified successfully."
-
-      # Step 6: Rollback in case of failure
+      # Step 6: Rollback on failure
       - name: Rollback on failure
-        if: failure()  # Run this step only if any previous step fails
+        if: failure()
         uses: appleboy/ssh-action@v0.1.10
         with:
-            host: ${{ secrets.SERVER_HOST }}
-            username: ${{ secrets.SERVER_USERNAME }}
-            password: ${{ secrets.SERVER_PASSWORD }}
-            script: |
-                cd /var/www/python.sicsglobal.com/animal_welfare/
-
-                # Stop and remove any partially deployed containers
-                docker-compose down
-
-                # Restore the backup of media and db.sqlite3
-                if [ -d ".temp" ]; then
-                    mv .temp/db.sqlite3 .
-                    mv .temp/media .
-                else
-                    echo "No backup found in .temp directory. Skipping rollback."
-                fi
-
-                # Start the previous working containers
-                docker-compose up -d
-
-                echo "Rollback completed successfully."
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /var/www/python.sicsglobal.com/animal_welfare/
+            
+            # Stop any running containers
+            docker-compose down
+            
+            # Restore from backup if exists
+            if [ -d ".temp" ]; then
+              [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
+              [ -d .temp/media ] && mv .temp/media .
+              [ -d .temp/db ] && mv .temp/db .
+              rm -rf .temp
+              
+              # Start previous version
+              docker-compose up -d
+              
+              echo "Rollback completed successfully"
+            else
+              echo "No backup found - cannot rollback"
+              exit 1
+            fi
