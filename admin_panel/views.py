@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from accounts.models import User
 from petshops.models import PetShop
 from volunteers.models import Volunteer
 from .models import AddPets, AdoptionRequest
 from django.contrib import messages
+from donation.models import Donation
+from django.contrib.admin.views.decorators import staff_member_required
+from .models import Hospital
+from .forms import HospitalForm
 
 @login_required
 def admin_dashboard(request):
@@ -13,11 +17,13 @@ def admin_dashboard(request):
 
     petshop_users = PetShop.objects.values_list("user_id", flat=True)
     users_count = User.objects.filter(is_superuser=False).exclude(id__in=petshop_users).count()
+    volunteer_count = Volunteer.objects.count()
     petshops_count = PetShop.objects.count()
 
     context = {
         "users_count": users_count,
         "petshops_count": petshops_count,
+        "volunteer_count": volunteer_count,
     }
     return render(request, "admin_panel/dashboard.html", context)
 
@@ -47,13 +53,32 @@ def manage_petshops(request):
     if not request.user.is_superuser:
         return redirect("home")
 
-    petshops = PetShop.objects.all()
+    petshops = PetShop.objects.filter(user__is_active=True)
     return render(request, "admin_panel/manage_petshops.html", {"petshops": petshops})
+
+@login_required
+def petshop_requests(request):
+    if not request.user.is_superuser:
+        return redirect("home")
+    
+    petshops = PetShop.objects.filter(user__is_active=True)
+    petshop_requests  = PetShop.objects.filter(user__is_active=False)
+    return render(request, 'admin_panel/manage_petshop_requests.html', {"petshop_requests": petshop_requests, "petshops": petshops})
+
 
 
 def admin_pet_list(request):
     pets = AddPets.objects.all()
-    return render(request, 'admin_panel/admin_pet_list.html', {'pets': pets})
+
+    adopted_pets = {
+        adoption.pet.id: adoption.user.username
+        for adoption in AdoptionRequest.objects.filter(status="Approved")
+    }
+    print(adopted_pets)
+    return render(request, "admin_panel/admin_pet_list.html", {
+        "pets": pets,
+        "adopted_pets": adopted_pets,
+    })
 
 def admin_add_pet(request):
     if request.method == 'POST':
@@ -131,14 +156,21 @@ def reject_adoption(request, request_id):
     adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
     adoption_request.status = 'Rejected'
     adoption_request.save()
-    return redirect('admin_adoption_requests')
+    return redirect('admin_panel:admin_adoption_requests')
 
 def user_toggle(request, user_id):
     user = User.objects.get(id=user_id)
     user.is_active = not user.is_active
     user.save()
 
-    return redirect('manage_users')
+    return redirect('admin_panel:manage_users')
+
+def volunteer_toggle(request, volunteer_id):
+    user = User.objects.get(id=volunteer_id)
+    user.is_active = not user.is_active
+    user.save()
+
+    return redirect('admin_panel:manage_volunteers')
 
 def toggle_petshop_status(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -147,8 +179,72 @@ def toggle_petshop_status(request, user_id):
 
     if user.is_active:
         messages.success(request, f"{user.username}'s account has been activated!")
-        return redirect('admin_panel:manage_petshops')
+        return redirect('admin_panel:petshop_requests')
     else:
         messages.warning(request, f"{user.username}'s account has been deactivated.")
 
-    return redirect('admin_panel:manage_petshops') 
+    return redirect('admin_panel:petshop_requests') 
+
+
+@login_required
+def approve_donation(request, donation_id):
+    donation = Donation.objects.get(id=donation_id)
+    donation.status = 'approved'
+    donation.save()
+    return redirect('admin_panel:admin_dashboard')
+
+@login_required
+def admin_dashboard_donations(request):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    donations = Donation.objects.all().order_by('-created_at')
+    return render(request, 'admin_panel/donations.html', {'donations': donations})
+
+def hospital_list(request):
+    states = Hospital.objects.values_list('state', flat=True).distinct()
+    selected_state = request.GET.get('state')
+    
+    if selected_state:
+        hospitals = Hospital.objects.filter(state=selected_state)
+    else:
+        hospitals = Hospital.objects.all()
+
+    return render(request, 'users/hospitals.html', {
+        'states': states,
+        'hospitals': hospitals,
+        'selected_state': selected_state
+    })
+
+
+def hospital_list_admin(request):
+    hospitals = Hospital.objects.all()
+    return render(request, 'admin_panel/hospital_list.html', {'hospitals': hospitals})
+
+def add_hospital(request):
+    if request.method == 'POST':
+        form = HospitalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:hospital_list_admin')
+    else:
+        form = HospitalForm()
+    return render(request, 'admin_panel/add_hospital.html', {'form': form})
+
+
+def edit_hospital(request, hospital_id):
+    hospital = get_object_or_404(Hospital, id=hospital_id)
+    if request.method == 'POST':
+        form = HospitalForm(request.POST, instance=hospital)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:hospital_list_admin')
+    else:
+        form = HospitalForm(instance=hospital)
+    return render(request, 'admin_panel/edit_hospital.html', {'form': form, 'hospital': hospital})
+
+
+def delete_hospital(request, hospital_id):
+    hospital = get_object_or_404(Hospital, id=hospital_id)
+    hospital.delete()
+    return redirect('admin_panel:hospital_list_admin')

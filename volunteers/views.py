@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import Volunteer, RescueRequest, RescueResponse
 from django.contrib.auth.decorators import login_required
+from donation.models import Donation
 import re
 # Create your views here.
 
@@ -33,13 +34,14 @@ def volunteer_register(request):
         if errors:
             return render(request, "volunteers/register.html", {"errors": errors})
 
-        user = User.objects.create_user(username=username, email=email, password=password, first_name=name)
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=name, user_type='volunteer')
+        user.is_active = False
         user.save()
 
         volunteer = Volunteer.objects.create(user=user, phone_number=phone_number)
         volunteer.save()
 
-        messages.success(request, "Registration successful! Please log in.")
+        messages.success(request, "Registration successful! Wait for admin approval.")
         return redirect("login")
 
     return render(request, "volunteers/register.html")
@@ -82,3 +84,11 @@ def reject_rescue(request, request_id):
         messages.success(request, "You have rejected the rescue request.")
     
     return redirect("rescue_list")
+
+@login_required
+def volunteer_dashboard(request):
+    if request.user.user_type != 'volunteer':
+        return redirect('home')
+
+    donations = Donation.objects.filter(volunteer=request.user, status='approved').order_by('-created_at')
+    return render(request, 'volunteers/volunteer_dashboard.html', {'donations': donations})

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-8">
+    <h2 class="text-2xl font-bold text-center mb-4 text-[#E54C00]">My Donations</h2>
+
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="w-full border-collapse my-6">
+            <thead>
+                <tr class="text-[#E54C00]">
+                    <th class="py-3 px-4 text-center">Donor</th>
+                    <th class="py-3 px-4 text-center">Amount (₹)</th>
+                    <th class="py-3 px-4 text-center">Date</th>
+                    <th class="py-3 px-4 text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr class="border-b hover:bg-gray-100">
+                    <td class="py-3 px-4 text-center">{{ donation.donor.username }}</td>
+                    <td class="py-3 px-4 text-center">₹{{ donation.amount }}</td>
+                    <td class="py-3 px-4 text-center">{{ donation.created_at|date:"d M Y, H:i A" }}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="px-2 py-1 text-sm font-medium rounded-md 
+                            {% if donation.status == 'approved' %} bg-green-200 text-green-800 
+                            {% else %} bg-red-200 text-red-800 {% endif %}">
+                            {{ donation.status|title }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="py-4 px-4 text-center text-gray-500">No donations received yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-xl text-center my-4">Pet Food Details</h1>
+<h1 class="text-xl text-center my-4">Details</h1>
 
 <section class="container mx-auto px-3 lg:px-0 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -10,31 +10,34 @@
 
         <!-- product details -->
         <div>
-            <h1 class="text-xl">{{ product.product_name }}</h1>
-            <p class="text-2xl py-4 font-medium">₹{{ product.product_price }}</p>
-            <p class="pb-2">Description</p>
-            <p class="text-sm font-light">{{ product.description }}</p>
-
-            <ul class="text-sm font-light py-4 bullets">
-                <li>100% Natural Ingredients</li>
-                <li>Rich in Protein</li>
-                <li>Essential Vitamins and Minerals</li>
-                <li>No Artificial Preservatives</li>
-                <li>Supports Digestive Health</li>
-            </ul>
-
-            <!-- counter and add to cart -->
-            <div class="flex items-center gap-4">
+            <h1 class="text-xl font-semibold">{{ product.product_name }}</h1>
+            <p class="text-2xl py-4 font-medium text-[#e54c00]">₹{{ product.product_price }}</p>
+            <p class="pb-2 text-gray-700 font-semibold">Description</p>
+            <p class="text-sm font-light text-gray-600">{{ product.product_description }}</p>
+        
+            <!-- Shop Details -->
+            <div class="mt-4 p-4 bg-gray-100 rounded-lg shadow-sm">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold text-gray-700">Shop Name:</span>
+                    <span class="text-gray-600">{{ product.petshop }}</span>
+                </div>
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="font-semibold text-gray-700">Contact Number:</span>
+                    <span class="text-gray-600">{{ product.petshop.phone_number }}</span>
+                </div>
+            </div>
+        
+            <!-- Counter and Add to Cart -->
+            <div class="flex items-center gap-4 mt-6">
                 <div class="flex items-center gap-2">
                     <button onclick="decreaseQuantity()" class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">-</button>
                     <p id="quantity" class="px-8 py-2 border border-[#ccc] rounded-md">1</p>
                     <button onclick="increaseQuantity()" class="border border-[#ccc] px-4 py-2 rounded-md hover:bg-gray-200">+</button>
                 </div>
                 <a href="#" onclick="addToCart(event, {{ product.id }})" 
-                class="bg-[#e54c00] text-white text-center px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D]">
+                class="bg-[#e54c00] text-white text-center px-4 py-2 rounded-lg w-full hover:bg-[#ED824D]">
                 Add to Cart
              </a>
-                <!-- <button class="bg-[#e54c00] text-white px-4 py-2 rounded-4xl w-full hover:bg-[#ED824D]">Add to Cart</button> -->
             </div>
         </div>
     </div>

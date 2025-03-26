@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from accounts.models import User
 # Create your models here.
 
 class AddPets(models.Model):
@@ -15,6 +15,7 @@ class AddPets(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class AdoptionRequest(models.Model):
     pet = models.ForeignKey(AddPets, on_delete=models.CASCADE)
@@ -38,6 +39,15 @@ class AdoptionApplication(models.Model):
     experience = models.TextField()
     reason = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+    
+class Hospital(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    state = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15)
 
     def __str__(self):
         return self.name

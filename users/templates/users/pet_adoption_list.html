@@ -16,7 +16,7 @@
     <h1
         class="text-xl absolute left-1/2 transform -translate-x-1/2 w-full hidden sm:block text-center my-4 sm:my-0">
         Pet
-        Shop</h1>
+        Adoption</h1>
     <div></div>
 </section>
 <!-- products -->
@@ -33,8 +33,13 @@
                     <div class="flex justify-between items-center">
                         <h3 class="font-semibold">{{ pet.name }}</h3>
                         <!--badge-->
+                        {% if pet.is_adopted %}
+                        <div class="bg-red-500 text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Not Available
+                        </div>
+                        {% else %}
                         <div class="bg-[#4CAF50] text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Available
                         </div>
+                        {% endif %}
                     </div>
                     <p class="text-xs font-medium text-[#4c4c4c] py-1">
                         {{ pet.bread }} • <span class="text-[#7f7f7f]">{{ pet.age }}</span>

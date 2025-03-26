@@ -55,8 +55,13 @@
                     <div class="flex justify-between items-center">
                         <h3 class="font-semibold">{{ pet.name }}</h3>
                         <!--badge-->
+                        {% if pet.is_adopted %}
+                        <div class="bg-red-700 text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Not Available
+                        </div>
+                        {% else %}
                         <div class="bg-[#4CAF50] text-white rounded-2xl text-[0.6rem] px-1.5 py-0.5">Available
                         </div>
+                        {% endif %}
                     </div>
                     <p class="text-xs font-medium text-[#4c4c4c] py-1">
                         {{ pet.bread }} • <span class="text-[#7f7f7f]">{{ pet.age }}</span>
@@ -95,7 +100,7 @@
                     <p class="text-xs font-medium text-[#7f7f7f] py-1">
                         {{ product.product_description }}
                     </p>
-                    <a href="{% url 'add_to_cart' product.id %}"><button
+                    <a href="" onclick="addToCart(event, {{ product.id }})"><button
                         class="w-full py-2 mt-3 bg-[#e54c00] text-white text-xs font-light rounded-3xl hover:cursor-pointer hover:bg-[#ED824D]">Add
                         to cart</button></a>
                 </div>

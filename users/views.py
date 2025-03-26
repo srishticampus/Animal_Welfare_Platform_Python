@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import UserProfile
@@ -63,7 +63,7 @@ def register(request):
             return render(request, 'users/register.html', {'errors': errors})
 
    
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password, user_type='normal')
         UserProfile.objects.create(user=user, aadhaar_number=aadhaar_number, phone_number=phone_number, profile_image=profile_image)
 
         messages.success(request, "Registration successful! You can now log in.")
@@ -142,6 +142,7 @@ def logout_view(request):
 def home(request):
     products = Product.objects.order_by('-id')[:3]
     pets = AddPets.objects.order_by('-id')[:3]
+    
     return render(request, 'users/home.html', {'products': products ,'pets': pets})
 
 @never_cache
@@ -324,7 +325,7 @@ def user_orders(request):
 @never_cache
 @login_required
 def pet_adoption_list(request):
-    pets = AddPets.objects.filter(is_adopted=False)
+    pets = AddPets.objects.all()
     return render(request, 'users/pet_adoption_list.html', {'pets': pets})
 
 @never_cache
