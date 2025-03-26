@@ -26,15 +26,15 @@ jobs:
             sudo mkdir -p /var/www/python.sicsglobal.com/animal_welfare
             sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data /var/www/python.sicsglobal.com/animal_welfare
             sudo chmod -R 775 /var/www/python.sicsglobal.com/animal_welfare
-            
+
             cd /var/www/python.sicsglobal.com/animal_welfare/
-            
+
             # Backup important files
             mkdir -p .temp
             [ -f db.sqlite3 ] && mv db.sqlite3 .temp/
             [ -d media ] && mv media .temp/
             [ -d db ] && mv db .temp/
-            
+
             # Clean directory while preserving .temp
             find . -mindepth 1 -maxdepth 1 ! -name '.temp' -exec rm -rf {} +
 
@@ -61,27 +61,27 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /var/www/python.sicsglobal.com/animal_welfare/
-            
+
             # Restore preserved files
             [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
             [ -d .temp/media ] && mv .temp/media .
             [ -d .temp/db ] && mv .temp/db .
             rm -rf .temp
-            
+
             # Set proper permissions
             sudo find . -type d -exec chmod 775 {} \;
             sudo find . -type f -exec chmod 664 {} \;
             sudo chmod -R 775 media db staticfiles
             sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data .
-            
+
             # Ensure db directory exists
             mkdir -p db
             chmod 775 db
-            
+
             # Docker deployment
             docker-compose down
             docker-compose up -d --build
-            
+
             # Verify container is running
             sleep 10  # Give containers time to start
             if ! docker ps --filter "name=animal_welfare_django" --format "{{.Status}}" | grep -q "Up"; then
@@ -103,6 +103,7 @@ jobs:
             fi
             echo "Application is healthy"
 
+            # Step 6: Rollback on failure
       # Step 6: Rollback on failure
       - name: Rollback on failure
         if: failure()
@@ -112,11 +113,18 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /var/www/python.sicsglobal.com/animal_welfare/
-            
+            cd /var/www/python.sicsglobal.com/animal_welfare/ || { echo "Failed to enter directory"; exit 1; }
+
+            # Verify docker-compose.yml exists
+            if [ ! -f "docker-compose.yml" ]; then
+              echo "Error: docker-compose.yml not found in $(pwd)"
+              ls -la  # Debug directory contents
+              exit 1
+            fi
+
             # Stop any running containers
-            docker-compose down
-            
+            docker-compose down || echo "Warning: docker-compose down failed"
+
             # Restore from backup if exists
             if [ -d ".temp" ]; then
               [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
@@ -125,9 +133,13 @@ jobs:
               rm -rf .temp
               
               # Start previous version
-              docker-compose up -d
-              
-              echo "Rollback completed successfully"
+              if docker-compose up -d; then
+                echo "Rollback completed successfully"
+                exit 0
+              else
+                echo "Error: Failed to start containers"
+                exit 1
+              fi
             else
               echo "No backup found - cannot rollback"
               exit 1
