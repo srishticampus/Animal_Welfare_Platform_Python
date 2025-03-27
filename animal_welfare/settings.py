@@ -30,6 +30,12 @@ ALLOWED_HOSTS = ['localhost','0.0.0.0','python.sicsglobal.com']
 
 #LOGIN_URL = '/users/login/'
 FORCE_SCRIPT_NAME = '/animal_welfare'
+# Add CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://python.sicsglobal.com',
+    'http://python.sicsglobal.com',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
