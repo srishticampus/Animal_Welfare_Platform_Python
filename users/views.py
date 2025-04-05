@@ -13,7 +13,7 @@ from volunteers.models import Volunteer, RescueRequest
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
-import re
+import re 
 from django.http import JsonResponse
 import json
 
@@ -344,7 +344,13 @@ def pet_adoption_detail(request, pet_id):
 
     adopted_user = AdoptionRequest.objects.filter(pet=pet, status="Approved").first()
 
-    return render(request, 'users/pet_adoption_detail.html', {'pet': pet, 'existing_request': existing_request, 'adopted_user': adopted_user.user.username if adopted_user else None
+    pet_owner = pet.owner
+
+    return render(request, 'users/pet_adoption_detail.html', {
+        'pet': pet,
+        'existing_request': existing_request, 
+        'adopted_user': adopted_user.user.username if adopted_user else None,
+        'pet_owner': pet_owner  
     })
 
 @never_cache
@@ -394,3 +400,75 @@ def create_rescue_request(request):
         return redirect("create_rescue_request")  
 
     return render(request, "users/rescue.html")
+
+
+@login_required
+def add_pet(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        age = request.POST["age"]
+        gender = request.POST["gender"]
+        breed = request.POST["breed"]
+        size = request.POST["size"]
+        description = request.POST["description"]
+        health_vaccinations = request.POST["health_vaccinations"]
+        image = request.FILES["image"]
+
+        pet = AddPets.objects.create(
+            name=name,
+            age=age,
+            gender=gender,
+            bread=breed,
+            size=size,
+            description=description,
+            health_vaccinations=health_vaccinations,
+            image=image,
+            owner=request.user, 
+        )
+        return redirect("pet_adoption_list")
+
+    return render(request, "users/add_pet.html")
+
+
+@login_required
+def user_pets_list(request):
+    """List all pets available for adoption (excluding those already adopted)"""
+    pets = AddPets.objects.filter(is_adopted=False).exclude(owner=request.user) 
+    return render(request, "users/user_pets_list.html", {"pets": pets})
+
+
+@login_required
+def apply_for_adoption(request, pet_id):
+    pet = get_object_or_404(AddPets, id=pet_id)
+
+    # Ensure users cannot apply for their own pet
+    if pet.owner == request.user:
+        return redirect("user_pets_list")
+
+    AdoptionRequest.objects.create(pet=pet, adopter=request.user, owner=pet.owner)
+    return redirect("user_pets_list")
+
+
+@login_required
+def manage_adoption_requests(request):
+    """List all adoption requests for pets the user owns."""
+    requests = AdoptionRequest.objects.filter(owner=request.user)
+    return render(request, "usersmanage_adoption_requests.html", {"requests": requests})
+
+
+@login_required
+def update_adoption_status(request, request_id, status):
+    """Approve or Reject an adoption request"""
+    adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
+
+    # Ensure only the pet owner can update the status
+    if adoption_request.owner != request.user:
+        return redirect("manage_adoption_requests")
+
+    adoption_request.status = status
+    if status == "Approved":
+        adoption_request.pet.is_adopted = True  # Mark pet as adopted
+        adoption_request.pet.save()
+
+    adoption_request.save()
+    return redirect("manage_adoption_requests")

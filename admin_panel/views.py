@@ -80,6 +80,7 @@ def admin_pet_list(request):
         "adopted_pets": adopted_pets,
     })
 
+@login_required
 def admin_add_pet(request):
     if request.method == 'POST':
         image = request.FILES['image']
@@ -99,7 +100,8 @@ def admin_add_pet(request):
             bread=bread,
             size=size,
             description=description,
-            health_vaccinations=health_vaccinations
+            health_vaccinations=health_vaccinations,
+            owner=request.user,
         )
         return redirect('admin_panel:admin_pet_list')
 

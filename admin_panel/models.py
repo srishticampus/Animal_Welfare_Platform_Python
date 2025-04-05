@@ -3,6 +3,7 @@ from accounts.models import User
 # Create your models here.
 
 class AddPets(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='pet_images/')
     name = models.CharField(max_length=100)
     age = models.CharField(max_length=100)
@@ -14,12 +15,14 @@ class AddPets(models.Model):
     is_adopted = models.BooleanField(default=False) 
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({'User' if self.owner else 'Admin'})"
     
 
 class AdoptionRequest(models.Model):
     pet = models.ForeignKey(AddPets, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="received_requests", null=True, blank=True)
+
     status = models.CharField(
         max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')], default='Pending'
     )
