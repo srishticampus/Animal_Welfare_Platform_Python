@@ -467,8 +467,49 @@ def update_adoption_status(request, request_id, status):
 
     adoption_request.status = status
     if status == "Approved":
-        adoption_request.pet.is_adopted = True  # Mark pet as adopted
+        adoption_request.pet.is_adopted = True
         adoption_request.pet.save()
 
     adoption_request.save()
     return redirect("manage_adoption_requests")
+
+
+# import numpy as np
+# from tensorflow.keras.models import load_model
+# from tensorflow.keras.preprocessing.image import load_img, img_to_array
+
+
+# model = load_model('my_model.h5')
+
+
+# translate = {
+#     "cane": "dog",
+#     "cavallo": "horse",
+#     "elefante": "elephant",
+#     "gallina": "chicken",
+#     "gatto": "cat",
+#     "mucca": "cow",
+#     "pecora": "sheep",
+#     "scoiattolo": "squirrel",
+# }
+
+# class_indices = {'cane': 0, 'cavallo': 1, 'elefante': 2, 'gallina': 3, 'gatto': 4,
+#                  'mucca': 5, 'pecora': 6, 'scoiattolo': 7}
+# idx_to_label = {v: k for k, v in class_indices.items()}
+
+
+# def predict_image(image_path):
+#     img = load_img(image_path, target_size=(224, 224))
+#     img_array = img_to_array(img) / 255.0  
+#     img_array = np.expand_dims(img_array, axis=0) 
+
+#     prediction = model.predict(img_array)
+#     predicted_class_idx = np.argmax(prediction)
+#     print(predicted_class_idx)
+#     predicted_label = idx_to_label[predicted_class_idx]
+#     translated_label = translate[predicted_label]
+
+#     print(f"Predicted class: {translated_label}")
+
+# # Example usage
+# predict_image('raw-img/mucca/OIP-_EZ9JozG9mdvRNA_kficAgAAAA.jpeg')

@@ -29,7 +29,9 @@
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="location" class="text-sm font-light">Location</label>
-                    <input type="text" id="location" name="location" class="border border-[#ccc] rounded-md p-2" />
+                    <input type="text" id="location" name="location" class="border border-[#ccc] rounded-md p-2" readonly />
+                    <button type="button" onclick="getLocation()"
+                        class="bg-[#e54c00] text-white rounded-md px-4 py-2 font-light text-sm hover:bg-[#ED824D] hover:cursor-pointer">Get Current Location</button>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label for="location" class="text-sm font-light">Land Mark</label>
@@ -55,5 +57,32 @@
     </section>
 
 
-
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+    
+                        try {
+                            const response = await fetch(apiUrl);
+                            const data = await response.json();
+                            const address = data.display_name;
+                            document.getElementById("location").value = address;
+                        } catch (error) {
+                            console.error("Error fetching location details:", error);
+                            alert("Failed to get location details.");
+                        }
+                    },
+                    function(error) {
+                        alert("Geolocation failed: " + error.message);
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
 {% endblock content %}
