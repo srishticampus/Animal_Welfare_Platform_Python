@@ -121,7 +121,11 @@ def shop_orders(request):
     })
     
 
-
+def delete_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    product.delete()
+    messages.success(request, 'Item deleted')
+    return redirect('list_products')
 
 def logout_petshop(request):
     logout(request)
