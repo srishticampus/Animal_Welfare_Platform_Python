@@ -54,8 +54,48 @@
                     class="bg-[#e54c00] text-white rounded-4xl py-4 font-light text-sm w-full md:w-1/3 mx-auto">Submit</button>
             </div>
         </form>
+        <input type="file" id="imageInput">
+    <button onclick="predictAnimal()">Predict</button>
+
+    <p>Predicted Animal: <input type="text" id="predictedAnimal" readonly></p>
+
     </section>
 
+
+    <script>
+        function predictAnimal() {
+            let imageInput = document.getElementById("imageInput").files[0];
+
+            if (!imageInput) {
+                alert("Please select an image!");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("image", imageInput);
+
+            fetch("{% url 'predict_image' %}", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": getCSRFToken() 
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.predicted_animal) {
+                    document.getElementById("predictedAnimal").value = data.predicted_animal;
+                } else {
+                    alert("Prediction failed!");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function getCSRFToken() {
+            return document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+        }
+    </script>
 
     <script>
         function getLocation() {

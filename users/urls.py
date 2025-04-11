@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register, login_view, logout_view, home, pet_shop, product_detail, cart_page, add_to_cart, remove_from_cart, checkout,order_success,pet_adoption_list,pet_adoption_detail,adoption_form,create_rescue_request,forgot_password,reset_password,user_orders, add_pet, user_pets_list, apply_for_adoption, manage_adoption_requests, update_adoption_status
+from .views import register, login_view, logout_view, home, pet_shop, product_detail, cart_page, add_to_cart, remove_from_cart, checkout,order_success,pet_adoption_list,pet_adoption_detail,adoption_form,create_rescue_request,forgot_password,reset_password,user_orders, add_pet, user_pets_list, apply_for_adoption, manage_adoption_requests, update_adoption_status, predict_image
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -28,6 +28,8 @@ urlpatterns = [
     path("apply-for-adoption/<int:pet_id>/", apply_for_adoption, name="apply_for_adoption"),
     path("manage-requests/", manage_adoption_requests, name="manage_adoption_requests"),
     path("update-adoption-status/<int:request_id>/<str:status>/", update_adoption_status, name="update_adoption_status"),
+    path("predict/", predict_image, name="predict_image"),
+
  
 
 ]
