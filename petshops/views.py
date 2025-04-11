@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-from .models import PetShop, Product
+from .models import PetShop, Product, Order, OrderItem
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -97,7 +97,30 @@ def add_product_page(request):
     return render(request, 'petshops/add_product.html')
 
 def list_product(request):
-    return render(request, 'petshops/list_products.html')
+    petshop = PetShop.objects.get(user=request.user)
+    products = Product.objects.filter(petshop=petshop)
+    return render(request, 'petshops/list_products.html', {'products': products})
+
+def shop_orders(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    try:
+        petshop = PetShop.objects.get(user=request.user)
+    except PetShop.DoesNotExist:
+        return redirect('some_error_page')
+
+    order_items = OrderItem.objects.filter(product__petshop=petshop)
+
+
+    orders = Order.objects.filter(order_items__in=order_items).distinct()
+
+    return render(request, 'petshops/shope_orders.html', {
+        'orders': orders,
+        'petshop': petshop
+    })
+    
+
 
 
 def logout_petshop(request):

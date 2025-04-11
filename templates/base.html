@@ -70,6 +70,7 @@
       {% elif user.petshop %}
         <a href="{% url 'add_product' %}" class="hover:text-[#e54c00] transition">Add Product</a>
         <a href="{% url 'list_products' %}" class="hover:text-[#e54c00] transition">List Products</a>
+        <a href="{% url 'shop_orders' %}" class="hover:text-[#e54c00] transition">Orders</a>
       {% endif %}
       <div class="lin">
         {% if user.is_superuser %}
