@@ -114,6 +114,32 @@
                 <li>Spayed</li>
                 <li>Microchipped</li>
             </ul>
+            <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                <h2 class="text-xl font-semibold text-gray-800">Posted by:</h2>
+                {% if pet_owner.is_superuser %}
+                    <p class="text-gray-700">Uploaded by Admin</p>
+                {% else %}
+                    <p class="text-gray-700 font-semibold">Name: {{ pet_owner.username }}</p>
+                    <p class="text-gray-700">Email: {{ pet_owner.email }}</p>
+                    <p class="text-gray-700">Phone: {{ pet_owner.userprofile.phone_number }}</p>
+                {% endif %}
+            </div>
+
+
+            <!-- <div class="user-details">
+                {% if pet_owner.is_superuser %}
+                    <p>Uploaded by Admin</p>
+                {% else %}
+                    <p>Uploaded by: {{ pet_owner.username }}</p>
+                    <p>Email: {{ pet_owner.email }}</p>
+
+                    {% if pet_owner.userprofile %}
+                        <p>Phone: {{ pet_owner.userprofile.phone_number }}</p>
+                    {% else %}
+                        <p>Phone: Not available</p>
+                    {% endif %}
+                {% endif %}
+            </div> -->
             <!-- counter and add to cart -->
             <div class="flex items
             -center gap-4">

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ pet.name }}</h2>
+<img src="{{ pet.image.url }}" alt="{{ pet.name }}">
+<p>Age: {{ pet.age }}</p>
+<p>Gender: {{ pet.gender }}</p>
+<p>Breed: {{ pet.breed }}</p>
+<p>Size: {{ pet.size }}</p>
+<p>Description: {{ pet.description }}</p>
+
+{% if not pet.is_adopted %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Apply for Adoption</button>
+    </form>
+{% else %}
+    <p>This pet has already been adopted.</p>
+{% endif %}
+
+{% endblock %}
