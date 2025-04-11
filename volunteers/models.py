@@ -18,6 +18,8 @@ class RescueRequest(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     location = models.CharField(max_length=255)
+    landmark = models.CharField(max_length=255, blank=True, null=True)
+    contact_number = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField()
     image = models.ImageField(upload_to="rescue_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

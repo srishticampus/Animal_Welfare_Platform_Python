@@ -387,13 +387,17 @@ def create_rescue_request(request):
     if request.method == "POST":
         location = request.POST["location"]
         description = request.POST["description"]
+        landmark = request.POST['landmark']
+        contact_number = request.POST['contact_number']
         image = request.FILES.get("image") 
 
         RescueRequest.objects.create(
             user=request.user,
             location=location,
             description=description,
-            image=image
+            image=image,
+            landmark=landmark,
+            contact_number=contact_number
         )
         
         messages.success(request, "Rescue request submitted successfully!")
