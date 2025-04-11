@@ -389,6 +389,7 @@ def create_rescue_request(request):
         description = request.POST["description"]
         landmark = request.POST['landmark']
         contact_number = request.POST['contact_number']
+        predicted_animal = request.POST['predicted_animal']
         image = request.FILES.get("image") 
 
         RescueRequest.objects.create(
@@ -397,7 +398,8 @@ def create_rescue_request(request):
             description=description,
             image=image,
             landmark=landmark,
-            contact_number=contact_number
+            contact_number=contact_number,
+            predicted_animal=predicted_animal
         )
         
         messages.success(request, "Rescue request submitted successfully!")

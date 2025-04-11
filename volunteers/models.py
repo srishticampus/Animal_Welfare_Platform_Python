@@ -22,6 +22,7 @@ class RescueRequest(models.Model):
     contact_number = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField()
     image = models.ImageField(upload_to="rescue_images/", blank=True, null=True)
+    predicted_animal = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Pending")
     accepted_by = models.ForeignKey(Volunteer, null=True, blank=True, on_delete=models.SET_NULL)
