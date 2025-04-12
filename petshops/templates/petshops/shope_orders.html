@@ -34,8 +34,12 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="flex justify-end mt-4">
+            <p class="font-bold">Total Revenue: ${{ total_price }}</p>
+        </div>
     {% else %}
         <p>No orders found.</p>
     {% endif %}
 </div>
 {% endblock %}
+

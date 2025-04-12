@@ -112,11 +112,12 @@ def shop_orders(request):
 
     order_items = OrderItem.objects.filter(product__petshop=petshop)
 
-
     orders = Order.objects.filter(order_items__in=order_items).distinct()
+    total_price = sum(order.total_price for order in orders)
 
     return render(request, 'petshops/shope_orders.html', {
         'orders': orders,
+        'total_price': total_price,
         'petshop': petshop
     })
     
