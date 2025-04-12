@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from petshops.models import PetShop
-from volunteers.models import Volunteer
+from volunteers.models import Volunteer, RescueRequest
 from .models import AddPets, AdoptionRequest
 from django.contrib import messages
 from donation.models import Donation
@@ -250,3 +250,10 @@ def delete_hospital(request, hospital_id):
     hospital = get_object_or_404(Hospital, id=hospital_id)
     hospital.delete()
     return redirect('admin_panel:hospital_list_admin')
+
+@login_required
+def rescue_list(request):
+    rescue_requests = RescueRequest.objects.all().order_by("-created_at")
+
+
+    return render(request, "admin_panel/rescue_list.html", {"rescue_requests": rescue_requests})
