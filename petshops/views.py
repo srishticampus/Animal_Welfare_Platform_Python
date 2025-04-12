@@ -34,9 +34,8 @@ def register_petshop(request):
         if User.objects.filter(email=email).exists():
             errors['email'] = "Email already exists!"
 
-       
-        if PetShop.objects.filter(registration_id=registration_id).exists():
-            errors['registration_id'] = "This Registration ID is already taken!"
+        if not registration_id.isdigit():
+            errors['registration_id'] = "Registration ID must contain only numbers!"
 
         if not re.fullmatch(r"\d{10}", phone_number):
             errors['phone_number'] = "Phone number must be exactly 10 digits!"

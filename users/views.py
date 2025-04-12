@@ -40,8 +40,8 @@ def register(request):
             errors['phone_number'] = "Phone number must be exactly 10 digits!"
 
     
-        if not aadhaar_number.isdigit():
-            errors['aadhaar_number'] = "Aadhaar number must contain only numbers!"
+        if not re.fullmatch(r'^\d{12}$', aadhaar_number):
+            errors['aadhaar_number'] = "Aadhaar number must contain exactly 12 digits!"
 
         
         if len(password) < 8:
