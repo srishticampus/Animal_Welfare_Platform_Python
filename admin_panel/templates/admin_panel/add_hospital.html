@@ -1,11 +1,58 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-xl text-center my-4">Add Hospital</h1>
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="bg-white rounded-2xl shadow-md p-8 max-w-3xl mx-auto border-t-4 border-orange-500">
+        <h1 class="text-3xl font-bold text-center text-orange-600 mb-6">Add Hospital</h1>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
 
-<form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md">Save</button>
-    <a href="{% url 'admin_panel:hospital_list_admin' %}" class="ml-4 text-blue-500">Cancel</a>
-</form>
+            <!-- Name -->
+            <div>
+                <label for="id_name" class="block text-sm font-semibold text-gray-700 mb-1">Hospital Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.name.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Address -->
+            <div>
+                <label for="id_address" class="block text-sm font-semibold text-gray-700 mb-1">Address</label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.address.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- State -->
+            <div>
+                <label for="id_state" class="block text-sm font-semibold text-gray-700 mb-1">State</label>
+                {{ form.state }}
+                {% if form.state.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.state.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Contact Number -->
+            <div>
+                <label for="id_contact_number" class="block text-sm font-semibold text-gray-700 mb-1">Contact Number</label>
+                {{ form.contact_number }}
+                {% if form.contact_number.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.contact_number.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end pt-4">
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-xl shadow transition duration-200">
+                    Save
+                </button>
+                <a href="{% url 'admin_panel:hospital_list_admin' %}" class="ml-4 text-orange-600 hover:text-orange-700 font-medium py-2 px-6 rounded-xl transition duration-200">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </section>
+</main>
 {% endblock %}

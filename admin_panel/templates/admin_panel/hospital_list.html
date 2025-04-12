@@ -1,38 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-xl text-center my-4">Manage Hospitals</h1>
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="bg-white rounded-2xl shadow-md p-8 border-t-4 border-orange-500 max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-orange-600 mb-6">Manage Hospitals</h1>
 
-<div class="text-center mb-4">
-    <a href="{% url 'admin_panel:add_hospital' %}" class="bg-blue-500 text-white px-4 py-2 rounded-md">+ Add Hospital</a>
-</div>
+        <!-- Add Hospital Button -->
+        <div class="text-right mb-4">
+            <a href="{% url 'admin_panel:add_hospital' %}" 
+               class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded-xl transition">
+                + Add Hospital
+            </a>
+        </div>
 
-<table class="table-auto w-full border-collapse border border-gray-300">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="border border-gray-300 px-4 py-2">Name</th>
-            <th class="border border-gray-300 px-4 py-2">Address</th>
-            <th class="border border-gray-300 px-4 py-2">State</th>
-            <th class="border border-gray-300 px-4 py-2">Contact</th>
-            <th class="border border-gray-300 px-4 py-2">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for hospital in hospitals %}
-        <tr>
-            <td class="border border-gray-300 px-4 py-2">{{ hospital.name }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ hospital.address }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ hospital.state }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ hospital.contact_number }}</td>
-            <td class="border border-gray-300 px-4 py-2">
-                <a href="{% url 'admin_panel:edit_hospital' hospital.id %}" class="text-blue-500">Edit</a> |
-                <a href="{% url 'admin_panel:delete_hospital' hospital.id %}" class="text-red-500" onclick="return confirm('Are you sure?')">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5" class="text-center py-4">No hospitals added yet.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <!-- Hospitals Table -->
+        <div class="overflow-x-auto rounded-xl shadow">
+            <table class="min-w-full table-auto border border-gray-200">
+                <thead class="bg-orange-50 text-orange-700 text-sm font-semibold">
+                    <tr>
+                        <th class="border border-gray-200 px-4 py-3 text-left">Name</th>
+                        <th class="border border-gray-200 px-4 py-3 text-left">Address</th>
+                        <th class="border border-gray-200 px-4 py-3 text-left">State</th>
+                        <th class="border border-gray-200 px-4 py-3 text-left">Contact</th>
+                        <th class="border border-gray-200 px-4 py-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm text-gray-700">
+                    {% for hospital in hospitals %}
+                    <tr class="hover:bg-orange-50 transition">
+                        <td class="border border-gray-200 px-4 py-3">{{ hospital.name }}</td>
+                        <td class="border border-gray-200 px-4 py-3">{{ hospital.address }}</td>
+                        <td class="border border-gray-200 px-4 py-3">{{ hospital.state }}</td>
+                        <td class="border border-gray-200 px-4 py-3">{{ hospital.contact_number }}</td>
+                        <td class="border border-gray-200 px-4 py-3 space-x-3">
+                            <a href="{% url 'admin_panel:edit_hospital' hospital.id %}" class="text-blue-600 hover:underline font-medium">Edit</a>
+                            <a href="{% url 'admin_panel:delete_hospital' hospital.id %}" class="text-red-500 hover:underline font-medium" onclick="return confirm('Are you sure you want to delete this hospital?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-gray-500 py-6">No hospitals added yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
 {% endblock %}
