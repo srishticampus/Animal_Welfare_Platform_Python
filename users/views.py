@@ -137,6 +137,29 @@ def logout_view(request):
     messages.success(request, "Logged out successfully!")
     return redirect('login')
 
+def user_profile(request):
+    user = request.user
+    return render(request, 'users/user_profile.html', {'user': user})
+
+def edit_user_profile(request):
+    user = request.user
+    if request.method == "POST":
+        user.username = request.POST.get('username', user.username)
+        user.email = request.POST.get('email', user.email)
+        user.userprofile.phone_number = request.POST.get('phone_number', user.userprofile.phone_number)
+        user.userprofile.aadhaar_number = request.POST.get('aadhaar_number', user.userprofile.aadhaar_number)
+        
+        profile_image = request.FILES.get('profile_image')
+        if profile_image:
+            user.userprofile.profile_image = profile_image
+        
+        user.save()
+        user.userprofile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('user_profile')
+    
+    return render(request, 'users/edit_user_profile.html', {'user': user})
+
 @never_cache
 @login_required
 def home(request):
