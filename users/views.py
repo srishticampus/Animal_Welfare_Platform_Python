@@ -548,6 +548,15 @@ from django.http import JsonResponse
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import os
+import gdown
+
+GOOGLE_DRIVE_FILE_ID = '1sP3G5CweVa1VDKDbHLrTq_-0-B_BP_OY'
+MODEL_PATH = 'my_model.h5'
+
+if not os.path.exists(MODEL_PATH):
+    print("Model not found. Downloading from Google Drive...")
+    url = f"https://drive.google.com/uc?id={GOOGLE_DRIVE_FILE_ID}"
+    gdown.download(url, MODEL_PATH, quiet=False)
 
 # Load your trained model
 model = load_model('my_model.h5')
