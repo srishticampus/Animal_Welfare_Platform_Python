@@ -15,6 +15,7 @@
         <div class="flex flex-col md:flex-row gap-4 justify-center">
             <form action="" method="post"
                 class="flex flex-1 w-full flex-col mx-auto border border-[#ccc] p-6 rounded-2xl">
+                {% csrf_token %}
                 <h2 class="text-2xl font-semibold mb-4">Get in Touch</h2>
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="rounded-md border border-[#ccc] p-2 mt-1 mb-3"

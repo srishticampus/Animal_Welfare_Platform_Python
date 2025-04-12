@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from accounts.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import UserProfile
+from .models import UserProfile, ContactUs
 from admin_panel.models import AddPets
 from petshops.models import Product, Cart, Order, OrderItem, Payment, ShippingAddress
 from django.shortcuts import render, get_object_or_404
