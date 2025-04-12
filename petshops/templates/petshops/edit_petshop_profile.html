@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container mx-auto px-3 lg:px-0 py-12">
+    <h2 class="text-3xl font-semibold text-center mb-8">Edit Your Profile</h2>
+
+    <form method="post" enctype="multipart/form-data" class="flex flex-col gap-6 w-full max-w-lg mx-auto">
+        {% csrf_token %}
+        <label for="registration_id" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Registration ID:</span>
+            <input type="text" name="registration_id" id="registration_id" value="{{ user.petshop.registration_id }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+
+        <label for="username" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Username:</span>
+            <input type="text" name="username" id="username" value="{{ user.username }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="email" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Email:</span>
+            <input type="email" name="email" id="email" value="{{ user.email }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="phone_number" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Phone Number:</span>
+            <input type="text" name="phone_number" id="phone_number" value="{{ user.petshop.phone_number }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="location" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Location:</span>
+            <input type="text" name="location" id="location" value="{{ user.petshop.location }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="available_accessories" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Available Accessories:</span>
+            <input type="text" name="available_accessories" id="available_accessories" value="{{ user.petshop.available_accessories }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <button type="submit" 
+                class="bg-[#e54c00] hover:bg-[#ED824D] text-white py-2 px-4 rounded-3xl mt-4">
+            Update
+        </button>
+    </form>
+</main>
+{% endblock %}
+

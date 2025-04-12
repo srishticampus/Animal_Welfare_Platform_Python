@@ -76,6 +76,25 @@ def login_petshop(request):
     return render(request, 'petshops/login.html')
 
 @login_required
+def petshop_profile(request):
+    user = request.user
+    return render(request, 'petshops/petshop_profile.html', {'user': user})
+
+def edit_petshop_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        user.username = request.POST['username']
+        user.email = request.POST['email']
+        user.petshop.registration_id = request.POST['registration_id']
+        user.petshop.phone_number = request.POST['phone_number']
+        user.petshop.location = request.POST['location']
+        user.petshop.available_accessories = request.POST['available_accessories']
+        user.save()
+        user.petshop.save()
+        return redirect('petshop_profile')
+    return render(request, 'petshops/edit_petshop_profile.html', {'user': user})
+
+@login_required
 def add_product_page(request):
     petshop = PetShop.objects.get(user=request.user)
     
