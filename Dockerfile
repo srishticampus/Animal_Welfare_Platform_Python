@@ -12,10 +12,16 @@ RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
-    
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Install pip-tools first
+RUN pip install --upgrade pip && pip install pip-tools
+
+# Copy requirements.in and compile
+COPY requirements.in .
+RUN pip-compile requirements.in --output-file requirements.txt
+
+# Install dependencies from the compiled requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy Django project files
 COPY . .

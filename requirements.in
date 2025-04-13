@@ -1,0 +1,6 @@
+# requirements.in (core dependencies)
+Django==5.1.7
+Pillow>=10.0.0  # Flexible version to avoid conflicts
+gdown>=4.7.0    # General-purpose Google Drive downloader
+tensorflow==2.15.0
+numpy>=1.26.4,<2.0.0  # Required for TensorFlow compatibility
