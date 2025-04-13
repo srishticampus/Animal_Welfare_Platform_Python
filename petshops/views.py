@@ -10,6 +10,7 @@ import re
 
 def register_petshop(request):
     if request.method == 'POST':
+        first_name = request.POST['first_name']
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
@@ -47,7 +48,7 @@ def register_petshop(request):
         if errors:
             return render(request, 'petshops/register.html', {'errors': errors})
 
-        user = User.objects.create_user(username=username, email=email, password=password, user_type='petshop')
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, user_type='petshop')
         user.is_active = False
         user.save()
         PetShop.objects.create(

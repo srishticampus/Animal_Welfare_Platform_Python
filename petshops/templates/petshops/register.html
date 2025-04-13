@@ -7,6 +7,12 @@
     <h1 class="text-xl font-semibold">Petshop Sign Up!</h1>
     {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+        <label for="first_name" class="flex flex-col">
+            <span>Name</span>
+            <input type="text" class="border border-[#ccc] rounded-md p-2" name="first_name" placeholder="Name" required>
+            {% if errors.first_name %}<p class="text-red-500">{{ errors.first_name }}</p>{% endif %}
+        </label>
+    
         <label for="registration_id" class="flex flex-col">
             <span>Registration ID</span>
             <input type="text" class="border border-[#ccc] rounded-md p-2" name="registration_id" placeholder="Registration ID" required>
