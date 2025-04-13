@@ -22,21 +22,27 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Create target directory if it doesn't exist
+            # Create target directory with proper permissions
             sudo mkdir -p /var/www/python.sicsglobal.com/animal_welfare
             sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data /var/www/python.sicsglobal.com/animal_welfare
             sudo chmod -R 775 /var/www/python.sicsglobal.com/animal_welfare
 
+            # Create required subdirectories with proper permissions
             cd /var/www/python.sicsglobal.com/animal_welfare/
+            mkdir -p media staticfiles db
+            sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data media staticfiles db
+            sudo chmod -R 775 media staticfiles db
+
+            # Create specific subdirectories that need to exist
+            mkdir -p media/profile_pictures media/pet_images media/rescue_images media/volunteer_pictures media/product_images
+            mkdir -p staticfiles/assets staticfiles/admin staticfiles/css
 
             # Backup important files
             mkdir -p .temp
             [ -f db.sqlite3 ] && mv db.sqlite3 .temp/
-            [ -d media ] && mv media .temp/
-            [ -d db ] && mv db .temp/
-
-            # Clean directory while preserving .temp
-            find . -mindepth 1 -maxdepth 1 ! -name '.temp' -exec rm -rf {} +
+            [ -d media ] && mv media/* .temp/media/ || true
+            [ -d db ] && mv db/* .temp/db/ || true
+            [ -d staticfiles ] && mv staticfiles/* .temp/staticfiles/ || true
 
       # Step 3: Copy files to the server with proper permissions
       - name: Copy files to server
@@ -51,6 +57,7 @@ jobs:
           overwrite: true
           tar_tmp_path: /tmp
           tar_exec: "tar"
+          rm: false  # Don't remove files before copying
 
       # Step 4: Set permissions and deploy
       - name: Set permissions and deploy
@@ -64,8 +71,9 @@ jobs:
 
             # Restore preserved files
             [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
-            [ -d .temp/media ] && mv .temp/media .
-            [ -d .temp/db ] && mv .temp/db .
+            [ -d .temp/media ] && mv .temp/media/* media/ || true
+            [ -d .temp/db ] && mv .temp/db/* db/ || true
+            [ -d .temp/staticfiles ] && mv .temp/staticfiles/* staticfiles/ || true
             rm -rf .temp
 
             # Set proper permissions
@@ -73,10 +81,6 @@ jobs:
             sudo find . -type f -exec chmod 664 {} \;
             sudo chmod -R 775 media db staticfiles
             sudo chown -R ${{ secrets.SERVER_USERNAME }}:www-data .
-
-            # Ensure db directory exists
-            mkdir -p db
-            chmod 775 db
 
             # Docker deployment
             docker-compose down
@@ -86,10 +90,11 @@ jobs:
             sleep 10  # Give containers time to start
             if ! docker ps --filter "name=animal_welfare_django" --format "{{.Status}}" | grep -q "Up"; then
               echo "Web container failed to start"
+              docker logs animal_welfare_django || true
               exit 1
             fi
 
-      # Step 5: Verify application health (updated)
+      # Step 5: Verify application health
       - name: Verify application health
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -141,8 +146,9 @@ jobs:
               
               # Restore files
               [ -f backup/db.sqlite3 ] && mv backup/db.sqlite3 .
-              [ -d backup/media ] && mv backup/media .
-              [ -d backup/db ] && mv backup/db .
+              [ -d backup/media ] && mv backup/media/* media/ || true
+              [ -d backup/db ] && mv backup/db/* db/ || true
+              [ -d backup/staticfiles ] && mv backup/staticfiles/* staticfiles/ || true
               
               # Start previous version
               if docker-compose up -d; then
@@ -159,8 +165,9 @@ jobs:
               docker-compose down || true
               
               [ -f .temp/db.sqlite3 ] && mv .temp/db.sqlite3 .
-              [ -d .temp/media ] && mv .temp/media .
-              [ -d .temp/db ] && mv .temp/db .
+              [ -d .temp/media ] && mv .temp/media/* media/ || true
+              [ -d .temp/db ] && mv .temp/db/* db/ || true
+              [ -d .temp/staticfiles ] && mv .temp/staticfiles/* staticfiles/ || true
               
               if docker-compose up -d; then
                 echo "Rollback completed successfully from .temp directory"
