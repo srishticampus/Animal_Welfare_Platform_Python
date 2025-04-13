@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Shop Orders</h2>
+
+    {% if orders %}
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 px-4 py-2">Product</th>
+                    <th class="border border-gray-300 px-4 py-2">Buyer</th>
+                    <!-- <th class="border border-gray-300 px-4 py-2">Quantity</th> -->
+                    <th class="border border-gray-300 px-4 py-2">Total Price</th>
+                    <!-- <th class="border border-gray-300 px-4 py-2">Status</th> -->
+                    <th class="border border-gray-300 px-4 py-2">Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+               
+                    <tr class="text-center">
+                        <td class="border border-gray-300 px-4 py-2">
+                            {% for item in order.order_items.all %}
+                                {{ item.product.product_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">{{ order.user.username }}</td>
+                        <!-- <td class="border border-gray-300 px-4 py-2">{{ order.quantity }}</td> -->
+                        <td class="border border-gray-300 px-4 py-2">${{ order.total_price }}</td>
+                        <!-- <td class="border border-gray-300 px-4 py-2">{{ order.status }}</td> -->
+                        <td class="border border-gray-300 px-4 py-2">{{ order.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="flex justify-end mt-4">
+            <p class="font-bold">Total Revenue: ${{ total_price }}</p>
+        </div>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

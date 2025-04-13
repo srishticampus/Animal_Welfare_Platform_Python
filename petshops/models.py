@@ -15,11 +15,12 @@ class PetShop(models.Model):
 
 # ------------------- PRODUCTS -------------------
 class Product(models.Model):
-    petshop = models.ForeignKey(PetShop, on_delete=models.CASCADE)
+    petshop = models.ForeignKey(PetShop, on_delete=models.CASCADE, related_name='products')
     product_name = models.CharField(max_length=255)
     product_price = models.DecimalField(max_digits=10, decimal_places=2)
     product_description = models.TextField()
     product_image = models.ImageField(upload_to='product_images/')
+    shop = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True) 
 
     def __str__(self):
         return self.product_name
@@ -68,6 +69,7 @@ class Payment(models.Model):
 # ------------------- ORDER -------------------
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField('OrderItem',  related_name='order_items')
     shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -79,8 +81,8 @@ class Order(models.Model):
 
 # ------------------- ORDER ITEMS -------------------
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,  related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 

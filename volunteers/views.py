@@ -16,6 +16,7 @@ def volunteer_register(request):
         phone_number = request.POST["phone_number"]
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
+        profile_image = request.FILES.get('profile_image')
 
         errors = {}
 
@@ -38,7 +39,7 @@ def volunteer_register(request):
         user.is_active = False
         user.save()
 
-        volunteer = Volunteer.objects.create(user=user, phone_number=phone_number)
+        volunteer = Volunteer.objects.create(user=user, phone_number=phone_number, profile_image=profile_image)
         volunteer.save()
 
         messages.success(request, "Registration successful! Wait for admin approval.")
@@ -46,6 +47,24 @@ def volunteer_register(request):
 
     return render(request, "volunteers/register.html")
 
+def volunteer_profile(request):
+    volunteer = request.user
+    return render(request, "volunteers/volunteer_profile.html", {"volunteer": volunteer})
+
+def edit_volunteer_profile(request):
+    user = request.user
+    if request.method == "POST":
+        user.username = request.POST.get('username', user.username)
+        user.first_name = request.POST.get('name', user.first_name)
+        user.email = request.POST.get('email', user.email)
+        user.volunteer.phone_number = request.POST.get('phone_number', user.volunteer.phone_number)
+        user.volunteer.profile_image = request.FILES.get('profile_image', user.volunteer.profile_image)
+
+        user.save()
+        user.volunteer.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('volunteer_profile')
+    return render(request, "volunteers/edit_volunteer_profile.html", {"user": user})
 
 @login_required
 def rescue_list(request):

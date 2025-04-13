@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from petshops.models import PetShop
-from volunteers.models import Volunteer
+from volunteers.models import Volunteer, RescueRequest
 from .models import AddPets, AdoptionRequest
 from django.contrib import messages
 from donation.models import Donation
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Hospital
 from .forms import HospitalForm
+from django.db.models import Q
 
 @login_required
 def admin_dashboard(request):
@@ -38,8 +39,15 @@ def manage_users(request):
         PetShop.objects.values_list("user_id", flat=True)
     ))
     
+    search_query = request.GET.get("q", "")
     users = User.objects.filter(is_superuser=False).exclude(id__in=excluded_users)
-    return render(request, "admin_panel/manage_users.html", {"users": users})
+
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query)
+           
+        )
+    return render(request, "admin_panel/manage_users.html", {"users": users,  "search_query": search_query})
 
 def manage_volunteers(request):
     if not request.user.is_superuser:
@@ -250,3 +258,10 @@ def delete_hospital(request, hospital_id):
     hospital = get_object_or_404(Hospital, id=hospital_id)
     hospital.delete()
     return redirect('admin_panel:hospital_list_admin')
+
+@login_required
+def rescue_list(request):
+    rescue_requests = RescueRequest.objects.all().order_by("-created_at")
+
+
+    return render(request, "admin_panel/rescue_list.html", {"rescue_requests": rescue_requests})

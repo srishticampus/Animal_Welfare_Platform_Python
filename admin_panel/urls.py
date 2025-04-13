@@ -32,4 +32,6 @@ urlpatterns = [
     path('hospitals/edit/<int:hospital_id>/', views.edit_hospital, name='edit_hospital'),
     path('hospitals/delete/<int:hospital_id>/', views.delete_hospital, name='delete_hospital'),
 
+    path("rescue-list/", views.rescue_list, name="rescue_list"),
+
 ]

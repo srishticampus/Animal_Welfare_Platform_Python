@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container mx-auto px-3 lg:px-0 py-12">
+    <h2 class="text-3xl font-semibold text-center mb-8">Edit Your Profile</h2>
+
+    <form method="post" enctype="multipart/form-data" class="flex flex-col gap-6 w-full max-w-lg mx-auto">
+        {% csrf_token %}
+        <label for="username" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Username:</span>
+            <input type="text" name="username" id="username" value="{{ user.username }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="email" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Email:</span>
+            <input type="email" name="email" id="email" value="{{ user.email }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="phone_number" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Phone Number:</span>
+            <input type="text" name="phone_number" id="phone_number" value="{{ user.userprofile.phone_number }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="aadhaar_number" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Aadhaar Number:</span>
+            <input type="text" name="aadhaar_number" id="aadhaar_number" value="{{ user.userprofile.aadhaar_number }}" required 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <label for="profile_image" class="flex flex-col">
+            <span class="text-sm font-light mb-2">Profile Image:</span>
+            <input type="file" name="profile_image" id="profile_image" 
+                   class="border border-[#ccc] rounded-md p-2 mt-1 focus:outline-none" />
+        </label>
+        
+        <button type="submit" 
+                class="bg-[#e54c00] hover:bg-[#ED824D] text-white py-2 px-4 rounded-3xl mt-4">
+            Update
+        </button>
+    </form>
+</main>
+{% endblock %}
+

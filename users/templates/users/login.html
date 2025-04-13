@@ -19,7 +19,15 @@
 
             <label for="password" class="flex flex-col">
                 <span>Password</span>
-                <input type="password" name="password" id="password" class="border border-[#ccc] rounded-md p-2 mt-1" />
+                <div class="relative">
+                    <input type="password" name="password" id="password" class="border border-[#ccc] rounded-md p-2 mt-1 w-full" />
+                    <button type="button" id="show-password" class="absolute top-1/2 transform -translate-y-1/2 right-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </button>
+                </div>
                 <a href="{% url 'forgot-password' %}" class="text-xs mt-2 ms-auto ">Forgot password?</a>
             </label>
 
@@ -31,4 +39,5 @@
         <!-- <p>Don't have an account? <a href="/signup" class="underline">Sign up</a></p> -->
 
     </main>
+    
     {% endblock %}

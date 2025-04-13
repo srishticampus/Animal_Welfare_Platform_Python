@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-from .models import PetShop, Product
+from .models import PetShop, Product, Order, OrderItem
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -10,6 +10,7 @@ import re
 
 def register_petshop(request):
     if request.method == 'POST':
+        first_name = request.POST['first_name']
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
@@ -34,9 +35,8 @@ def register_petshop(request):
         if User.objects.filter(email=email).exists():
             errors['email'] = "Email already exists!"
 
-       
-        if PetShop.objects.filter(registration_id=registration_id).exists():
-            errors['registration_id'] = "This Registration ID is already taken!"
+        if not registration_id.isdigit():
+            errors['registration_id'] = "Registration ID must contain only numbers!"
 
         if not re.fullmatch(r"\d{10}", phone_number):
             errors['phone_number'] = "Phone number must be exactly 10 digits!"
@@ -48,7 +48,7 @@ def register_petshop(request):
         if errors:
             return render(request, 'petshops/register.html', {'errors': errors})
 
-        user = User.objects.create_user(username=username, email=email, password=password, user_type='petshop')
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, user_type='petshop')
         user.is_active = False
         user.save()
         PetShop.objects.create(
@@ -76,6 +76,25 @@ def login_petshop(request):
     return render(request, 'petshops/login.html')
 
 @login_required
+def petshop_profile(request):
+    user = request.user
+    return render(request, 'petshops/petshop_profile.html', {'user': user})
+
+def edit_petshop_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        user.username = request.POST['username']
+        user.email = request.POST['email']
+        user.petshop.registration_id = request.POST['registration_id']
+        user.petshop.phone_number = request.POST['phone_number']
+        user.petshop.location = request.POST['location']
+        user.petshop.available_accessories = request.POST['available_accessories']
+        user.save()
+        user.petshop.save()
+        return redirect('petshop_profile')
+    return render(request, 'petshops/edit_petshop_profile.html', {'user': user})
+
+@login_required
 def add_product_page(request):
     petshop = PetShop.objects.get(user=request.user)
     
@@ -97,8 +116,36 @@ def add_product_page(request):
     return render(request, 'petshops/add_product.html')
 
 def list_product(request):
-    return render(request, 'petshops/list_products.html')
+    petshop = PetShop.objects.get(user=request.user)
+    products = Product.objects.filter(petshop=petshop)
+    return render(request, 'petshops/list_products.html', {'products': products})
 
+def shop_orders(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    try:
+        petshop = PetShop.objects.get(user=request.user)
+    except PetShop.DoesNotExist:
+        return redirect('some_error_page')
+
+    order_items = OrderItem.objects.filter(product__petshop=petshop)
+
+    orders = Order.objects.filter(order_items__in=order_items).distinct()
+    total_price = sum(order.total_price for order in orders)
+
+    return render(request, 'petshops/shope_orders.html', {
+        'orders': orders,
+        'total_price': total_price,
+        'petshop': petshop
+    })
+    
+
+def delete_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    product.delete()
+    messages.success(request, 'Item deleted')
+    return redirect('list_products')
 
 def logout_petshop(request):
     logout(request)

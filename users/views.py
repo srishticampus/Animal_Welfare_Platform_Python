@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from accounts.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import UserProfile
+from .models import UserProfile, ContactUs
 from admin_panel.models import AddPets
 from petshops.models import Product, Cart, Order, OrderItem, Payment, ShippingAddress
 from django.shortcuts import render, get_object_or_404
@@ -40,8 +40,8 @@ def register(request):
             errors['phone_number'] = "Phone number must be exactly 10 digits!"
 
     
-        if not aadhaar_number.isdigit():
-            errors['aadhaar_number'] = "Aadhaar number must contain only numbers!"
+        if not re.fullmatch(r'^\d{12}$', aadhaar_number):
+            errors['aadhaar_number'] = "Aadhaar number must contain exactly 12 digits!"
 
         
         if len(password) < 8:
@@ -136,6 +136,29 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
     return redirect('login')
+
+def user_profile(request):
+    user = request.user
+    return render(request, 'users/user_profile.html', {'user': user})
+
+def edit_user_profile(request):
+    user = request.user
+    if request.method == "POST":
+        user.username = request.POST.get('username', user.username)
+        user.email = request.POST.get('email', user.email)
+        user.userprofile.phone_number = request.POST.get('phone_number', user.userprofile.phone_number)
+        user.userprofile.aadhaar_number = request.POST.get('aadhaar_number', user.userprofile.aadhaar_number)
+        
+        profile_image = request.FILES.get('profile_image')
+        if profile_image:
+            user.userprofile.profile_image = profile_image
+        
+        user.save()
+        user.userprofile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('user_profile')
+    
+    return render(request, 'users/edit_user_profile.html', {'user': user})
 
 @never_cache
 @login_required
@@ -387,13 +410,19 @@ def create_rescue_request(request):
     if request.method == "POST":
         location = request.POST["location"]
         description = request.POST["description"]
+        landmark = request.POST['landmark']
+        contact_number = request.POST['contact_number']
+        predicted_animal = request.POST['predicted_animal']
         image = request.FILES.get("image") 
 
         RescueRequest.objects.create(
             user=request.user,
             location=location,
             description=description,
-            image=image
+            image=image,
+            landmark=landmark,
+            contact_number=contact_number,
+            predicted_animal=predicted_animal
         )
         
         messages.success(request, "Rescue request submitted successfully!")
@@ -513,3 +542,65 @@ def update_adoption_status(request, request_id, status):
 
 # # Example usage
 # predict_image('raw-img/mucca/OIP-_EZ9JozG9mdvRNA_kficAgAAAA.jpeg')
+
+import numpy as np
+from django.http import JsonResponse
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+import os
+import gdown
+
+GOOGLE_DRIVE_FILE_ID = '1sP3G5CweVa1VDKDbHLrTq_-0-B_BP_OY'
+MODEL_PATH = 'my_model.h5'
+
+if not os.path.exists(MODEL_PATH):
+    print("Model not found. Downloading from Google Drive...")
+    url = f"https://drive.google.com/uc?id={GOOGLE_DRIVE_FILE_ID}"
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+# Load your trained model
+model = load_model('my_model.h5')
+
+# Mapping
+translate = {
+    "cane": "dog",
+    "cavallo": "horse",
+    "elefante": "elephant",
+    "gallina": "chicken",
+    "gatto": "cat",
+    "mucca": "cow",
+    "pecora": "sheep",
+    "scoiattolo": "squirrel",
+}
+
+class_indices = {'cane': 0, 'cavallo': 1, 'elefante': 2, 'gallina': 3, 'gatto': 4,
+                 'mucca': 5, 'pecora': 6, 'scoiattolo': 7}
+idx_to_label = {v: k for k, v in class_indices.items()}
+
+def predict_image(request):
+    if request.method == "POST" and request.FILES.get("image"):
+        image = request.FILES["image"]
+        image_path = f"temp/{image.name}"  # Save image temporarily
+        os.makedirs("temp", exist_ok=True)
+        
+        with open(image_path, "wb") as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
+        # Preprocess the image
+        img = load_img(image_path, target_size=(224, 224))
+        img_array = img_to_array(img) / 255.0  
+        img_array = np.expand_dims(img_array, axis=0)  
+
+        # Predict
+        prediction = model.predict(img_array)
+        predicted_class_idx = np.argmax(prediction)
+        predicted_label = idx_to_label[predicted_class_idx]
+        translated_label = translate.get(predicted_label, "Unknown")
+
+        # Delete the image after processing
+        os.remove(image_path)
+
+        return JsonResponse({"predicted_animal": translated_label})
+    
+    return JsonResponse({"error": "Invalid request"}, status=400)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="container mx-auto px-3 lg:px-0 py-12">
+    <section class="flex flex-col items-center md:flex-col gap-4">
+        <div class=" * flex flex-col w-full md:w-3/4 items-center"> 
+            <h1 class="text-lg font-medium py-2">Registration ID: {{ user.petshop.registration_id }}</h1>
+            <p class="text-lg font-medium py-2">Username: {{ user.username }}</p>
+            <p class="text-lg font-medium py-2">Email: {{ user.email }}</p>
+            <p class="text-lg font-medium py-2">Phone: {{ user.petshop.phone_number }}</p>
+            <p class="text-lg font-medium py-2">Location: {{ user.petshop.location }}</p>
+            <p class="text-lg font-medium py-2">Available Accessories: {{ user.petshop.available_accessories }}</p>
+        </div>
+        <a href="{% url 'edit_petshop_profile' %}">Edit</a>
+    </section>
+   
+</main>
+
+{% endblock %}
+
