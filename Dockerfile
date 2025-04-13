@@ -7,7 +7,12 @@ ENV PYTHONUNBUFFERED 1
 
 # Set working directory
 WORKDIR /code
-
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+    
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
