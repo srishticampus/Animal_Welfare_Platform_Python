@@ -9,6 +9,7 @@ from donation.models import Donation
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Hospital
 from .forms import HospitalForm
+from django.db.models import Q
 
 @login_required
 def admin_dashboard(request):
@@ -38,8 +39,15 @@ def manage_users(request):
         PetShop.objects.values_list("user_id", flat=True)
     ))
     
+    search_query = request.GET.get("q", "")
     users = User.objects.filter(is_superuser=False).exclude(id__in=excluded_users)
-    return render(request, "admin_panel/manage_users.html", {"users": users})
+
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query)
+           
+        )
+    return render(request, "admin_panel/manage_users.html", {"users": users,  "search_query": search_query})
 
 def manage_volunteers(request):
     if not request.user.is_superuser:
