@@ -280,8 +280,28 @@ def checkout(request):
 
     if request.method == "POST":
         address = request.POST["address"]
-        pin_code = request.POST["pin_code"]
         phone = request.POST["phone"]
+        pin_code = request.POST["pin_code"]
+        card_number = request.POST["card_number"]
+        card_name = request.POST["card_name"]
+        expiry_date = request.POST["expiry_date"]
+        cvv = request.POST["cvv"]
+        
+        if not phone.isdigit() or len(phone) != 10:
+            messages.error(request, "Phone number should be only numbers and 10 digits.")
+            return render(request, "users/checkout.html", context)
+        
+        if not pin_code.isdigit() or len(pin_code) != 6:
+            messages.error(request, "Pin Code should be only numbers and 6 digits.")
+            return render(request, "users/checkout.html", context)
+        
+        if not card_number.isdigit() or len(card_number) != 16:
+            messages.error(request, "Card number should be only numbers and 16 digits.")
+            return render(request, "users/checkout.html", context)
+        
+        if not cvv.isdigit() or len(cvv) != 3:
+            messages.error(request, "CVV should be only numbers and 3 digits.")
+            return render(request, "users/checkout.html", context)
         
         shipping_address = ShippingAddress.objects.create(
             user=request.user,
@@ -297,10 +317,10 @@ def checkout(request):
         
         payment = Payment.objects.create(
             user=request.user,
-            card_number=request.POST["card_number"],
-            card_name=request.POST["card_name"],
-            expiry_date=request.POST["expiry_date"],
-            cvv=request.POST["cvv"]
+            card_number=card_number,
+            card_name=card_name,
+            expiry_date=expiry_date,
+            cvv=cvv
         )
         
         order = Order.objects.create(
@@ -415,19 +435,27 @@ def create_rescue_request(request):
         predicted_animal = request.POST['predicted_animal']
         image = request.FILES.get("image") 
 
-        RescueRequest.objects.create(
-            user=request.user,
-            location=location,
-            description=description,
-            image=image,
-            landmark=landmark,
-            contact_number=contact_number,
-            predicted_animal=predicted_animal
-        )
-        
-        messages.success(request, "Rescue request submitted successfully!")
-        return redirect("create_rescue_request")  
+        if image:
+            if not (image.name.endswith('.png') or image.name.endswith('.jpg')):
+                messages.error(request, "Please upload a valid .png or .jpg image")
+                return redirect("create_rescue_request")  
 
+        if contact_number.isdigit() and len(contact_number) == 10:
+            RescueRequest.objects.create(
+                user=request.user,
+                location=location,
+                description=description,
+                image=image,
+                landmark=landmark,
+                contact_number=contact_number,
+                predicted_animal=predicted_animal
+            )
+            messages.success(request, "Rescue request submitted successfully!")
+            return redirect("create_rescue_request")  
+        else:
+            messages.error(request, "Please enter a valid 10 digit contact number")
+            return redirect("create_rescue_request")  
+        
     return render(request, "users/rescue.html")
 
 
