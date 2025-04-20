@@ -530,6 +530,9 @@ def update_adoption_status(request, request_id, status):
     adoption_request.save()
     return redirect("manage_adoption_requests")
 
+def user_rescue_list(request):
+    rescue_requests = RescueRequest.objects.all().order_by("-created_at")
+    return render(request, "users/rescue_list.html", {"rescue_requests": rescue_requests})
 
 # import numpy as np
 # from tensorflow.keras.models import load_model

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register, login_view, logout_view, home, pet_shop, product_detail, cart_page, add_to_cart, remove_from_cart, checkout,order_success,pet_adoption_list,pet_adoption_detail,adoption_form,create_rescue_request,forgot_password,reset_password,user_orders, add_pet, user_pets_list, apply_for_adoption, manage_adoption_requests, update_adoption_status, predict_image, user_profile, edit_user_profile
+from .views import register, login_view, logout_view, home, pet_shop, product_detail, cart_page, add_to_cart, remove_from_cart, checkout,order_success,pet_adoption_list,pet_adoption_detail,adoption_form,create_rescue_request,forgot_password,reset_password,user_orders, add_pet, user_pets_list, apply_for_adoption, manage_adoption_requests, update_adoption_status, predict_image, user_profile, edit_user_profile, user_rescue_list
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -23,6 +23,9 @@ urlpatterns = [
     path('reset-password/', reset_password, name='reset_password'),
     path('profile/', user_profile, name='user_profile'),
     path('edit-profile/', edit_user_profile, name='edit_user_profile'),
+
+    path("user_rescue-list/", user_rescue_list, name="user_rescue_list"),
+
 
 
     path("add-pet/", add_pet, name="add_pet"),
