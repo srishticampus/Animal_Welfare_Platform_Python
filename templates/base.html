@@ -19,7 +19,7 @@
 
 <body class="bg-[#F6F7F9] text-[#4c4c4c] flex flex-col min-h-screen">
   <!-- navbar -->
-  <nav class="py-6 bg-white shadow-md">
+  <nav class="py-6 bg-white shadow-md px-4">
     <div class="container mx-auto px-4 lg:px-0 flex justify-between items-center">
       <!-- logo -->
       <div class="flex items-center gap-2">
@@ -53,6 +53,9 @@
       {% elif user.volunteer %}
       <a href="{% url 'rescue_list' %}">Rescue List</a>
       <a href="{% url 'volunteer_dashboard' %}">Donations</a>
+      <a class="hover:text-[#e54c00] transition" href="{% url 'admin_panel:hospital_list' %}">Hospitals</a>
+
+      
       {% elif user.is_authenticated and not user.petshop %}
       <!-- nav -->
       <ul class="text-sm font-medium gap-6 hidden md:flex">
@@ -231,7 +234,7 @@
   </div>
 
 <!-- footer -->
-<footer class="bg-[#4c4c4c] text-white py-4 mt-auto">
+<footer class="bg-[#4c4c4c] text-white py-4 mt-auto px-4">
     <div class="container mx-auto px-3 pt-3 lg:px-0 flex">
         <div class="flex-1 flex flex-col justify-between pb-1">
             <!-- logo -->
@@ -259,10 +262,10 @@
         <!-- nav -->
         <div class="flex-1">
             <nav class="text-xs font-light py-2 flex flex-col justify-evenly items-stretch text-end gap-4">
-                <a href="#">Home</a>
-                <a href="#">Shop</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
+                <a href="">Home</a>
+                <!-- <a href="#">Shop</a> -->
+                <a href="{% url 'about_page' %}">About</a>
+                <a href="{% url 'contact_page' %}">Contact</a>
             </nav>
         </div>
     </div>
