@@ -16,6 +16,7 @@ from admin_panel.models import AddPets, AdoptionRequest, AdoptionApplication
 import re 
 from django.http import JsonResponse
 import json
+from donation.models import Donation
 
 def register(request):
     if request.method == "POST":
@@ -533,6 +534,10 @@ def update_adoption_status(request, request_id, status):
 def user_rescue_list(request):
     rescue_requests = RescueRequest.objects.all().order_by("-created_at")
     return render(request, "users/rescue_list.html", {"rescue_requests": rescue_requests})
+
+def my_donations(request):
+    donations = Donation.objects.filter(donor=request.user).order_by('-created_at')
+    return render(request, "users/my_donations.html", {"donations": donations})
 
 # import numpy as np
 # from tensorflow.keras.models import load_model
